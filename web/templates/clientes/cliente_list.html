@@ -33,7 +33,7 @@
                         <td>{{ field.tel_cel }}</td>
                         <td>{{ field.data_cadastro }}</td>
                         <td class="button-editar"><a href="{% url 'cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-pencil"></i></a></td>
-                        <td class="button-editar"><a data-toggle="modal" data-target="#del_cliente"
+                        <td class="button-remover"><a data-toggle="modal" data-target="#del_cliente"
                            href="{% url 'cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-trash"></i></a></td>
                       </tr>
             {% endfor %}

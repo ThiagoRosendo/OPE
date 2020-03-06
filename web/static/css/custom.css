@@ -4,14 +4,6 @@ li.active{
     background-color: red;
 }
 
-.button-editar{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 35px;
-    height: 35px;
-}
-
 .button-editar-href{
     padding: 0;
     text-align: center;   
