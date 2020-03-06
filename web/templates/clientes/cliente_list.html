@@ -33,40 +33,13 @@
                         <td>{{ field.tel_cel }}</td>
                         <td>{{ field.data_cadastro }}</td>
                         <td class="button-editar"><a href="{% url 'cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-pencil"></i></a></td>
-                        <td class="button-editar"><a data-toggle="modal" data-target="#del_cliente"
-                           href="{% url 'cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-trash"></i></a></td>
+                        <td class="button-editar" method="post"><a href="#" class="dropdown-item button-editar-href"><i class="fa fa-trash"></i></a></td>
                       </tr>
             {% endfor %}
          </tbody>
                   </table>
 
-  <!-- Início do Modal -->
-                                  <!-- Botão para acionar modal -->
-                                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_cliente">Excluir</button>
-                
-                                  <!-- Modal -->
-                                  <div class="modal fade" id="del_cliente" tabindex="-1" role="dialog" aria-labelledby="excluir_cliente" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="excluir_cliente">Excluir Cadastro</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                              <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                          Tem certerza que deseja excluir o cadastro de <b>{{ cliente.nome }}</b>? Todos os dados serão perdidos!
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                          <button type="submit" name="excluir" class="btn btn-danger">Sim, excluir</button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- Fim do Modal -->  
-
-                
+                  
                 </div>
               </div>
             </div>

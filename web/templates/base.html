@@ -3,6 +3,12 @@
 <html lang="pt-br">
   <head>
       <title>GC Dominium</title>
+      <script src="../static/js/cep.js"></script>
+      <script src="../static/js/cpf.js"></script>
+      <script src="../static/js/cel.js"></script>
+      <script src="../static/js/data.js"></script>
+      <script src="../static/js/nome.js"></script>
+      <script src="../static/js/moeda.js"></script>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="description" content="">
@@ -116,10 +122,8 @@
           <ul>
             <li><a href="{% url 'index' %}"> <i class="icon-home"></i>Home </a></li>
             <li><a href="{% url 'cliente_list' %}"> <i class="icon-user"></i> Clientes </a></li>
-          
-            <span class="heading">Serviços</span>
-            <li><a href="{% url 'services_cad' %}"> <i class="icon-padnote"></i>Cadastrar </a></li>
-            <li><a href="{% url 'services_list' %}"> <i class="icon-list"></i>Lista de Serviços </a></li>
+            <li><a href="{% url 'services_list' %}"> <i class="icon-list"></i> Serviços </a></li>
+           
           </u1>
         </nav>
         <div class="content-inner">
@@ -173,5 +177,6 @@
 
   <script src="{% static 'js/jquery.js' %}"></script>
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
   </body>
 </html>

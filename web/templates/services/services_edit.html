@@ -6,6 +6,7 @@
 <script src="../../static/js/cel.js"></script>
 <script src="../../static/js/data.js"></script>
 <script src="../../static/js/nome.js"></script>
+<script src="../../static/js/moeda.js"></script>
 
 {% if message.success %}
 <div class="alert alert-success" role="alert">
@@ -38,75 +39,73 @@
               </div>
               <div class="form-group col-md-2">      
                 <label for="id_valor">Valor</label>
-                <input type="float" name="valor" class="form-control" required id="id_valor" placeholder="R$ 0,00" maxlength="14" value="{{ services.valor }}">
+                <input type="float" name="valor" class="form-control" required id="id_valor" placeholder="R$ 0,00" maxlength="14" value="{{ services.valor }}" onKeyPress="return(moeda(this,'.','.',event))">
               </div>
   
               <div class="form-group col-md-9">
                 <label for="id_descricao">Descrição</label>
-                <textarea name="descricao" class="form-control" rows="12" required id="id_descricao" placeholder="Fale um pouco sobre este serviço"></textarea>
+                <input name="descricao" class="form-control" rows="5" cols="70" required id="id_descricao" placeholder="Fale um pouco sobre este serviço" value="{{services.descricao}}">
   
               </div>
-            <!-- <div class="form-group">
-                <label for="id_photo">Foto</label>
-                <input type="file" name="photo" class="form-control" id="photo">
-                </div> -->
           </div>
-                    <!-------------------------------------------------------- FIM DADOS PESSOAIS ------------------------------------------->
-                        </div>                        
-                        <hr class="my-3">
-                        <div class="pure-controls">
-                                <!-- Início do Modal -->
-                                                  <!-- Botão para acionar modal -->
-                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#salvar_cliente">Salvar</button>
-                                
-                              <!-- Modal -->
-                              <div class="modal fade" id="salvar_cliente" tabindex="-1" role="dialog" aria-labelledby="salvar_alteracoes" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="salvar_alteracoes">Salvar Alterações</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                      Deseja salvar as alterações no cadastro de <b>{{ services.nome }}</b>?
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                      <button type="submit" name="salvar" class="btn btn-primary">Sim, salvar</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <!-- Fim do Modal -->               
-                              
-                              
-                              <!-- Início do Modal -->
-                                                  <!-- Botão para acionar modal -->
-                              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_cliente">Excluir</button>
-                                
-                                <!-- Modal -->
-                                <div class="modal fade" id="del_cliente" tabindex="-1" role="dialog" aria-labelledby="excluir_cliente" aria-hidden="true">
-                                  <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                        <h5 class="modal-title" id="excluir_cliente">Excluir Cadastro</h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                            <span aria-hidden="true">&times;</span>
-                                          </button>
-                                      </div>
-                                      <div class="modal-body">
-                                        Tem certerza que deseja excluir o cadastro de <b>{{ services.nome }}</b>? Todos os dados serão perdidos!
-                                      </div>
-                                      <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                        <button type="submit" name="excluir" class="btn btn-danger">Sim, excluir</button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <!-- Fim do Modal -->
+          </div>   
+                 <!-------------------------------------------------------- FIM DADOS PESSOAIS ------------------------------------------->
+                      
+                 <hr class="my-3">
+                 <div class="pure-controls">
+                         <!-- Início do Modal -->
+                                           <!-- Botão para acionar modal -->
+                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#salvar_cliente">Salvar</button>
+                         
+                       <!-- Modal -->
+                       <div class="modal fade" id="salvar_cliente" tabindex="-1" role="dialog" aria-labelledby="salvar_alteracoes" aria-hidden="true">
+                         <div class="modal-dialog modal-dialog-centered" role="document">
+                           <div class="modal-content">
+                             <div class="modal-header">
+                               <h5 class="modal-title" id="salvar_alteracoes">Salvar Alterações</h5>
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                   <span aria-hidden="true">&times;</span>
+                                 </button>
+                             </div>
+                             <div class="modal-body">
+                               Deseja salvar as alterações no cadastro de <b>{{ services.nome }}</b>?
+                             </div>
+                             <div class="modal-footer">
+                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                               <button type="submit" name="salvar" class="btn btn-primary">Sim, salvar</button>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                       <!-- Fim do Modal -->               
+                       
+                       
+                       <!-- Início do Modal -->
+                                           <!-- Botão para acionar modal -->
+                       <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_cliente">Excluir</button>
+                         
+                         <!-- Modal -->
+                         <div class="modal fade" id="del_cliente" tabindex="-1" role="dialog" aria-labelledby="excluir_cliente" aria-hidden="true">
+                           <div class="modal-dialog modal-dialog-centered" role="document">
+                             <div class="modal-content">
+                               <div class="modal-header">
+                                 <h5 class="modal-title" id="excluir_cliente">Excluir Cadastro</h5>
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                     <span aria-hidden="true">&times;</span>
+                                   </button>
+                               </div>
+                               <div class="modal-body">
+                                 Tem certerza que deseja excluir o cadastro de <b>{{ services.nome }}</b>? Todos os dados serão perdidos!
+                               </div>
+                               <div class="modal-footer">
+                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                 <button type="submit" name="excluir" class="btn btn-danger">Sim, excluir</button>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                         <!-- Fim do Modal -->
+                      
           </form>
         </div>
       </div>
