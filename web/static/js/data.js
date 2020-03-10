@@ -71,3 +71,55 @@ function mascaraData(val) {
     return true;
 
 }
+
+
+
+function valData(id_data_nascimento){//dd/mm/aaaa
+
+  day = id_data_nascimento.substring(0,2);
+  month = id_data_nascimento.substring(3,5);
+  year = id_data_nascimento.substring(6,10);
+  
+  if( (month==01) || (month==03) || (month==05) || (month==07) || (month==08) || (month==10) || (month==12) )    {//mes com 31 dias
+  if( (day < 01) || (day > 31) ){
+      alert('Data inválida!');
+      document.cliente.data_nascimento.value = '';
+      document.cliente.data_nascimento.focus();
+      return false;
+  }
+  } else
+  
+  if( (month==04) || (month==06) || (month==09) || (month==11) ){//mes com 30 dias
+  if( (day < 01) || (day > 30) ){
+      alert('Data inválida!');
+      document.cliente.data_nascimento.value = '';
+      document.cliente.data_nascimento.focus();
+      return false;
+  }
+  } else
+  
+  if( (month==02) ){//February and leap year
+  if( (year % 4 == 0) && ( (year % 100 != 0) || (year % 400 == 0) ) ){
+  if( (day < 01) || (day > 29) ){
+      alert('Data inválida!');
+      document.cliente.data_nascimento.value = '';
+      document.cliente.data_nascimento.focus();
+      return false;
+  }
+  } else {
+  if( (day < 01) || (day > 28) ){
+  alert('Data inválida!');
+  document.cliente.data_nascimento.value = '';
+      document.cliente.data_nascimento.focus();
+      return false;
+  }
+  }
+  }
+  if( (month >12)){
+     alert('Data inválida!');
+     document.cliente.data_nascimento.value = '';
+      document.cliente.data_nascimento.focus();
+      return false;
+     }
+  
+  }

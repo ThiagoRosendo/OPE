@@ -46,7 +46,7 @@
 
             <div class="form-group col-md-2">
               <label for="id_data_nascimento">Data de nascimento*</label>
-              <input type="text" name="data_nascimento" class="form-control" required id="id_data_nascimento" placeholder="01/01/1900" maxlength="10 " onkeypress="mascaraData(this)">
+              <input type="text" name="data_nascimento" class="form-control" required id="id_data_nascimento" placeholder="01/01/1900" maxlength="10 " onkeypress="mascaraData(this)" onblur="valData(this.value)">
             </div>
 
             <div class="form-group col-md-1">
@@ -120,7 +120,6 @@
                                 <label for="id_uf">Estado*</label>
                                 <input type="text" name="uf" class="form-control" required id="id_uf" placeholder="UF" maxlength="2">
                               </div>
-                              
                           <!--------------------------------------------------------FIM DO ENDEREÇO ------------------------------------------->
                         </div>                        
                         <hr class="my-3">
@@ -128,6 +127,7 @@
                 <div class="pure-controls">
                     <button type="submit" class="btn btn-primary">CADASTRAR</button>
                 </div></div>
+               
           </form>
         </div>
       </div>

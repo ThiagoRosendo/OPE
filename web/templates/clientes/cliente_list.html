@@ -6,7 +6,7 @@
 <div class="col-lg-8">
   <div class="card">
     <div class="card-close">
-    <a href="{% url 'cliente_cad' %}" class="dropdown-item edit"><i class="fa fa-plus"></i></a>
+    <a href="{% url 'cliente_cad' %}" class="dropdown-item edit">Adicionar <i class="fa fa-plus"></i></a>
     </div>
             <div class="card-header d-flex align-items-center">
                             <h3 class="h4">Lista de Clientes</h3>
@@ -33,9 +33,37 @@
                         <td>{{ field.tel_cel }}</td>
                         <td>{{ field.data_cadastro }}</td>
                         <td class="button-editar"><a href="{% url 'cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-pencil"></i></a></td>
-                        <td class="button-remover"><a data-toggle="modal" data-target="#del_cliente"
-                           href="{% url 'cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-trash"></i></a></td>
-                      </tr>
+                        <td class="button-remover"><button type="button" data-toggle="modal" data-target="#del_cliente"
+                            class="dropdown-item button-editar-href"><i class="fa fa-trash"></i></a></td>
+                      
+                                                  <!-- Modal -->
+                                                  <div class="modal fade" id="del_cliente" tabindex="-1" role="dialog" aria-labelledby="excluir_cliente" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title" id="excluir_cliente">Excluir Cadastro</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                                              <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          Tem certerza que deseja excluir o cadastro de <b>{{ cliente.nome }}</b>? Todos os dados serão perdidos!
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                          <button type="submit" name="excluir" class="btn btn-danger">Sim, excluir</button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <!-- Fim do Modal -->
+                      
+                      
+                      
+                      
+                      
+                      
+                          </tr>
             {% endfor %}
          </tbody>
                   </table>
