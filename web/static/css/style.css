@@ -47,7 +47,15 @@ label {
   border-top-color: #e5abab;
 }
 
+.foto-cliente{
+  position: absolute;
+  right: 55px;
+  top: 60px;
+}
 
+.avatar{
+  margin-top: 50px;
+}
 
 @media(max-width:796px){
   #id_conteudo{
@@ -56,5 +64,15 @@ label {
   }
   .mensagem input{
     width: 100%;
+  }
+
+  .card-body{
+    margin-top: 180px;
+  }
+
+  .foto-cliente{
+    position: absolute;
+    right: 105px;
+    top: 65px;
   }
 }
