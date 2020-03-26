@@ -9,7 +9,7 @@ class ClienteCadForm(forms.ModelForm):
         fields = [
             'nome', 'cpf', 'rg', 'data_nascimento', 'email',
             'tel_fixo', 'sexo', 'logradouro', 'numero', 'complemento',
-            'bairro', 'cidade', 'uf', 'tel_cel', 'tel_emergency', 'cep'
+            'bairro', 'cidade', 'uf', 'tel_cel', 'tel_emergency', 'cep', 'photo'
             ]
 
 
@@ -18,6 +18,6 @@ class ServicesForm(forms.ModelForm):
     class Meta:
         model = Servicos
         fields = [
-            'nome', 'valor', 'descricao'
+            'nome', 'valor', 'descricao', 'images'
         ]
         

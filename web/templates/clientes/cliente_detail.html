@@ -15,11 +15,12 @@
                                 <h3 class="h4">Dados Pessoais</h3>
                     </div>
                 <div class="card-body">
-                    <!-- <div class="avatar"><img src="{{ field.photo.url }}" class="img-fluid rounded-circle" width="200px" height="200px"></div> -->
                     <b>Nome: </b> {{ field.nome }}  <br>
                     <b>CPF: </b> {{ field.cpf }} &nbsp;&nbsp;-&nbsp;&nbsp; <b>RG: </b> {{ field.rg }}  <br>
                     <b>Data de nascimento: </b> {{ field.data_nascimento }}  <br>
                     <b>Sexo: </b> {{ field.sexo }} <br>
+
+                    <div class="avatar"><img src="{{ field.photo.url }}" class="img-fluid rounded-circle" width="150px">
                     
                     <hr class="my-3">
                     <b>Residencial: </b> {{ field.tel_fixo }} &nbsp;&nbsp;-&nbsp;&nbsp; <b>Celular: </b> {{ field.tel_cel }} &nbsp;&nbsp;-&nbsp;&nbsp;
@@ -31,6 +32,9 @@
                     {{ field.cidade }}  &nbsp;-&nbsp; {{ field.uf }}  <br>
                     {{ field.cep }}
 
+                   
+</div>
+                    
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class ClienteModel(models.Model):
     sexo_choices = [['Feminino', 'Feminino'], ['Masculino', 'Masculino']]
     data_cadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
@@ -10,6 +9,7 @@ class ClienteModel(models.Model):
     rg = models.CharField('RG', max_length=20, null=True)
     data_nascimento = models.CharField('Data de nascimento', max_length=10, null=False, default='01/01/1900')
     sexo = models.CharField(max_length=9, choices=sexo_choices, null=True, blank=True)
+    photo = models.ImageField('Foto de perfil', upload_to='profile', default='default.jpg', blank=True)
     
     # Contato
 
@@ -41,6 +41,7 @@ class Servicos(models.Model):
     nome = models.CharField('Nome', default='', null=False, max_length=50)
     valor = models.FloatField('Valor', null=False, default=0)
     descricao = models.TextField('Descrição', default='', null=False)
+    images = models.FileField('Imagens', blank=True, upload_to="servicos/imagens/")
     
     
     

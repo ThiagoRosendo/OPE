@@ -10,18 +10,23 @@ def index(request):
 
 def cliente_cad(request):
     page = 'clientes/cliente_cad.html'
-    form = ClienteCadForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('cliente_list')
-
+    
+    if request.POST:
+        form = ClienteCadForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cliente cadastrado com sucesso!')
+            return redirect('cliente_list')
+    else:
+        form = ClienteCadForm
+        messages.warning(request, 'Ops! Verifique os dados digitados!')
     return render(request, page, {'form': form})
 
 
 def cliente_edit(request, cpf):
     page = 'clientes/cliente_edit.html'
     cliente = ClienteModel.objects.get(cpf=cpf)
-    form = ClienteCadForm(request.POST or None, instance=cliente)
+    form = ClienteCadForm(request.POST or None, request.FILES, instance=cliente)
     if request.POST:
         if form.is_valid() and 'salvar' in request.POST:
             form.save()

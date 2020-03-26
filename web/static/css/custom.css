@@ -9,3 +9,8 @@ li.active{
     text-align: center;   
 }
 
+.area-texto{
+    margin-left: 300px;
+    text-align: right;
+    font-style: italic;
+}

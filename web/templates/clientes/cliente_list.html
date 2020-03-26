@@ -32,8 +32,8 @@
                         <td>{{ field.cpf }}</td>
                         <td>{{ field.tel_cel }}</td>
                         <td>{{ field.data_cadastro }}</td>
-                        <td class="button-editar"><a href="{% url 'cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-pencil"></i></a></td>
-                        <td class="button-remover"><button type="button" data-toggle="modal" data-target="#del_cliente"
+                        <td><a href="{% url 'cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-pencil"></i></a></td>
+                        <td><button type="button" data-toggle="modal" data-target="#del_cliente"
                             class="dropdown-item button-editar-href"><i class="fa fa-trash"></i></a></td>
                       
                                                   <!-- Modal -->
