@@ -19,19 +19,20 @@ def cliente_cad(request):
             return redirect('cliente_list')
     else:
         form = ClienteCadForm
-        messages.warning(request, 'Ops! Verifique os dados digitados!')
+        
     return render(request, page, {'form': form})
 
 
 def cliente_edit(request, cpf):
     page = 'clientes/cliente_edit.html'
     cliente = ClienteModel.objects.get(cpf=cpf)
-    form = ClienteCadForm(request.POST or None, request.FILES, instance=cliente)
+    form = ClienteCadForm(request.POST or None, instance=cliente)
     if request.POST:
         if form.is_valid() and 'salvar' in request.POST:
             form.save()
             return redirect('cliente_list')
         if 'excluir' in request.POST:
+            cliente.photo.delete()
             cliente.delete()
             return redirect('cliente_list')
 

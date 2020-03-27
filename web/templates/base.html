@@ -106,6 +106,14 @@
             </div>
           </div>
         </nav>
+
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
       </header>
       <div class="page-content d-flex align-items-stretch"> 
         <!-- Side Navbar -->
@@ -135,13 +143,7 @@
           </header>
 
           {% block content %}
-          {% if messages %}
-  <ul class="messages">
-    {% for message in messages %}
-      <li class="{{ message.tags }}">{{ message }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
+
 
         {% endblock %} 
 
