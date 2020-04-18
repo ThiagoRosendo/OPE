@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web',
+    'registration_bootstrap',
+    'bootstrapform',
+    'django_forms_bootstrap',
+    'crispy_forms',
+    'widget_tweaks'
     
 ]
 
@@ -124,7 +129,7 @@ TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 

@@ -6,29 +6,26 @@
 <div class="col-lg-8">
     <div class="card">
       <div class="card-close">
-        <a href="{% url 'services_cad' %}" class="dropdown-item edit"> Adicionar <i class="fa fa-plus"></i></a>
+        <a href="{% url 'web:services_cad' %}" class="dropdown-item edit"> Adicionar <i class="fa fa-plus"></i></a>
         </div>
             <div class="card-header d-flex align-items-center">
-                            <h3 class="h4">Lista de Serviços</h3>
+                            <h3 class="h4">Serviços</h3>
                         </div>
               <div class="card-body">
                 <div class="table-responsive">   
                   <table class="table table-striped table-sm">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Telefone Celular</th>
-                        <th>Data de cadastro</th>
+                        
+                        <th>Nome do Serviço</th>
+                        <th>Valor por Sessão</th>
                       </tr>
                     </thead>
                     <tbody>                        
             {% for field in services %}
                       <tr>
-                        <th scope="row">{{ field.id }}</th>
-                        <td><a href="{% url 'services_detail' field.id %}"><li>{{ field.nome }}</li></a></td>
-                        
+                        <td><a href="{% url 'web:services_detail' field.id %}"><li>{{ field.nome }}</li></a></td>
+                        <td>R$  {{ field.valor }}</td>
                       </tr>
             {% endfor %}
          </tbody>

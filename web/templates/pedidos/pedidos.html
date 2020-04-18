@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for field in services %}
+{% for field in pedido %}
+{% for item in pedidodet %}
 <br>
 <br>
 <div class="col-lg-8">
         <div class="card">
                 <div class="card-close">
-                <a href="{% url 'web:services_edit' field.id %}" class="dropdown-item edit"><i class="fa fa-gear"></i></a>
+                <a href="#" class="dropdown-item edit"><i class="fa fa-gear"></i></a>
                 </div>
 
                       
@@ -15,14 +16,15 @@
                                 <h3 class="h4">Detalhes do Serviço</h3>
                     </div>
                 <div class="card-body">
-                    <b>{{ field.nome }} </b> <br>
-                    <b>Valor por sessão:  </b> R$ {{ field.valor }} &nbsp;&nbsp;&nbsp;  <br>
-                    <b>Descrição: </b> {{ field.descricao }} <br>
+                    <b> </b> <br>
+                    <b>Valor por sessão:  </b> R$ {{ field.cliente }} &nbsp;&nbsp;&nbsp;  <br>
+                    <b>Descrição: </b> {{ item.servico }} <br>
 
 
                             </div>
                         </div>
                     </div>
+{% endfor %}
 {% endfor %}
 
 {% endblock %}

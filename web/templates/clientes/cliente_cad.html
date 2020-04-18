@@ -6,6 +6,7 @@
 <script src="../../static/js/cel.js"></script>
 <script src="../../static/js/data.js"></script>
 <script src="../../static/js/nome.js"></script>
+
 <br>
 <br>
 <div class="container-fluid">
@@ -120,9 +121,11 @@
                                 <label for="id_uf">Estado*</label>
                                 <input type="text" name="uf" class="form-control" required id="id_uf" placeholder="UF" maxlength="2">
                               </div>
+
+                              <input type="hidden" name="alert" value="{{alert}}" readonly>
                           <!--------------------------------------------------------FIM DO ENDEREÇO ------------------------------------------->
                         </div>
-                        <!-- <input type="file" name="image" id="id_image">               -->
+                        
                         <hr class="my-3">
 
                 <div class="pure-controls">
@@ -130,6 +133,16 @@
                 </div></div>
                
           </form>
+          <script>
+            $( document ).ready(function() {
+              if (document.registroForm.alert.value==1){
+                swal("¡Bien hecho!aaa", "El registro fue exitosoaaaa.", "suaaaaaccess")
+              }
+              if (document.registroForm.alert.value==0){
+                swal("¡Ooaaaaps!", "Algo salaaaaió mal.", "erraaaaor")
+              }
+            });
+            </script>
         </div>
       </div>
     </div>

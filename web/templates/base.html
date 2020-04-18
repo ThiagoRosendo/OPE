@@ -48,6 +48,7 @@
           }
         }
       </style>
+  
   </head>
   <body>
     <div class="page">
@@ -65,7 +66,7 @@
             <div class="navbar-holder d-flex align-items-center justify-content-between">
               <!-- Navbar Header-->
               <div class="navbar-header">
-                <!-- Navbar Brand --><a href="{% url 'index' %}" class="navbar-brand d-none d-sm-inline-block">
+                <!-- Navbar Brand --><a href="{% url 'web:index' %}" class="navbar-brand d-none d-sm-inline-block">
                   <div class="brand-text d-none d-lg-inline-block"><span>GC </span><strong> Dominium</strong></div>
                   <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>GCD</strong></div></a>
                 <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
@@ -108,11 +109,12 @@
         </nav>
 
         {% if messages %}
-        <ul class="messages">
+        <div class="alert alert-success" role="alert">
           {% for message in messages %}
             <li class="{{ message.tags }}">{{ message }}</li>
           {% endfor %}
-        </ul>
+        
+      </div>
       {% endif %}
       </header>
       <div class="page-content d-flex align-items-stretch"> 
@@ -128,9 +130,12 @@
           </div>
           <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
           <ul>
-            <li><a href="{% url 'index' %}"> <i class="icon-home"></i>Home </a></li>
-            <li><a href="{% url 'cliente_list' %}"> <i class="icon-user"></i> Clientes </a></li>
-            <li><a href="{% url 'services_list' %}"> <i class="icon-list"></i> Serviços </a></li>
+            <li><a href="{% url 'web:index' %}"> <i class="icon-home"></i>Home </a></li>
+            <li><a href="{% url 'web:cliente_list' %}"> <i class="icon-user"></i> Clientes </a></li>
+            <li><a href="{% url 'web:services_list' %}"> <i class="icon-list"></i> Serviços </a></li>
+            <li><a href="{% url 'web:novo_pedido' %}"> <i class="icon-list"></i> Novo Pedido </a></li>
+            
+            
            
           </u1>
         </nav>
@@ -168,6 +173,25 @@
 
 
     <!-- JavaScript files-->
+    <script>
+      $(document).ready(function(){
+          $("#add-item").click(function(ev) {
+              ev.preventDefault();
+              var count = $('#pedido').children().length;
+              var tmplMarkup = $("#item-pedido").html();
+              var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+              $("div#pedido").append(compiledTmpl);
+  
+              // update form count
+              $('#id_product-TOTAL_FORMS').attr('value', count + 1);
+  
+              // some animate to scroll to view our new form
+              $('html, body').animate({
+                  scrollTop: $("#add-item").position().top-200
+              }, 800);
+          });
+      });
+  </script>
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/popper.js/umd/popper.min.js' %}"> </script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
