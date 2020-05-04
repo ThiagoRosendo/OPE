@@ -18,7 +18,7 @@ li.active{
 .label {
     display: inline;
     padding: .2em .6em .3em;
-    font-size: 75%;
+    font-size: 100%;
     font-weight: bold;
     line-height: 1;
     color: #fff;
@@ -29,4 +29,8 @@ li.active{
 }
 .label-info {
     background-color: #3c7f93;
+}
+
+.idade{
+    position: fixed;
 }

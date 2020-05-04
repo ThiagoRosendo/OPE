@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
-
-
+{% load crispy_forms_tags %}
+{% load bootstrap %}
+{% load widget_tweaks %}
 {% block content %}
-<script src="../../static/js/nome.js"></script>
-<script src="../../static/js/moeda.js"></script>
-<br>
 <br>
 <div class="container-fluid">
   <div class="row">
@@ -12,25 +10,200 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header d-flex align-items-center">
-          <h3 class="h4">Cadastrar Serviço</h3>
+          <h3 class="h4">Ficha</h3>
         </div>
         <div class="card-body">
-          <p>Os campos com <b>*</b> são de preenchimento obrigatório.</p>
-           <!-------------------------------------------------------- DADOS PESSOAIS ------------------------------------------->
-           <form name="service" method="post">        
+
+          <form name="service" method="post">        
             {% csrf_token %}
             {{ form.non_field_errors }}
+              
+            {% for field in cliente %}
+            <input type="hidden" name="cliente" id="id_cliente" value="{{field.cpf}}">
+            <b>Nome: </b> {{field.nome}}
+            {% endfor %}
+ <hr>
+ <h3>Hábitos Diários</h3>
 
-            <div>
+  <br>
 
-                {{ form.as_p}}
+  <b>Trantamento estético anterior: </b>
+  <input type="radio" name="tratamento_anterior" value="1" required="" id="id_tratamento_anterior_0"> Sim
+  <input type="radio" name="tratamento_anterior" value="2" required="" id="id_tratamento_anterior_1"> Não
 
+  <br>
 
-          </div>
-                    <!-------------------------------------------------------- FIM DADOS PESSOAIS ------------------------------------------->
+  <b>Usa lentes de contato: </b>
+  <input type="radio" name="lentes_contato" value="1" required="" id="id_lentes_contato_0"> Sim
+  <input type="radio" name="lentes_contato" value="2" required="" id="id_lentes_contato_1"> Não
+  
+  <br>
+
+  <b>Utilização de cosméticos: </b>
+  <input type="radio" name="cosmeticos" value="1" required="" id="id_cosmeticos_0"> Sim
+  <input type="radio" name="cosmeticos" value="2" required="" id="id_cosmeticos_1"> Não
+  
+  <br>
+
+  <b>Exposição ao sol: </b>
+  <input type="radio" name="exposicao_sol" value="1" required="" id="id_exposicao_sol_0"> Sim
+  <input type="radio" name="exposicao_sol" value="2" required="" id="id_exposicao_sol_1"> Não
+  
+  <br>
+
+  <b>Faz uso de Filtro Solar: </b>
+  <input type="radio" name="filtro_solar" value="1" required="" id="id_filtro_solar_0"> Sim
+  <input type="radio" name="filtro_solar" value="2" required="" id="id_filtro_solar_1"> Não
+  
+  <br>
+
+  <b>Tabagismo: </b>
+  <input type="radio" name="tabagismo" value="1" required="" id="id_tabagismo_0"> Sim
+  <input type="radio" name="tabagismo" value="2" required="" id="id_tabagismo_1"> Não
+  
+  <br>
+
+  <b>Ingere bebida alcoólica: </b>
+  <input type="radio" name="bebida_alcoolica" value="1" required="" id="id_bebida_alcoolica_0"> Sim
+  <input type="radio" name="bebida_alcoolica" value="2" required="" id="id_bebida_alcoolica_1"> Não
+  
+  <br>
+
+  <b>Funcionamento intestinal: </b>
+  <input type="radio" name="intestino" value="1" required="" id="id_intestino_0"> Bom
+  <input type="radio" name="intestino" value="2" required="" id="id_intestino_1"> Regular
+  <input type="radio" name="intestino" value="3" required="" id="id_intestino_2"> Péssimo
+
+  <br>
+
+  <b>Qualidade do sono: </b>
+  <input type="radio" name="sono" value="1" required="" id="id_sono_0"> Bom
+  <input type="radio" name="sono" value="2" required="" id="id_sono_1"> Regular
+  <input type="radio" name="sono" value="3" required="" id="id_sono_2"> Péssimo
+
+  <br>
+
+  <b>Alimentação: </b>
+  <input type="radio" name="alimentacao" value="1" required="" id="id_alimentacao_0"> Boa
+  <input type="radio" name="alimentacao" value="2" required="" id="id_alimentacao_1"> Regular
+  <input type="radio" name="alimentacao" value="3" required="" id="id_alimentacao_2"> Péssima
+
+  <br>
+
+  <b>Ingestão de água: </b>
+  <input type="radio" name="lentes_contato" value="1" required="" id="id_lentes_contato_0"> Sim
+  <input type="radio" name="lentes_contato" value="2" required="" id="id_lentes_contato_1"> Não
+  
+  <br>
+
+  <b>Pratica atividade física: </b>
+  <input type="radio" name="atv_fisica" value="1" required="" id="id_atv_fisica_0"> Sim
+  <input type="radio" name="atv_fisica" value="2" required="" id="id_atv_fisica_1"> Não
+  
+  <br>
+
+  <b>Uso de anticoncepcional: </b>
+  <input type="radio" name="anticoncepcional" value="1" required="" id="id_anticoncepcional_0"> Sim
+  <input type="radio" name="anticoncepcional" value="2" required="" id="id_anticoncepcional_1"> Não
+  
+  <br>
+
+  <b>Gestante: </b>
+  <input type="radio" name="gestante" value="1" required="" id="id_gestante_0"> Sim
+  <input type="radio" name="gestante" value="2" required="" id="id_gestante_1"> Não
+
+<hr>
+
+<h2>Histórico Clínico</h2>
+
+  <br>
+  
+  <b>Trantamento médico atual: </b>
+  <input type="radio" name="tratamento_medico" value="1" required="" id="id_tratamento_medico_0"> Sim
+  <input type="radio" name="tratamento_medico" value="2" required="" id="id_tratamento_medico_1"> Não
+  
+  <br>
+  
+  <b>Antecedentes alérgicos: </b>
+  <input type="radio" name="alergias" value="1" required="" id="id_alergias_0"> Sim
+  <input type="radio" name="alergias" value="2" required="" id="id_alergias_1"> Não
+
+  <br>
+  
+  <b>Portador de marcapasso: </b>
+  <input type="radio" name="marcapasso" value="1" required="" id="id_marcapasso_0"> Sim
+  <input type="radio" name="marcapasso" value="2" required="" id="id_marcapasso_1"> Não
+
+  <br>
+  
+  <b>Alterações cardíacas: </b>
+  <input type="radio" name="cardiaco" value="1" required="" id="id_cardiaco_0"> Sim
+  <input type="radio" name="cardiaco" value="2" required="" id="id_cardiaco_1"> Não
+
+  <br>
+  
+  <b>Hipo/hipertensão arterial: </b>
+  <input type="radio" name="h_tensao" value="1" required="" id="id_h_tensao_0"> Sim
+  <input type="radio" name="h_tensao" value="2" required="" id="id_h_tensao_1"> Não
+
+  <br>
+  
+  <b>Distúrbio circulatório: </b>
+  <input type="radio" name="d_circulatorio" value="1" required="" id="id_d_circulatorio_0"> Sim
+  <input type="radio" name="d_circulatorio" value="2" required="" id="id_d_circulatorio_1"> Não
+
+  <br>
+  
+  <b>Distúrbio renal: </b>
+  <input type="radio" name="d_renal" value="1" required="" id="id_d_renal_0"> Sim
+  <input type="radio" name="d_renal" value="2" required="" id="id_d_renal_1"> Não
+
+  <br>
+  
+  <b>Distúrbio hormonal: </b>
+  <input type="radio" name="d_hormonal" value="1" required="" id="id_d_hormonal_0"> Sim
+  <input type="radio" name="d_hormonal" value="2" required="" id="id_d_hormonal_1"> Não
+
+  <br>
+  
+  <b>Distúrbio gastro-intestinal: </b>
+  <input type="radio" name="d_gastro" value="1" required="" id="id_d_gastro_0"> Sim
+  <input type="radio" name="d_gastro" value="2" required="" id="id_d_gastro_1"> Não
+
+  <br>
+  
+  <b>Epilepsia - Convulsões: </b>
+  <input type="radio" name="epilepsia" value="1" required="" id="id_epilepsia_0"> Sim
+  <input type="radio" name="epilepsia" value="2" required="" id="id_epilepsia_1"> Não
+
+  <br>
+  
+  <b>Alterações psicológicas/psiquiátricas: </b>
+  <input type="radio" name="alteracoes_psic" value="1" required="" id="id_alteracoes_psic_0"> Sim
+  <input type="radio" name="alteracoes_psic" value="2" required="" id="id_alteracoes_psic_1"> Não
+
+  <br>
+  
+  <b>Estresse: </b>
+  <input type="radio" name="estresse" value="1" required="" id="id_estresse_0"> Sim
+  <input type="radio" name="estresse" value="2" required="" id="id_estresse_1"> Não
+
+  <br>
+  
+  <b>Diabetes: </b>
+  <input type="radio" name="diabetes" value="1" required="" id="id_diabetes_0"> Sim
+  <input type="radio" name="diabetes" value="2" required="" id="id_diabetes_1"> Não
+
+  <br>
+  
+  <b>Algum tipo de doença: </b>
+  <input type="radio" name="doenca" value="1" required="" id="id_doenca_0"> Sim
+  <input type="radio" name="doenca" value="2" required="" id="id_doenca_1"> Não
+          
+           <hr>
 
                 <div class="pure-controls">
-                    <button type="submit" class="btn btn-primary">CADASTRAR</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
                 </div></div>
           </form>
         </div>

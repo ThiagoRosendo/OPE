@@ -1,4 +1,6 @@
 from django.db import models
+from .agenda import agenda
+from datetime import date
 
 ficha = (
     (u'1', u'Bom'),
@@ -10,6 +12,16 @@ booleano = (
     (u'2', u'Não')
 )
 
+horarios = (
+    ('07:30', '07:30'), ('08:00', '08:00'), ('08:30', '08:30'), ('09:00', '09:00'), ('09:30', '09:30'),
+    ('10:00', '10:00'), ('10:30', '10:30'), ('11:00', '11:00'), ('11:30', '11:30'),
+    ('12:00', '12:00'), ('12:30', '12:30'), ('13:00', '13:00'), ('13:30', '13:30'),
+    ('14:00', '14:00'), ('14:30', '14:30'), ('15:00', '15:00'), ('15:30', '15:30'),
+    ('16:00', '16:00'), ('16:30', '16:30'), ('17:00', '17:00'), ('17:30', '17:30'),
+    ('18:00', '18:00'), ('18:30', '18:30'), ('19:00', '19:00'), ('19:30', '19:30'),
+    ('20:00', '20:00'), ('20:30', '20:30'), ('21:00', '21:00'), ('21:30', '21:30')
+)
+
 class ClienteModel(models.Model):
     sexo_choices = [['Feminino', 'Feminino'], ['Masculino', 'Masculino']]
     data_cadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
@@ -17,7 +29,7 @@ class ClienteModel(models.Model):
     nome = models.CharField('Nome', max_length=50)
     cpf = models.CharField('CPF', primary_key=True, null=False, max_length=14)
     rg = models.CharField('RG', max_length=20, null=True)
-    data_nascimento = models.CharField('Data de nascimento', max_length=10, null=False, default='01/01/1900')
+    data_nascimento = models.DateField('Data de nascimento')
     sexo = models.CharField(max_length=9, choices=sexo_choices, null=True, blank=True)
     photo = models.ImageField('Foto de perfil', upload_to='profile', default='default.jpg', blank=True)
     
@@ -45,10 +57,21 @@ class ClienteModel(models.Model):
         verbose_name = 'Cliente'
         verbose_name_plural = 'Clientes'
 
+    def idade(self):
+        hoje = date.today()
+        idade = hoje.year - self.data_nascimento.year - ((hoje.month, hoje.day) < (self.data_nascimento.month, self.data_nascimento.day)) 
+        return '%d anos' % idade
+
+    def data_formatada(self):
+        dia = self.data_nascimento.day
+        mes = self.data_nascimento.month
+        ano = self.data_nascimento.year
+        data = date(ano, mes, dia)
+        return data
 
 class Servicos(models.Model):
     id = models.AutoField(primary_key=True)
-    nome = models.CharField('Nome', default='', null=False, max_length=50)
+    nome = models.CharField('Nome', default='', null=False, max_length=50, unique=True)
     valor = models.DecimalField('Valor', null=False, max_digits=7, decimal_places=2)
     descricao = models.TextField('Descrição', default='', null=False)
     images = models.FileField('Imagens', blank=True, upload_to="servicos/imagens/")
@@ -58,6 +81,10 @@ class Servicos(models.Model):
 
     def get_valor(self):
         return self.valor
+
+    def get_nome(self):
+        return self.nome
+       
 
     class Meta:
         verbose_name = 'Serviço'
@@ -79,10 +106,7 @@ class Pedido(models.Model):
     class Meta:
         verbose_name = 'pedido'
         verbose_name_plural = 'pedidos'
-    
-    # conta os itens em cada venda
-    def get_itens(self):
-        return self.pedido_det.count()
+
     
 
 class PedidoDetail(models.Model):
@@ -94,8 +118,11 @@ class PedidoDetail(models.Model):
     
 
     def __str__(self):
-        return str(self.pedido)
 
+        return '(%s) %s' % (self.pedido, self.servico)
+
+    def get_cliente_name(self):
+        return self.pedido.cliente.nome
 
 class FichaAnamnese(models.Model):
     cliente = cliente = models.ForeignKey(ClienteModel, related_name='ficha_cliente', verbose_name='cliente', on_delete=models.CASCADE)
@@ -135,7 +162,15 @@ class FichaAnamnese(models.Model):
     doenca = models.CharField('Algum tipo de doença', choices=booleano, max_length=1)
     
 
-
+class Agenda(models.Model):
+    id = models.AutoField(primary_key=True)
+    cliente = models.ForeignKey(ClienteModel, related_name='cliente_agenda', verbose_name='cliente', on_delete=models.CASCADE)
+    pedido = models.ForeignKey(PedidoDetail, related_name='pedido_agenda', verbose_name='pedido', on_delete=models.CASCADE)
+    servico = models.CharField('Serviço', max_length=50)
+    data = models.DateField()
+    hora_inicio = models.CharField(choices=horarios, max_length=5)
+    hora_fim = models.CharField(choices=horarios, max_length=5)
+    
 
 
 

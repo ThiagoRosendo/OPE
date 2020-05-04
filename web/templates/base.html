@@ -3,12 +3,6 @@
 <html lang="pt-br">
   <head>
       <title>GC Dominium</title>
-      <script src="../static/js/cep.js"></script>
-      <script src="../static/js/cpf.js"></script>
-      <script src="../static/js/cel.js"></script>
-      <script src="../static/js/data.js"></script>
-      <script src="../static/js/nome.js"></script>
-      <script src="../static/js/moeda.js"></script>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="description" content="">
@@ -173,25 +167,7 @@
 
 
     <!-- JavaScript files-->
-    <script>
-      $(document).ready(function(){
-          $("#add-item").click(function(ev) {
-              ev.preventDefault();
-              var count = $('#pedido').children().length;
-              var tmplMarkup = $("#item-pedido").html();
-              var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-              $("div#pedido").append(compiledTmpl);
   
-              // update form count
-              $('#id_product-TOTAL_FORMS').attr('value', count + 1);
-  
-              // some animate to scroll to view our new form
-              $('html, body').animate({
-                  scrollTop: $("#add-item").position().top-200
-              }, 800);
-          });
-      });
-  </script>
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/popper.js/umd/popper.min.js' %}"> </script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
@@ -200,10 +176,17 @@
     <script src="{% static 'vendor/jquery-validation/jquery.validate.min.js' %}"></script>
     <script src="{% static 'js/charts-home.js' %}"></script>
     <!-- Main File-->
+    
     <script src="{% static 'js/front.js' %}"></script>
 
-  <script src="{% static 'js/jquery.js' %}"></script>
+  <!-- <script src="{% static 'js/jquery.js' %}"></script>
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="../static/js/cep.js"></script>
+  <script src="../static/js/cpf.js"></script>
+  <script src="../static/js/cel.js"></script>
+  <script src="../static/js/data.js"></script>
+  <script src="../static/js/nome.js"></script>
+  <script src="../static/js/moeda.js"></script> -->
 
   </body>
 </html>

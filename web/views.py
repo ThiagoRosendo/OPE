@@ -1,11 +1,50 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib import messages
 from .forms import *
+from django.forms import modelformset_factory
 from .models import *
 from django.views.generic import TemplateView, ListView, DetailView
-
 from django.forms import formset_factory, inlineformset_factory
+from datetime import date
 
+def check_data(data):
+    hoje = date.today()
+    if data < hoje:
+        return False
+
+def check_agenda(agenda, data, hora_inicio, hora_fim):
+
+    inicio = []
+    fim = []
+    for item in agenda:
+        if item.data == data:
+            inicio.append(item.hora_inicio)
+            fim.append(item.hora_fim)
+    inicio.sort()
+    fim.sort()
+    if len(inicio) > 0:
+        if hora_inicio > fim[-1]:
+            return True
+
+        for i in range(0, len(inicio)):
+            cont = 1
+            if (cont == len(inicio)):
+                cont -= 1
+            if hora_inicio == inicio[i]:
+                return False
+            elif hora_inicio < inicio[i] and hora_fim > inicio[i]: 
+                return False
+            elif hora_inicio > inicio[i] and hora_inicio < fim[i]: 
+                return False
+            elif hora_fim > inicio[cont]:
+                return False
+            elif hora_inicio >= hora_fim:
+                return False
+            cont += 1
+
+    return True
+        
+    
 
 def index(request):
     return render(request, 'index.html')
@@ -17,9 +56,10 @@ def cliente_cad(request):
     if request.POST:
         form = ClienteCadForm(request.POST, request.FILES)
         if form.is_valid():
+            form = form.save(commit=False)
             form.save()
             messages.success(request, 'Cliente cadastrado com sucesso!')
-            return redirect('web:cliente_list')
+            return redirect('web:cliente_detail', form.cpf)
     else:
         form = ClienteCadForm
     return render(request, page, {'form': form})
@@ -104,10 +144,11 @@ def services_detail(request, id):
 
 def novo_pedido(request):
     order_forms = Pedido()
-    t = Servicos()
     objetos = Servicos.objects.all()
     objetos = objetos.order_by('id')
-    item_order_formset = inlineformset_factory(Pedido, PedidoDetail, form=PedidoDetailForm, extra=2, can_delete=False, min_num=1, validate_min=True)
+    item_order_formset = inlineformset_factory(Pedido, PedidoDetail, form=PedidoDetailForm, extra=2,
+                                               can_delete=False, min_num=1, validate_min=True
+                                             )
 
     if request.method == 'POST':
         forms = PedidoForm(request.POST, request.FILES, instance=order_forms)
@@ -127,7 +168,6 @@ def novo_pedido(request):
         'forms': forms,
         'formset': formset,
         'objetos': objetos,
-        't': t
     }
 
     return render(request, 'pedidos/novo_pedido.html', context)
@@ -143,18 +183,54 @@ def pedido_detail(request, id):
 
 def ficha_anamnese(request, cpf):
     page = 'clientes/ficha_anamnese.html'
+    cliente = ClienteModel.objects.filter(cpf=cpf)
     if request.POST:
         form = AnamneseForm(request.POST)
         if form.is_valid():
+            form = form.save(commit=False)
             form.save()
             messages.success(request, 'Ficha cadastrada com sucesso!')
-            return redirect('web:services_list')
+            return redirect('web:ficha_anamnese_p', form.cliente.cpf)
     else:
         form = AnamneseForm
-    return render(request, page, {'form': form})
+    return render(request, page, {'form': form, 'cliente': cliente})
 
 def ficha_anamnese_p(request, cpf):
     page = 'clientes/ficha_anamnese_p.html'
     ficha = FichaAnamnese.objects.filter(cliente=cpf)
 
     return render(request, page, {'ficha': ficha})
+
+
+# def agendar(request, id):
+#     page = 'pedidos/agendar.html'
+#     pedido_detail = PedidoDetail.objects.filter(pedido=id)
+#     pedido = Pedido.objects.filter(id=id)
+#     agenda = Agenda.objects.all()
+#     if request.POST:
+#         form = AgendaForm(request.POST)
+#         if form.is_valid():
+#             form = form.save(commit=False)
+#             if check_data(form.data) is False:
+#                 messages.error(request, 'Não é possível agendar um atendimento para uma data anterior a hoje!')
+#                 form = AgendaForm
+#             elif check_agenda(agenda, form.data, form.hora_inicio, form.hora_fim) is False:
+#                 messages.error(request, 'Horário não disponível')
+#                 form = AgendaForm
+#             else:
+#                 form.save()
+#                 return redirect('web:pedido_detail', form.pedido.id)
+            
+#     else:
+#         form = AgendaForm
+#     return render(request, page, {'form': form, 'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda})
+
+def agendar(request, id):
+
+    formset = modelformset_factory(Agenda, fields=('cliente', 'pedido', 'servico', 'data', 'hora_inicio', 'hora_fim'), extra=2)
+    if request.method == 'POST':
+        form = formset(request.POST)
+        instance = form.save()
+    form = formset(request.POST)
+
+    return render(request, 'pedidos/agendar.html', {'form': form})

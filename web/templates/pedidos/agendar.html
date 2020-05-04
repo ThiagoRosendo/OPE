@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load bootstrap %}
+{% load widget_tweaks %}
+{% block content %}
+
+<br>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Basic Form-->
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <h3 class="h4">Agendar atendimento</h3>
+        </div>
+        <div class="card-body">
+          <p>Os campos com <b>*</b> são de preenchimento obrigatório.</p>
+           <form name="service" method="post">        
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+           {{form}}
+
+                <div class="pure-controls">
+                    <button type="submit" class="btn btn-primary">CADASTRAR</button>
+                </div></div>
+          
+</form>
+<u1 class="list-unstyled">
+<li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse" class="collapsed"> <i class="icon-interface-windows"></i>Example dropdown </a>
+  <ul id="exampledropdownDropdown" class="list-unstyled collapse" style="">
+    <li><a href="#">Page</a></li>
+    <li><a href="#">Page</a></li>
+    <li><a href="#">Page</a></li>
+  </ul>
+</li>
+
+</u1>
+
+<script>
+  var horarios = []
+  for (i=1; i < document.getElementById("id_hora_inicio").options.length; i++){
+    horarios.push(document.getElementById("id_hora_inicio").options[i].value)
+  }
+
+
+  function get_hora_inicio(input){
+    var inicio = [];
+
+    {% for item in agenda %}
+  
+    var dia = {{item.data | date:"d"}};
+    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
+    var ano = {{item.data | date:"Y"}};
+    var data = ano + "-" + mes + "-" + dia;
+  
+    if(input == data){
+        var hora = String({{item.hora_inicio | cut:":"}});
+
+        if(hora.length  == 3){
+          inicio.push("0" + hora[0] + ":" + hora[1] + hora[2])
+        }
+        else{
+          inicio.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
+      }
+      }
+    {% endfor %}
+        inicio.sort();
+      return inicio;
+  };
+
+  function get_hora_fim(input){
+    var fim = [];
+
+    {% for item in agenda %}
+  
+    var dia = {{item.data | date:"d"}};
+    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
+    var ano = {{item.data | date:"Y"}};
+    var data = ano + "-" + mes + "-" + dia;
+  
+    if(input == data){
+        var hora = String({{item.hora_fim| cut:":"}});
+
+        if(hora.length  == 3){
+          fim.push("0" + hora[0] + ":" + hora[1] + hora[2])
+        }
+        else{
+          fim.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
+      }
+      }
+    {% endfor %}
+        fim.sort();
+      return fim;
+  };
+
+  
+
+</script>
+<script src="../../static/js/agendar.js"></script>
+
+
+
+        </div>
+      </div>
+    </div>
+{% endblock %}

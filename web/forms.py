@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from .agenda import agenda
 
 from django.forms import formset_factory
 
@@ -61,6 +62,7 @@ class AnamneseForm(forms.ModelForm):
     cardiaco = forms.CharField(widget=forms.RadioSelect(choices=booleano))
     h_tensao = forms.CharField(widget=forms.RadioSelect(choices=booleano))
     d_circulatorio = forms.CharField(widget=forms.RadioSelect(choices=booleano))
+    d_renal = forms.CharField(widget=forms.RadioSelect(choices=booleano))
     d_hormonal = forms.CharField(widget=forms.RadioSelect(choices=booleano))
     d_gastro = forms.CharField(widget=forms.RadioSelect(choices=booleano))
     epilepsia = forms.CharField(widget=forms.RadioSelect(choices=booleano))
@@ -72,5 +74,13 @@ class AnamneseForm(forms.ModelForm):
     class Meta:
 
         model = FichaAnamnese
+        fields = '__all__'
+
+
+class AgendaForm(forms.ModelForm):
+    
+    
+    class Meta:
+        model = Agenda
         fields = '__all__'
     

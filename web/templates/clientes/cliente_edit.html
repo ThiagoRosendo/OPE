@@ -14,7 +14,6 @@
 {% endif %}
 
 <br>
-<br>
 <div class="container-fluid">
   <div class="row">
     <!-- Basic Form-->
@@ -38,7 +37,7 @@
             </div>
             <div class="form-group col-md-2">      
               <label for="id_nome">CPF*</label>
-              <input type="text" name="cpf" class="form-control" required id="id_cpf" value="{{ cliente.cpf }}" readonly=True maxlength="14" onblur="validarCPF(this.value)" oninput="mascara(this)">
+              <input type="text" name="cpf" class="form-control" required id="id_cpf" value="{{ cliente.cpf }}" readonly maxlength="14" onblur="validarCPF(this.value)" oninput="mascara(this)">
             </div>
 
             <div class="form-group col-md-2">
@@ -48,13 +47,12 @@
 
             <div class="form-group col-md-2">
               <label for="id_data_nascimento">Data de nascimento*</label>
-              <input type="text" name="data_nascimento" class="form-control" required id="id_data_nascimento" value="{{ cliente.data_nascimento }}" maxlength="10 "
-               onkeypress="mascaraData(this)" onblur="valData(this.value)" readonly=True>
+              <input type="date" name="data_nascimento" class="form-control" required id="id_data_nascimento" value="{{ cliente.data_formatada}}" maxlength="10">
             </div>
 
             <div class="form-group col-md-1">
                <label for="id_sexo">Sexo</label>
-               <select name="sexo" required id="id_sexo" class="form-control" readonly="true">
+               <select name="sexo" required id="id_sexo" class="form-control" readonly>
                     <option>{{ cliente.sexo }}</option>
                           </select>
             </div>
