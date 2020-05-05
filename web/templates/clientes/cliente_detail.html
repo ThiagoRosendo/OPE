@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{{ClienteModel.idade}}
 {% for field in cliente %}
 <br>
-<br>
-<div class="col-lg-8">
+<div class="col-lg-12">
         <div class="card">
                 <div class="card-close">
-                <a href="{% url 'cliente_edit' field.cpf %}" class="dropdown-item edit"><i class="fa fa-gear"></i></a>
+
+                <a href="{% url 'web:cliente_edit' field.cpf %}" class="dropdown-item edit"><i class="fa fa-gear"></i></a>
                 </div>
 
                       
@@ -17,7 +19,7 @@
                 <div class="card-body">
                     <b>Nome: </b> {{ field.nome }}  <br>
                     <b>CPF: </b> {{ field.cpf }} &nbsp;&nbsp;-&nbsp;&nbsp; <b>RG: </b> {{ field.rg }}  <br>
-                    <b>Data de nascimento: </b> {{ field.data_nascimento }}  <br>
+                    <b>Data de nascimento: </b> {{ field.data_nascimento }} <b>Idade: </b> {{field.idade}} <br>
                     <b>Sexo: </b> {{ field.sexo }} <br>
 
                     <div class="avatar">
@@ -28,13 +30,56 @@
                     <b>Emergência: </b> {{ field.tel_emergency }}  &nbsp;&nbsp;-&nbsp;&nbsp; <b>E-mail: </b> {{ field.email }}  <br>
 
                     <hr class="my-3">
-                    <b>Endereço: </b><br>
+                    <b>Endereço: </b>
                     {{ field.logradouro }}, {{ field.numero }} &nbsp; {{ field.complemento }}&nbsp;&nbsp; - &nbsp;&nbsp; {{ field.bairro }} <br>
                     {{ field.cidade }}  &nbsp;-&nbsp; {{ field.uf }}  <br>
                     {{ field.cep }}
 
                    
 </div>
+
+<hr>
+<script>
+    function open_ficha_anamnese() {
+        window.open("{% url 'web:ficha_anamnese' field.cpf %}","__blank", "width=900,height=600")
+    };
+    function view_ficha_anamnese() {
+        window.open("{% url 'web:ficha_anamnese_p' field.cpf %}","__blank", "width=900,height=600")
+    }
+</script>
+{% for item in fichas %}
+
+<a href="#" onclick="view_ficha_anamnese()">Ficha</a>
+
+{% empty %}
+
+<a href="#" onclick="open_ficha_anamnese()">Preencher Ficha</a>
+
+{% endfor %}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-left" style="width:20%;">Nº do Pedido</th>
+            <th class="text-center" style="width:30%;">Data</th>
+            <th class="text-center" style="width:30%;">Valor Total</th>
+            <th class="text-right" style="width: 20%"></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for i in pedidos %}
+        <tr>
+            <td>{{i.id}} </td>
+            <td class="text-center">{{i.data | date:"d M Y"}}</td>
+            <td class="text-center">R$ {{i.valor_total}}</td>
+            <td class="text-right"><a href="{% url 'web:agendar' i.id %}">Agendar</a> | <a href="{% url 'web:pedido_detail' i %}">Detalhes</a> </td>
+        </tr>
+    {% endfor %}
+        
+    
+    </tbody>
+</table>
                     
                             </div>
                         </div>
