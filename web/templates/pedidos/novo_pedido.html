@@ -31,7 +31,7 @@
                             
             <div id="pedido">
 
-                <table class="table table-striped table-sm">
+                <table class="table table-sm">
                     <thead>
                       <tr>
                         <th style="width: 60%">Serviço</th>
@@ -132,13 +132,15 @@ function limpa_campos{{forloop.counter0}}() {
                 <hr>
 
                 <input type="text" id="id_valor_total" name="valor_total" hidden>
-
+<!-- --------------------------  INPUT DE DESCONTO  ------------------------- -->
                 <div class="form-group">
                 <input type="number" step="0.10" max="100" class="form-group col-md-1" id="id_desconto" name="desconto" class="form-control"
                  oninput="reset_preco(), aplica_desconto(this.value), get_subtotal0(), get_subtotal1(), get_subtotal2(), get_total1()"
                  onblur="reset_preco(), aplica_desconto(this.value),get_subtotal0(), get_subtotal1(), get_subtotal2(), get_total1()">
 
             </div>
+
+ <!--------------------------------- FIM INPUT DE DESCONTO---------------------------------------------- -->
                 <h3 class="text-right"><b>Total: R$</b> <span id="id_total" class="label label-info">0,00</span></h3>
         
         <script>

@@ -166,7 +166,7 @@ class Agenda(models.Model):
     id = models.AutoField(primary_key=True)
     cliente = models.ForeignKey(ClienteModel, related_name='cliente_agenda', verbose_name='cliente', on_delete=models.CASCADE)
     pedido = models.ForeignKey(PedidoDetail, related_name='pedido_agenda', verbose_name='pedido', on_delete=models.CASCADE)
-    servico = models.CharField('Serviço', max_length=50)
+    servico = models.ForeignKey(Servicos, on_delete=models.CASCADE)
     data = models.DateField()
     hora_inicio = models.CharField(choices=horarios, max_length=5)
     hora_fim = models.CharField(choices=horarios, max_length=5)

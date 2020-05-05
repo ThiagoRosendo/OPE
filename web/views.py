@@ -202,35 +202,26 @@ def ficha_anamnese_p(request, cpf):
     return render(request, page, {'ficha': ficha})
 
 
-# def agendar(request, id):
-#     page = 'pedidos/agendar.html'
-#     pedido_detail = PedidoDetail.objects.filter(pedido=id)
-#     pedido = Pedido.objects.filter(id=id)
-#     agenda = Agenda.objects.all()
-#     if request.POST:
-#         form = AgendaForm(request.POST)
-#         if form.is_valid():
-#             form = form.save(commit=False)
-#             if check_data(form.data) is False:
-#                 messages.error(request, 'Não é possível agendar um atendimento para uma data anterior a hoje!')
-#                 form = AgendaForm
-#             elif check_agenda(agenda, form.data, form.hora_inicio, form.hora_fim) is False:
-#                 messages.error(request, 'Horário não disponível')
-#                 form = AgendaForm
-#             else:
-#                 form.save()
-#                 return redirect('web:pedido_detail', form.pedido.id)
-            
-#     else:
-#         form = AgendaForm
-#     return render(request, page, {'form': form, 'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda})
-
 def agendar(request, id):
+    page = 'pedidos/agendar.html'
+    pedido_detail = PedidoDetail.objects.filter(pedido=id)
+    pedido = Pedido.objects.filter(id=id)
+    agenda = Agenda.objects.all()
+    if request.POST:
+        form = AgendaForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            if check_data(form.data) is False:
+                messages.error(request, 'Não é possível agendar um atendimento para uma data anterior a hoje!')
+                form = AgendaForm
+            elif check_agenda(agenda, form.data, form.hora_inicio, form.hora_fim) is False:
+                messages.error(request, 'Horário não disponível')
+                form = AgendaForm
+            else:
+                form.save()
+                return redirect('web:pedido_detail', form.pedido.id)
+            
+    else:
+        form = AgendaForm
+    return render(request, page, {'form': form, 'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda})
 
-    formset = modelformset_factory(Agenda, fields=('cliente', 'pedido', 'servico', 'data', 'hora_inicio', 'hora_fim'), extra=2)
-    if request.method == 'POST':
-        form = formset(request.POST)
-        instance = form.save()
-    form = formset(request.POST)
-
-    return render(request, 'pedidos/agendar.html', {'form': form})
