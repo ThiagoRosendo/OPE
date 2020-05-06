@@ -49,11 +49,11 @@
 </script>
 {% for item in fichas %}
 
-<a href="#" onclick="view_ficha_anamnese()">Ficha</a>
+<a href="#" onclick="view_ficha_anamnese()" class="btn-ficha">Avaliação Pessoal</a>
 
 {% empty %}
 
-<a href="#" onclick="open_ficha_anamnese()">Preencher Ficha</a>
+<a href="#" onclick="open_ficha_anamnese()" class="btn-ficha">Preencher Ficha</a>
 
 {% endfor %}
 

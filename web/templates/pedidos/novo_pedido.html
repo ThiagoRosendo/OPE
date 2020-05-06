@@ -36,7 +36,7 @@
                       <tr>
                         <th style="width: 60%">Serviço</th>
                         <th style="width: 15%">Valor</th>
-                        <th style="width: 10%">Quantidade</th>
+                        <th style="width: 10%">Nº Sessões </th>
                         <th style="width: 15%">Subtotal</th>
                       </tr>
                     </thead>
@@ -133,15 +133,16 @@ function limpa_campos{{forloop.counter0}}() {
 
                 <input type="text" id="id_valor_total" name="valor_total" hidden>
 <!-- --------------------------  INPUT DE DESCONTO  ------------------------- -->
-                <div class="form-group">
-                <input type="number" step="0.10" max="100" class="form-group col-md-1" id="id_desconto" name="desconto" class="form-control"
+                <div class="form-group btn-desconto">
+                <span class="desc">Desconto</span>
+                <input type="number" class="input-desconto" step="0.10" max="100" class="form-group col-md-1" id="id_desconto" name="desconto" class="form-control"
                  oninput="reset_preco(), aplica_desconto(this.value), get_subtotal0(), get_subtotal1(), get_subtotal2(), get_total1()"
                  onblur="reset_preco(), aplica_desconto(this.value),get_subtotal0(), get_subtotal1(), get_subtotal2(), get_total1()">
-
+                <span class="porcentagem">%</span>
             </div>
 
  <!--------------------------------- FIM INPUT DE DESCONTO---------------------------------------------- -->
-                <h3 class="text-right"><b>Total: R$</b> <span id="id_total" class="label label-info">0,00</span></h3>
+                <h3 class="text-right" style="margin-bottom: 25px;"><b>Total: R$</b> <span id="id_total" class="label label-info">0,00</span></h3>
         
         <script>
          
@@ -183,8 +184,8 @@ function reset_preco(){
                  
                 
                         
-                 <a href="{% url 'web:index' %}" class="btn btn-warning pull-right"><i class="fa fa-times"></i> Cancelar</a>
-                        <button class="btn btn-primary pull-right" value="Save"><i class="fa fa-floppy-o"></i> Salvar</button>
+                 <a href="{% url 'web:index' %}" class="btn btn-warning pull-right botao-cancelar"><i class="fa fa-times"></i> Cancelar</a>
+                        <button class="btn btn-primary pull-right botao-salvar" value="Save"><i class="fa fa-floppy-o"></i> Salvar</button>
                  
     </form>      
            </div>
