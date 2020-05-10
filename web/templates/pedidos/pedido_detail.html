@@ -52,7 +52,79 @@
     </div>
 
 
-        </div>
-      </div>
+        
+	<div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Serviço</th>
+					<th class="text-right">Nº da sessão</th>
+					<th class="text-right">Data</th>
+					<th class="text-right">Hora de início</th>
+					<th class="text-right">Hora de fim</th>
+					<th class="text-right">Status</th>
+
+				</tr>
+			</thead>
+			<tbody>
+			
+				{% for item in pedido_detail %}
+			
+			
+
+					{% for sessao in item.sessoes|make_list %}
+					
+					{% for dado in agenda %}
+					
+					{% if sessao == dado.get_sessao %}
+					
+					<tr>
+					<td>{{item.servico}} </td>
+					<td class="text-right">{{sessao}}</td>
+					<td class="text-right">{{dado.data | date:"d/m/Y"}}</td>
+					<td class="text-right">{{dado.hora_inicio}}</td>
+					<td class="text-right">{{dado.hora_fim}}</td>
+					<td class="text-right">Agendado</td>
+				</tr>
+					
+					{% endif %}
+					
+					{% endfor %}
+					
+					<tr>
+					<td>{{item.servico}} </td>
+					<td class="text-right">{{sessao}}</td>
+					<td class="text-right"></td>
+					<td class="text-right"></td>
+					<td class="text-right"></td>
+					<td class="text-right"><a href="#" onclick="open_agendar{{forloopcounter}}()">Agendar</a></td>
+				</tr>
+
+					
+				
+				
+				<script>
+					function open_agendar{{forloopcounter}}() {
+						window.open("{% url 'web:agendar_sessao' item.pedido.id 1 %}","__blank", "width=500,height=600")
+					};
+				</script>
+
+					
+					
+					{% endfor %}
+
+				
+			
+			{% endfor %}
+
+				
+			
+			</tbody>
+		</table>
+
+
+	</div>
+</div>
+</div>
     
     {% endblock %}

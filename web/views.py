@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.shortcuts import render, redirect, HttpResponseRedirect, get_object_or_404, HttpResponse
 from django.contrib import messages
 from .forms import *
 from django.forms import modelformset_factory
@@ -6,6 +6,7 @@ from .models import *
 from django.views.generic import TemplateView, ListView, DetailView
 from django.forms import formset_factory, inlineformset_factory
 from datetime import date
+
 
 def check_data(data):
     hoje = date.today()
@@ -177,8 +178,9 @@ def pedido_detail(request, id):
     page = 'pedidos/pedido_detail.html'
     pedido = Pedido.objects.filter(id=id)
     pedido_detail = PedidoDetail.objects.filter(pedido=id)
+    agenda = Agenda.objects.filter(pedido=id)
 
-    return render(request, page, {'pedido': pedido, 'pedido_detail': pedido_detail})
+    return render(request, page, {'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda})
 
 
 def ficha_anamnese(request, cpf):
@@ -202,11 +204,12 @@ def ficha_anamnese_p(request, cpf):
     return render(request, page, {'ficha': ficha})
 
 
-def agendar(request, id):
-    page = 'pedidos/agendar.html'
+def agendar_sessao(request, id, sessao):
+    page = 'pedidos/agendar_sessao.html'
     pedido_detail = PedidoDetail.objects.filter(pedido=id)
     pedido = Pedido.objects.filter(id=id)
     agenda = Agenda.objects.all()
+    n_sessao = sessao
     if request.POST:
         form = AgendaForm(request.POST)
         if form.is_valid():
@@ -219,9 +222,11 @@ def agendar(request, id):
                 form = AgendaForm
             else:
                 form.save()
-                return redirect('web:pedido_detail', form.pedido.id)
+                return HttpResponse('<script>window.close(); window.opener.location.reload();</script>')
+        else:
+            raise Exception('Erro')
             
     else:
         form = AgendaForm
-    return render(request, page, {'form': form, 'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda})
+    return render(request, page, {'form': form, 'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda, 'n_sessao': n_sessao})
 

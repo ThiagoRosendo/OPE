@@ -47,7 +47,7 @@
 
             <div class="form-group col-md-2">
               <label for="id_data_nascimento">Data de nascimento*</label>
-              <input type="date" name="data_nascimento" class="form-control" required id="id_data_nascimento" value="{{ cliente.data_formatada}}" maxlength="10">
+              <input type="date" name="data_nascimento" class="form-control" required id="id_data_nascimento" value="{{ cliente.data_formatada | date:'Y-m-d' }}" maxlength="10">
             </div>
 
             <div class="form-group col-md-1">

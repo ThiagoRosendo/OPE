@@ -118,12 +118,21 @@ class PedidoDetail(models.Model):
     
 
     def __str__(self):
-
-        return '(%s) %s' % (self.pedido, self.servico)
+        return str(self.pedido)
 
     def get_cliente_name(self):
         return self.pedido.cliente.nome
 
+    def get_quantidade(self):
+        return self.quantidade
+        
+    def sessoes(self):
+        sessoes = ''
+        for i in range(1, self.quantidade+1):
+            sessoes = sessoes + str(i)
+        return sessoes
+
+        
 class FichaAnamnese(models.Model):
     cliente = cliente = models.ForeignKey(ClienteModel, related_name='ficha_cliente', verbose_name='cliente', on_delete=models.CASCADE)
 
@@ -167,10 +176,17 @@ class Agenda(models.Model):
     cliente = models.ForeignKey(ClienteModel, related_name='cliente_agenda', verbose_name='cliente', on_delete=models.CASCADE)
     pedido = models.ForeignKey(PedidoDetail, related_name='pedido_agenda', verbose_name='pedido', on_delete=models.CASCADE)
     servico = models.ForeignKey(Servicos, on_delete=models.CASCADE)
+    sessao = models.PositiveIntegerField('Sessão')
     data = models.DateField()
     hora_inicio = models.CharField(choices=horarios, max_length=5)
     hora_fim = models.CharField(choices=horarios, max_length=5)
-    
+
+    def __str__(self):
+        return str(self.sessao)
+
+    def get_sessao(self):
+        return str(self.sessao)
+        
 
 
 

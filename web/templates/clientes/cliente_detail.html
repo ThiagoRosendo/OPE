@@ -73,7 +73,7 @@
             <td>{{i.id}} </td>
             <td class="text-center">{{i.data | date:"d M Y"}}</td>
             <td class="text-center">R$ {{i.valor_total}}</td>
-            <td class="text-right"><a href="{% url 'web:agendar' i.id %}">Agendar</a> | <a href="{% url 'web:pedido_detail' i %}">Detalhes</a> </td>
+            <td class="text-right"><a href="{% url 'web:pedido_detail' i %}">Detalhes</a> </td>
         </tr>
     {% endfor %}
         

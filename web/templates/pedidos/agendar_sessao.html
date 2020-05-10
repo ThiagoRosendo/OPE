@@ -1,0 +1,182 @@
+{% load crispy_forms_tags %}
+{% load bootstrap %}
+{% load widget_tweaks %}
+{% block content %}
+
+<br>
+
+<!doctype html>
+{% load static %}
+<html lang="pt-br">
+  <head>
+      <title>GC Dominium</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="{% static 'css/fontastic.css' %}">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static 'css/style.default.css' %}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/web/img/favicon.ico">
+    <style>
+        .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+  
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+      </style>
+  
+  </head>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Basic Form-->
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <h3 class="h4">Agendar atendimento</h3>
+        </div>
+        <div class="card-body">
+          
+
+           <form method="POST">        
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            {% for item in pedido_detail %}
+
+            {% for sessao in n_sessao %}
+            <input type="hidden" name="sessao" required id="id_sessao" value="{{sessao}}">
+                        {% endfor %}
+              <input type="hidden" name="cliente" required id="id_cliente" value="{{item.pedido.cliente.cpf}}">
+
+              <input type="hidden" name="pedido" required id="id_pedido" value="{{item.pedido}}">
+              <input type="hidden" name="servico" required id="id_servico" value="{{item.servico.id}}">
+              {% endfor %}
+  
+  
+  <label for="id_data">Data:</label>
+  <input type="date" name="data" required id="id_data" onblur="reset_horarios(), remove_inicio(this.value, id_hora_inicio)"><br><br>
+
+
+  {{form.hora_inicio.label}}: 
+  {{form.hora_inicio | attr:"oninput:reset_hora_fim(), remove_fim(id_data.value, id_hora_fim, this.value)"}}<br><br>
+
+  {{form.hora_fim.label}}: 
+  {{form.hora_fim}}<br><br>
+
+
+
+  
+                  <div class="pure-controls">
+                      <button type="submit" class="btn btn-primary">CADASTRAR</button>
+                  </div>
+        </form>
+
+
+<script>
+  var horarios = []
+  for (i=1; i < document.getElementById("id_hora_inicio").options.length; i++){
+    horarios.push(document.getElementById("id_hora_inicio").options[i].value)
+  }
+
+
+
+  function get_hora_inicio(input){
+    var inicio = [];
+
+    {% for item in agenda %}
+    var dia = {{item.data | date:"d"}};
+    var dia = String(dia);
+    if (dia.length == 1){dia = "0" + dia};
+    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
+    var ano = {{item.data | date:"Y"}};
+    var data = ano + "-" + mes + "-" + dia;
+    console.log(input)
+    console.log(data)
+
+  
+    if(input == data){
+        var hora = String({{item.hora_inicio | cut:":"}});
+
+        if(hora.length  == 3){
+          inicio.push("0" + hora[0] + ":" + hora[1] + hora[2])
+        }
+        else{
+          inicio.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
+      }
+      }
+    {% endfor %}
+        inicio.sort();
+        console.log(inicio)
+      return inicio;
+  };
+
+  function get_hora_fim(input){
+    var fim = [];
+
+    {% for item in agenda %}
+  
+    var dia = {{item.data | date:"d"}};
+    var dia = String(dia);
+    if (dia.length == 1){dia = "0" + dia};
+    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
+    var ano = {{item.data | date:"Y"}};
+    var data = ano + "-" + mes + "-" + dia;
+  
+    if(input == data){
+        var hora = String({{item.hora_fim| cut:":"}});
+
+        if(hora.length  == 3){
+          fim.push("0" + hora[0] + ":" + hora[1] + hora[2])
+        }
+        else{
+          fim.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
+      }
+      }
+    {% endfor %}
+        fim.sort();
+      return fim;
+  };
+
+  
+  function CloseAndRefresh()
+{
+    window.close();
+    if (window.opener && !window.opener.closed) {
+    window.opener.location.reload();
+    }
+}
+</script>
+<script src="../../static/js/agendar.js"></script>
+
+
+
+        </div>
+      </div>
+    </div>
+{% endblock %}
