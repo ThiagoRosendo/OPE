@@ -97,19 +97,9 @@
 					<td class="text-right"></td>
 					<td class="text-right"></td>
 					<td class="text-right"></td>
-					<td class="text-right"><a href="#" onclick="open_agendar{{forloopcounter}}()">Agendar</a></td>
-				</tr>
-
-					
-				
-				
-				<script>
-					function open_agendar{{forloopcounter}}() {
-						window.open("{% url 'web:agendar_sessao' item.pedido.id 1 %}","__blank", "width=500,height=600")
-					};
-				</script>
-
-					
+          <td class="text-right"><a class="btn btn-dark btn-sm" href="#" data-toggle="modal" data-target="#exampleModal"
+            data-whatever="{{sessao}}">Agendar</a></td>
+				</tr>	
 					
 					{% endfor %}
 
@@ -122,9 +112,267 @@
 			</tbody>
 		</table>
 
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h5 class="modal-title" id="exampleModalLabel">Agendar</h5>
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+				<div class="modal-body">
+					<form method="POST">        
+						{% csrf_token %}
+            {{ form.non_field_errors }}
+
+      {% for item in pedido_detail %}
+      <textarea type="text" class="form-control" id="recipient-name"></textarea>
+
+
+            
+            <input type="text" name="sessao" required id="id_sessao"><br>
+                        
+              <input type="hidden" name="cliente" required id="id_cliente" value="{{item.pedido.cliente.cpf}}">
+
+              <input type="hidden" name="pedido" required id="id_pedido" value="{{item.pedido}}">
+              <input type="hidden" name="servico" required id="id_servico" value="{{item.servico.id}}">
+              {% endfor %}
+  
+  
+  <label for="id_data">Data:</label>
+  <input type="date" name="data" required id="id_data" onblur="reset_horarios(), remove_inicio(this.value, id_hora_inicio)"><br><br>
+
+
+   Hora inicio: 
+  <select name="hora_inicio" oninput="reset_hora_fim(), remove_fim(id_data.value, id_hora_fim, this.value)" required id="id_hora_inicio">
+  <option value="" selected>---------</option>
+
+  <option value="08:00">08:00</option>
+
+  <option value="08:30">08:30</option>
+
+  <option value="09:00">09:00</option>
+
+  <option value="09:30">09:30</option>
+
+  <option value="10:00">10:00</option>
+
+  <option value="10:30">10:30</option>
+
+  <option value="11:00">11:00</option>
+
+  <option value="11:30">11:30</option>
+
+  <option value="12:00">12:00</option>
+
+  <option value="12:30">12:30</option>
+
+  <option value="13:00">13:00</option>
+
+  <option value="13:30">13:30</option>
+
+  <option value="14:00">14:00</option>
+
+  <option value="14:30">14:30</option>
+
+  <option value="15:00">15:00</option>
+
+  <option value="15:30">15:30</option>
+
+  <option value="16:00">16:00</option>
+
+  <option value="16:30">16:30</option>
+
+  <option value="17:00">17:00</option>
+
+  <option value="17:30">17:30</option>
+
+  <option value="18:00">18:00</option>
+
+  <option value="18:30">18:30</option>
+
+  <option value="19:00">19:00</option>
+
+  <option value="19:30">19:30</option>
+
+  <option value="20:00">20:00</option>
+
+  <option value="20:30">20:30</option>
+
+  <option value="21:00">21:00</option>
+
+  <option value="21:30">21:30</option>
+
+</select><br><br>
+
+  Hora fim: 
+  <select name="hora_fim" required id="id_hora_fim">
+  <option value="" selected>---------</option>
+
+  <option value="08:00">08:00</option>
+
+  <option value="08:30">08:30</option>
+
+  <option value="09:00">09:00</option>
+
+  <option value="09:30">09:30</option>
+
+  <option value="10:00">10:00</option>
+
+  <option value="10:30">10:30</option>
+
+  <option value="11:00">11:00</option>
+
+  <option value="11:30">11:30</option>
+
+  <option value="12:00">12:00</option>
+
+  <option value="12:30">12:30</option>
+
+  <option value="13:00">13:00</option>
+
+  <option value="13:30">13:30</option>
+
+  <option value="14:00">14:00</option>
+
+  <option value="14:30">14:30</option>
+
+  <option value="15:00">15:00</option>
+
+  <option value="15:30">15:30</option>
+
+  <option value="16:00">16:00</option>
+
+  <option value="16:30">16:30</option>
+
+  <option value="17:00">17:00</option>
+
+  <option value="17:30">17:30</option>
+
+  <option value="18:00">18:00</option>
+
+  <option value="18:30">18:30</option>
+
+  <option value="19:00">19:00</option>
+
+  <option value="19:30">19:30</option>
+
+  <option value="20:00">20:00</option>
+
+  <option value="20:30">20:30</option>
+
+  <option value="21:00">21:00</option>
+
+  <option value="21:30">21:30</option>
+
+</select><br>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+				  <button type="submit" class="btn btn-primary">Enviar</button>
+				</div>
+			  </div>
+				</form>
+
+			</div>
+		  </div>
+		  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Falar com @getbootstrap</button>
+
+<script>
+$('#exampleModal').on('show.bs.modal', function (event) {
+	var button = $(event.relatedTarget) // Botão que acionou o modal
+	var recipient = button.data('whatever') // Extrai informação dos atributos data-*
+	// Se necessário, você pode iniciar uma requisição AJAX aqui e, então, fazer a atualização em um callback.
+	// Atualiza o conteúdo do modal. Nós vamos usar jQuery, aqui. No entanto, você poderia usar uma biblioteca de data binding ou outros métodos.
+	var modal = $(this)
+	modal.find('.modal-title').text('Nova mensagem para ' + recipient)
+	modal.find('id_sessao').val(recipient)
+  document.getElementById("id_sessao").value = recipient
+  })
+  
+</script>
+<script>
+  var horarios = []
+  for (i=1; i < document.getElementById("id_hora_inicio").options.length; i++){
+    horarios.push(document.getElementById("id_hora_inicio").options[i].value)
+  }
+
+
+
+  function get_hora_inicio(input){
+    var inicio = [];
+
+    {% for item in agenda_all %}
+    var dia = {{item.data | date:"d"}};
+    var dia = String(dia);
+    if (dia.length == 1){dia = "0" + dia};
+    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
+    var ano = {{item.data | date:"Y"}};
+    var data = ano + "-" + mes + "-" + dia;
+    console.log(input)
+    console.log(data)
+
+  
+    if(input == data){
+        var hora = String({{item.hora_inicio | cut:":"}});
+
+        if(hora.length  == 3){
+          inicio.push("0" + hora[0] + ":" + hora[1] + hora[2])
+        }
+        else{
+          inicio.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
+      }
+      }
+    {% endfor %}
+        inicio.sort();
+        console.log(inicio)
+      return inicio;
+  };
+
+  function get_hora_fim(input){
+    var fim = [];
+
+    {% for item in agenda_all %}
+  
+    var dia = {{item.data | date:"d"}};
+    var dia = String(dia);
+    if (dia.length == 1){dia = "0" + dia};
+    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
+    var ano = {{item.data | date:"Y"}};
+    var data = ano + "-" + mes + "-" + dia;
+  
+    if(input == data){
+        var hora = String({{item.hora_fim| cut:":"}});
+
+        if(hora.length  == 3){
+          fim.push("0" + hora[0] + ":" + hora[1] + hora[2])
+        }
+        else{
+          fim.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
+      }
+      }
+    {% endfor %}
+        fim.sort();
+      return fim;
+  };
+
+  
+  function CloseAndRefresh()
+{
+    window.close();
+    if (window.opener && !window.opener.closed) {
+    window.opener.location.reload();
+    }
+}
+</script>
+<script src="../../static/js/agendar.js"></script> 
+
 
 	</div>
 </div>
 </div>
+
+
     
     {% endblock %}

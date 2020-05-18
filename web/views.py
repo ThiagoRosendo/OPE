@@ -179,8 +179,27 @@ def pedido_detail(request, id):
     pedido = Pedido.objects.filter(id=id)
     pedido_detail = PedidoDetail.objects.filter(pedido=id)
     agenda = Agenda.objects.filter(pedido=id)
+    agenda_all = Agenda.objects.all()
+    if request.POST:
+        form = AgendaForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            if check_data(form.data) is False:
+                messages.error(request, 'Não é possível agendar um atendimento para uma data anterior a hoje!')
+                form = AgendaForm
+            elif check_agenda(agenda, form.data, form.hora_inicio, form.hora_fim) is False:
+                messages.error(request, 'Horário não disponível')
+                form = AgendaForm
+            else:
+                form.save()
+                return redirect ('web:index')
+        else:
+            raise Exception('Erro')
+            
+    else:
+        form = AgendaForm
 
-    return render(request, page, {'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda})
+    return render(request, page, {'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda, 'agenda_all': agenda_all, 'form': form})
 
 
 def ficha_anamnese(request, cpf):
