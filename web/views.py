@@ -179,7 +179,8 @@ def pedido_detail(request, id):
     page = 'pedidos/pedido_detail.html'
     pedido = Pedido.objects.filter(id=id)
     pedido_detail = PedidoDetail.objects.filter(pedido=id)
-    agenda = Agenda.objects.filter(pedido=id)
+    agenda_pedido = Agenda.objects.filter(pedido=id)
+    agenda = Agenda.objects.all()
     if request.POST:
         form = AgendaForm(request.POST)
         if form.is_valid():
@@ -199,7 +200,7 @@ def pedido_detail(request, id):
     else:
         form = AgendaForm
 
-    return render(request, page, {'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda, 'form': form})
+    return render(request, page, {'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda, 'agenda_pedido': agenda_pedido, 'form': form})
 
 
 def ficha_anamnese(request, cpf):

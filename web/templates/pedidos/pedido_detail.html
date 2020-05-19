@@ -66,7 +66,7 @@
 
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="table-body" > 
 			
 				{% for item in pedido_detail %}
 			
@@ -74,24 +74,8 @@
 
 					{% for sessao in item.sessoes|make_list %}
 					
-					{% for dado in agenda %}
 					
-					{% if sessao == dado.get_sessao %}
-					
-					<tr>
-					<td>{{item.servico}} </td>
-					<td class="text-right">{{sessao}}</td>
-					<td class="text-right">{{dado.data | date:"d/m/Y"}}</td>
-					<td class="text-right">{{dado.hora_inicio}}</td>
-					<td class="text-right">{{dado.hora_fim}}</td>
-					<td class="text-right">Agendado</td>
-				</tr>
-					
-					{% endif %}
-					
-					{% endfor %}
-					
-					<tr>
+					<tr id="{{sessao}}">
 					<td>{{item.servico}} </td>
 					<td class="text-right">{{sessao}}</td>
 					<td class="text-right"></td>
@@ -102,93 +86,61 @@
 				</tr>	
 					
 					{% endfor %}
-
-				
-			
 			{% endfor %}
 
-				
+  <script>
+
+  var table = document.getElementById("table-body")
+
+  {% for dado in agenda_pedido %}
+    
+  var sessao = {{dado.sessao}}
+  var dia = {{dado.data | date:"d"}};
+    var dia = String(dia);
+    if (dia.length == 1){dia = "0" + dia};
+    var mes = ("0"+{{dado.data | date:"m"}}).slice(-2);
+    var ano = {{dado.data | date:"Y"}};
+    var data = dia + "/" + mes + "/" + ano;
+
+    var hora_inicio = String({{dado.hora_inicio | cut:":"}});
+
+    if(hora_inicio.length  == 3){
+      var hora_ini = ("0" + hora_inicio[0] + ":" + hora_inicio[1] + hora_inicio[2])
+    }
+    else{
+      var hora_ini = (hora_inicio[0] + hora_inicio[1] + ":" + hora_inicio[2] + hora_inicio[3])
+    }
+
+    var hora_fim = String({{dado.hora_fim | cut:":"}});
+
+    if(hora_fim.length  == 3){
+      var hora_f = ("0" + hora_fim[0] + ":" + hora_fim[1] + hora_fim[2])
+    }
+    else{
+      var hora_f = (hora_fim[0] + hora_fim[1] + ":" + hora_fim[2] + hora_fim[3])
+    }
+
+    for (var i = 0, row; row = table.rows[i]; i++){
+    if(row.cells[1].innerHTML == sessao){
+    row.cells[2].innerHTML = data
+    row.cells[3].innerHTML = hora_ini
+    row.cells[4].innerHTML = hora_f
+    row.cells[5].innerHTML = "Agendado"
+
+    }
+    }
+    
+
+  {% endfor %}
+        
+      </script>  
+      
+
 			
 			</tbody>
     </table>
     
     {% include 'pedidos/agendar_sessao.html' %}
-
-<script>
-  var horarios = []
-  for (i=1; i < document.getElementById("id_hora_inicio").options.length; i++){
-    horarios.push(document.getElementById("id_hora_inicio").options[i].value)
-  }
-
-
-
-  function get_hora_inicio(input){
-    var inicio = [];
-
-    {% for item in agenda_all %}
-    var dia = {{item.data | date:"d"}};
-    var dia = String(dia);
-    if (dia.length == 1){dia = "0" + dia};
-    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
-    var ano = {{item.data | date:"Y"}};
-    var data = ano + "-" + mes + "-" + dia;
-    console.log(input)
-    console.log(data)
-
-  
-    if(input == data){
-        var hora = String({{item.hora_inicio | cut:":"}});
-
-        if(hora.length  == 3){
-          inicio.push("0" + hora[0] + ":" + hora[1] + hora[2])
-        }
-        else{
-          inicio.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
-      }
-      }
-    {% endfor %}
-        inicio.sort();
-        console.log(inicio)
-      return inicio;
-  };
-
-  function get_hora_fim(input){
-    var fim = [];
-
-    {% for item in agenda_all %}
-  
-    var dia = {{item.data | date:"d"}};
-    var dia = String(dia);
-    if (dia.length == 1){dia = "0" + dia};
-    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
-    var ano = {{item.data | date:"Y"}};
-    var data = ano + "-" + mes + "-" + dia;
-  
-    if(input == data){
-        var hora = String({{item.hora_fim| cut:":"}});
-
-        if(hora.length  == 3){
-          fim.push("0" + hora[0] + ":" + hora[1] + hora[2])
-        }
-        else{
-          fim.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
-      }
-      }
-    {% endfor %}
-        fim.sort();
-      return fim;
-  };
-
-  
-  function CloseAndRefresh()
-{
-    window.close();
-    if (window.opener && !window.opener.closed) {
-    window.opener.location.reload();
-    }
-}
-</script>
-<script src="../../static/js/agendar.js"></script> 
 
 
 	</div>

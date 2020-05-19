@@ -30,7 +30,7 @@
 <br>
 <div class="form-group col-md-6">
 <label for="id_hora_inicio">Início:</label> 
-{{form.hora_inicio | attr:"class:form-control"}}
+{{form.hora_inicio | attr:"class:form-control" | attr:"oninput:reset_hora_fim(), remove_fim(id_data.value, id_hora_fim, this.value)"}}
 </div>
 
 <div class="form-group col-md-6">
@@ -60,3 +60,79 @@ $(this).find("#id_sessao").val(myVal);
 });
 
 </script>
+
+<script>
+  var horarios = []
+  for (i=1; i < document.getElementById("id_hora_inicio").options.length; i++){
+    horarios.push(document.getElementById("id_hora_inicio").options[i].value)
+  }
+
+
+
+  function get_hora_inicio(input){
+    var inicio = [];
+
+    {% for item in agenda %}
+    var dia = {{item.data | date:"d"}};
+    var dia = String(dia);
+    if (dia.length == 1){dia = "0" + dia};
+    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
+    var ano = {{item.data | date:"Y"}};
+    var data = ano + "-" + mes + "-" + dia;
+    console.log(input)
+    console.log(data)
+
+  
+    if(input == data){
+        var hora = String({{item.hora_inicio | cut:":"}});
+
+        if(hora.length  == 3){
+          inicio.push("0" + hora[0] + ":" + hora[1] + hora[2])
+        }
+        else{
+          inicio.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
+      }
+      }
+    {% endfor %}
+        inicio.sort();
+        console.log(inicio)
+      return inicio;
+  };
+
+  function get_hora_fim(input){
+    var fim = [];
+
+    {% for item in agenda %}
+  
+    var dia = {{item.data | date:"d"}};
+    var dia = String(dia);
+    if (dia.length == 1){dia = "0" + dia};
+    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
+    var ano = {{item.data | date:"Y"}};
+    var data = ano + "-" + mes + "-" + dia;
+  
+    if(input == data){
+        var hora = String({{item.hora_fim| cut:":"}});
+
+        if(hora.length  == 3){
+          fim.push("0" + hora[0] + ":" + hora[1] + hora[2])
+        }
+        else{
+          fim.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
+      }
+      }
+    {% endfor %}
+        fim.sort();
+      return fim;
+  };
+
+  
+  function CloseAndRefresh()
+{
+    window.close();
+    if (window.opener && !window.opener.closed) {
+    window.opener.location.reload();
+    }
+}
+</script>
+<script src="../../static/js/agendar.js"></script> 
