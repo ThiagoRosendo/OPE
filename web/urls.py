@@ -37,7 +37,7 @@ urlpatterns = [
     path('pedido/<id>', views.pedido_detail, name='pedido_detail'),
     path('clientes/<cpf>/ficha', views.ficha_anamnese, name='ficha_anamnese'),
     path('clientes/<cpf>/print-ficha', views.ficha_anamnese_p, name='ficha_anamnese_p'),
-    path('pedido/<id>_<sessao>/agendar', views.agendar_sessao, name='agendar_sessao'),
+    
 
     
 
