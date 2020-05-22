@@ -1,0 +1,33 @@
+{% load widget_tweaks %}
+<div class="modal fade" id="del_agendamento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Cancelar Sessão</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+      <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      
+        <p>Tem certeza que deseja cancelar a sessão? </p>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      <a href="" id="btn-del" class="btn btn-primary">Sim</a>
+    </div>
+    </div>
+    </form>
+
+  </div>
+  </div>
+
+<script>
+$('#del_agendamento').on('show.bs.modal', function (event) {
+var myVal = $(event.relatedTarget).data('sessao');
+var href = $(event.relatedTarget).data('del');
+$(this).find('.modal-title').text("Cancelar Sessão " + myVal)
+$("#btn-del").attr('href', href)
+});
+</script>

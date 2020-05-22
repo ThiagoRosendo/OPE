@@ -60,9 +60,9 @@
 					<th>Serviço</th>
 					<th class="text-right">Nº da sessão</th>
 					<th class="text-right">Data</th>
-					<th class="text-right">Hora de início</th>
-					<th class="text-right">Hora de fim</th>
-					<th class="text-right">Status</th>
+					<th class="text-right">Início</th>
+					<th class="text-right">Término</th>
+					<th class="text-right"></th>
 
 				</tr>
 			</thead>
@@ -75,14 +75,15 @@
 					{% for sessao in item.sessoes|make_list %}
 					
 					
-					<tr id="{{sessao}}">
+					<tr id="{{forloop.counter}}">
 					<td>{{item.servico}} </td>
-					<td class="text-right">{{sessao}}</td>
+					<td class="text-right">{{forloop.counter}}</td>
 					<td class="text-right"></td>
 					<td class="text-right"></td>
 					<td class="text-right"></td>
-          <td class="text-right"><a class="btn btn-dark btn-sm" href="#" data-toggle="modal" data-target="#exampleModal"
-            data-sessao="{{sessao}}" id="btn-sessao">Agendar</a></td>
+          <td class="text-right"><button class="btn btn-dark btn-sm" href="#" data-toggle="modal" data-target="#exampleModal"
+			data-sessao="{{forloop.counter}}" id="btn-sessao">Agendar</button>
+		</td>
 				</tr>	
 					
 					{% endfor %}
@@ -93,6 +94,9 @@
   var table = document.getElementById("table-body")
 
   {% for dado in agenda_pedido %}
+
+  var id = {{dado.id}}
+  var url = 'agenda/' + id + '/del'
     
   var sessao = {{dado.sessao}}
   var dia = {{dado.data | date:"d"}};
@@ -122,11 +126,14 @@
 
     for (var i = 0, row; row = table.rows[i]; i++){
     if(row.cells[1].innerHTML == sessao){
+
+	var btn = "btn-cancel"+i
     row.cells[2].innerHTML = data
     row.cells[3].innerHTML = hora_ini
     row.cells[4].innerHTML = hora_f
-    row.cells[5].innerHTML = "Agendado"
-
+    row.cells[5].innerHTML = "<button id="+ btn +" type='button' class='btn btn-danger btn-sm' data-target='#del_agendamento' data-toggle='modal'>Cancelar</button>"
+	document.getElementById(btn).setAttribute('data-del', url )
+	document.getElementById(btn).setAttribute('data-sessao', {{dado.sessao}})
     }
     }
     
@@ -140,7 +147,9 @@
 			</tbody>
     </table>
     
-    {% include 'pedidos/agendar_sessao.html' %}
+	{% include 'pedidos/agendar_sessao.html' %}
+    {% include 'pedidos/modal_del.html' %}
+	
 
 
 	</div>

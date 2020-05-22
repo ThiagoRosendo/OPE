@@ -129,7 +129,7 @@ class PedidoDetail(models.Model):
     def sessoes(self):
         sessoes = ''
         for i in range(1, self.quantidade+1):
-            sessoes = sessoes + str(i)
+            sessoes += '1'
         return sessoes
 
         
@@ -186,6 +186,9 @@ class Agenda(models.Model):
 
     def get_sessao(self):
         return str(self.sessao)
+    
+    def get_pedido(self):
+        return str(self.pedido)
         
 
 

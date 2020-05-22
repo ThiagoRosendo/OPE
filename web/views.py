@@ -220,3 +220,14 @@ def ficha_anamnese(request, cpf):
 def ficha_anamnese_p(request, cpf):
     page = 'clientes/ficha_anamnese_p.html'
     ficha = FichaAnamnese.objects.filter(cliente=cpf)
+
+def del_agendamento(request, id):
+    page = 'pedidos/del_agendamento.html'
+    agendamento = Agenda.objects.get(id=id)
+    form = AgendaForm(request.POST)
+    if request.POST:
+        agendamento.delete()
+        return redirect('web:pedido_detail', agendamento.get_pedido())
+
+    return render(request, page, {'form': form, 'agendamento': agendamento})
+
