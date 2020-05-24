@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect, get_object_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
 from django.forms import modelformset_factory
@@ -47,11 +48,31 @@ def check_agenda(agenda, data, hora_inicio, hora_fim):
     return True
         
     
+def login_view(request):
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('web:index')
+            
+        else:
+            messages.error(request, 'Usuário ou senha inválidos!')
+            return redirect('web:login')
+            # Return an 'invalid login' error message.
 
+    return render(request, 'login.html')
+
+def logout_user(request):
+    logout(request)
+    return redirect('web:login')
+
+@login_required
 def index(request):
     return render(request, 'index.html')
 
-
+@login_required
 def cliente_cad(request):
     page = 'clientes/cliente_cad.html'
     
@@ -67,6 +88,7 @@ def cliente_cad(request):
     return render(request, page, {'form': form})
 
 
+@login_required
 def cliente_edit(request, cpf):
     page = 'clientes/cliente_edit.html'
     cliente = ClienteModel.objects.get(cpf=cpf)
@@ -83,6 +105,7 @@ def cliente_edit(request, cpf):
     return render(request, page, {'form': form, 'cliente': cliente})
 
 
+@login_required
 def cliente_list(request):
     page = 'clientes/cliente_list.html'
     clientes = ClienteModel.objects.all()
@@ -91,6 +114,7 @@ def cliente_list(request):
     return render(request, page, {'clientes': clientes})
 
 
+@login_required
 def cliente_detail(request, cpf):
     page = 'clientes/cliente_detail.html'
     cliente = ClienteModel.objects.filter(cpf=cpf)
@@ -100,6 +124,7 @@ def cliente_detail(request, cpf):
     return render(request, page, {'cliente': cliente, 'pedidos': pedidos, 'fichas': fichas})
 
 
+@login_required
 def services_cad(request):
     page = 'services/services_cad.html'
     
@@ -114,6 +139,7 @@ def services_cad(request):
     return render(request, page, {'form': form})
 
 
+@login_required
 def services_edit(request, id):
     page = 'services/services_edit.html'
     services = Servicos.objects.get(id=id)
@@ -129,6 +155,7 @@ def services_edit(request, id):
     return render(request, page, {'form': form, 'services': services})
 
 
+@login_required
 def services_list(request):
     page = 'services/services_list.html'
     services = Servicos.objects.all()
@@ -137,6 +164,7 @@ def services_list(request):
     return render(request, page, {'services': services})
 
 
+@login_required
 def services_detail(request, id):
     page = 'services/services_detail.html'
     services = Servicos.objects.filter(id=id)
@@ -144,6 +172,7 @@ def services_detail(request, id):
     return render(request, page, {'services': services})
 
 
+@login_required
 def novo_pedido(request):
     order_forms = Pedido()
     objetos = Servicos.objects.all()
@@ -175,6 +204,7 @@ def novo_pedido(request):
     return render(request, 'pedidos/novo_pedido.html', context)
 
 
+@login_required
 def pedido_detail(request, id):
     page = 'pedidos/pedido_detail.html'
     pedido = Pedido.objects.filter(id=id)
@@ -203,6 +233,7 @@ def pedido_detail(request, id):
     return render(request, page, {'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda, 'agenda_pedido': agenda_pedido, 'form': form})
 
 
+@login_required
 def ficha_anamnese(request, cpf):
     page = 'clientes/ficha_anamnese.html'
     cliente = ClienteModel.objects.filter(cpf=cpf)
@@ -217,10 +248,12 @@ def ficha_anamnese(request, cpf):
         form = AnamneseForm
     return render(request, page, {'form': form, 'cliente': cliente})
 
+@login_required
 def ficha_anamnese_p(request, cpf):
     page = 'clientes/ficha_anamnese_p.html'
     ficha = FichaAnamnese.objects.filter(cliente=cpf)
 
+@login_required
 def del_agendamento(request, id):
     page = 'pedidos/del_agendamento.html'
     agendamento = Agenda.objects.get(id=id)

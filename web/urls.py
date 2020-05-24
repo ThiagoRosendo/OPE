@@ -24,6 +24,8 @@ app_name = 'web'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login', views.login_view, name='login'),
+    path('logout', views.logout_user, name='logout'),
     path('', views.index, name='index'),
     path('clientes/cadastrar/', views.cliente_cad, name='cliente_cad'),
     path('clientes/lista/', views.cliente_list, name='cliente_list'),
