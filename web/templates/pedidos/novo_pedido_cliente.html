@@ -26,7 +26,7 @@
           </div>
           <div class="card-body">
         
-            <form action="" method="POST" name="pedido">
+            <form action="" method="POST" name="pedido" onkeydown="return event.key != 'Enter';">
               
                 {% csrf_token %}
                 <div class="form-row">
