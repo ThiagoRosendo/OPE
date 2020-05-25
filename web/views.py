@@ -276,7 +276,7 @@ def pedido_detail(request, id):
             else:
                 messages.success(request, 'Sessão %s para o serviço de %s foi agendada com sucesso!' % (form.sessao, form.servico))
                 form.save()
-                return redirect('web:pedido_detail', form.pedido.pedido.id)
+                return redirect('web:pedido_detail', form.pedido.id)
         else:
             raise Exception('Erro')
             

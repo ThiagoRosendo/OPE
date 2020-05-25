@@ -174,7 +174,7 @@ class FichaAnamnese(models.Model):
 class Agenda(models.Model):
     id = models.AutoField(primary_key=True)
     cliente = models.ForeignKey(ClienteModel, related_name='cliente_agenda', verbose_name='cliente', on_delete=models.CASCADE)
-    pedido = models.ForeignKey(PedidoDetail, related_name='pedido_agenda', verbose_name='pedido', on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido, related_name='pedido_agenda', verbose_name='pedido', on_delete=models.CASCADE)
     servico = models.CharField(max_length=255)
     sessao = models.CharField(max_length=3)
     data = models.DateField()

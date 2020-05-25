@@ -15,11 +15,11 @@
 
   
         
-        <input type="text" name="sessao" required id="id_sessao">
-        <input type="text" name="servico" required id="id_servico">
-          <input type="text" name="cliente" required id="id_cliente" value="{{pedido.cliente.cpf}}">
+        <input type="hidden" name="sessao" required id="id_sessao">
+        <input type="hidden" name="servico" required id="id_servico">
+          <input type="hidden" name="cliente" required id="id_cliente" value="{{pedido.cliente.cpf}}">
 
-          <input type="text" name="pedido" required id="id_pedido" value="{{pedido}}">
+          <input type="hidden" name="pedido" required id="id_pedido" value="{{pedido}}">
           
           
 
