@@ -170,7 +170,7 @@ function reset_preco(){
     var i, len;
 
     {% for item in objetos %}
-    servico.push({{item.id}});
+    servico.push("{{item.nome}}");
     valor.push({{item.valor}});
     {% endfor %}
 
