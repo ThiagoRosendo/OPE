@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-{{ClienteModel.idade}}
 {% for field in cliente %}
+<header class="page-header">
+    <div class="container-fluid">
+     <a href="{% url 'web:index' %}"> Início</a> / 
+     <a href="{% url 'web:cliente_list' %}"> Lista de clientes</a> /
+        {{field.nome}}
+    </div>
+  </header>
+
 <br>
 <div class="col-lg-12">
         <div class="card">
                 <div class="card-close">
-
-                <a href="{% url 'web:cliente_edit' field.cpf %}" class="dropdown-item edit"><i class="fa fa-gear"></i></a>
+                    <a href="{% url 'web:novo_pedido_cliente' field.cpf %}"><i class="fa fa-plus"></i> Novo pedido</a> 
+                <a href="{% url 'web:cliente_edit' field.cpf %}"><i class="fa fa-gear"></i> Editar</a>
                 </div>
 
                       
@@ -19,15 +25,15 @@
                 <div class="card-body">
                     <b>Nome: </b> {{ field.nome }}  <br>
                     <b>CPF: </b> {{ field.cpf }} &nbsp;&nbsp;-&nbsp;&nbsp; <b>RG: </b> {{ field.rg }}  <br>
-                    <b>Data de nascimento: </b> {{ field.data_nascimento }} <b>Idade: </b> {{field.idade}} <br>
+                    <b>Data de nascimento: </b> {{ field.data_nascimento | date:'d/m/Y' }} &nbsp;&nbsp; <b>Idade: </b> {{field.idade}} <br>
                     <b>Sexo: </b> {{ field.sexo }} <br>
 
                     <div class="avatar">
                     <img src="{{ field.photo.url }}" class="img-fluid rounded-circle foto-cliente" width="150px">
                     
                     <hr class="my-3">
-                    <b>Residencial: </b> {{ field.tel_fixo }} &nbsp;&nbsp;-&nbsp;&nbsp; <b>Celular: </b> {{ field.tel_cel }} &nbsp;&nbsp;-&nbsp;&nbsp;
-                    <b>Emergência: </b> {{ field.tel_emergency }}  &nbsp;&nbsp;-&nbsp;&nbsp; <b>E-mail: </b> {{ field.email }}  <br>
+                    <b>Residencial: </b> {% if field.tel_fixo %}{{field.tel_fixo}}{% else %}Não informado{% endif %} &nbsp;&nbsp;-&nbsp;&nbsp; <b>Celular: </b> {% if field.tel_cel %}{{field.tel_cel}}{% else %}Não informado{% endif %} &nbsp;&nbsp;-&nbsp;&nbsp;
+                    <b>Emergência: </b> {% if field.tel_emergency %}{{field.tel_emergency}}{% else %}Não informado{% endif %}  &nbsp;&nbsp;-&nbsp;&nbsp; <b>E-mail: </b> {% if field.email %}{{field.email}}{% else %}Não informado{% endif %}  <br>
 
                     <hr class="my-3">
                     <b>Endereço: </b>
@@ -68,13 +74,19 @@
         </tr>
     </thead>
     <tbody>
-    {% for i in pedidos %}
+        {% for i in pedidos %}
+    
         <tr>
             <td>{{i.id}} </td>
             <td class="text-center">{{i.data | date:"d M Y"}}</td>
             <td class="text-center">R$ {{i.valor_total}}</td>
             <td class="text-right"><a href="{% url 'web:pedido_detail' i %}">Detalhes</a> </td>
         </tr>
+
+        {% empty %}
+        <hr>
+        <h4>Nenhum pedido registrado</h4>
+        
     {% endfor %}
         
     

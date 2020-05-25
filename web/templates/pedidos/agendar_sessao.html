@@ -13,15 +13,15 @@
         {% csrf_token %}
         {{ form.non_field_errors }}
 
-  {% for item in pedido_detail %}
+  
         
-        <input type="hidden" name="sessao" required id="id_sessao">
-                    
-          <input type="hidden" name="cliente" required id="id_cliente" value="{{item.pedido.cliente.cpf}}">
+        <input type="text" name="sessao" required id="id_sessao">
+        <input type="text" name="servico" required id="id_servico">
+          <input type="text" name="cliente" required id="id_cliente" value="{{pedido.cliente.cpf}}">
 
-          <input type="hidden" name="pedido" required id="id_pedido" value="{{item.pedido}}">
-          <input type="hidden" name="servico" required id="id_servico" value="{{item.servico.id}}">
-          {% endfor %}
+          <input type="text" name="pedido" required id="id_pedido" value="{{pedido}}">
+          
+          
 
 <div class="form-row">
 <label for="id_data">Data:</label>
@@ -55,8 +55,11 @@
 <script>
 $('#exampleModal').on('show.bs.modal', function (event) {
 var myVal = $(event.relatedTarget).data('sessao');
+var servico = $(event.relatedTarget).data('servico');
 $(this).find('.modal-title').text("Agendar Sessão " + myVal)
 $(this).find("#id_sessao").val(myVal);
+$(this).find("#id_servico").val(servico);
+
 });
 
 </script>

@@ -7,11 +7,14 @@
 <script src="../../static/js/data.js"></script>
 <script src="../../static/js/nome.js"></script>
 
-{% if message.success %}
-<div class="alert alert-success" role="alert">
-    Um simples alerta success. Olha só!
+<header class="page-header">
+  <div class="container-fluid">
+   <a href="{% url 'web:index' %}"> Início</a> / 
+   <a href="{% url 'web:cliente_list' %}"> Lista de clientes</a> /
+   <a href="{% url 'web:cliente_detail' cliente.cpf %}"> {{cliente.nome}}</a> / 
+   Editar Cadastro
   </div>
-{% endif %}
+</header>
 
 <br>
 <div class="container-fluid">

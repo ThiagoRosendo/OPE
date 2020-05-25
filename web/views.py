@@ -104,6 +104,17 @@ def cliente_edit(request, cpf):
 
     return render(request, page, {'form': form, 'cliente': cliente})
 
+@login_required
+def cliente_del(request, cpf):
+    page = 'clientes/del_cliente.html'
+    cliente = ClienteModel.objects.get(cpf=cpf)
+    form = ClienteCadForm(request.POST)
+    if request.POST:
+        cliente.delete()
+        messages.warning(request, 'O cadastro de %s foi exlcuído com sucesso!' % cliente.nome)
+        return redirect('web:cliente_list')
+
+    return render (request, page, {'cliente': cliente, 'form': form})
 
 @login_required
 def cliente_list(request):
@@ -147,8 +158,10 @@ def services_edit(request, id):
     if request.POST:
         if form.is_valid() and 'salvar' in request.POST:
             form.save()
+            messages.success(request, 'O serviço de %s foi atulizado com sucesso!' % services.nome)
             return redirect('web:services_list')
         if 'excluir' in request.POST:
+            messages.warning(request, 'O serviço de %s foi excluído!' % services.nome)
             services.delete()
             return redirect('web:services_list')
 
@@ -175,6 +188,8 @@ def services_detail(request, id):
 @login_required
 def novo_pedido(request):
     order_forms = Pedido()
+    clientes = ClienteModel.objects.all()
+    clientes = clientes.order_by('nome')
     objetos = Servicos.objects.all()
     objetos = objetos.order_by('id')
     item_order_formset = inlineformset_factory(Pedido, PedidoDetail, form=PedidoDetailForm, extra=2,
@@ -189,6 +204,7 @@ def novo_pedido(request):
             forms = forms.save(commit=False)
             forms.save()
             formset.save()
+            messages.success(request, 'Pedido registrado com sucesso!')
             return redirect('web:pedido_detail', forms.id)
 
     else:
@@ -199,15 +215,51 @@ def novo_pedido(request):
         'forms': forms,
         'formset': formset,
         'objetos': objetos,
+        'clientes': clientes
     }
 
     return render(request, 'pedidos/novo_pedido.html', context)
 
 
 @login_required
+def novo_pedido_cliente(request, cpf):
+    cliente = ClienteModel.objects.get(cpf=cpf)
+    order_forms = Pedido()
+    objetos = Servicos.objects.all()
+    objetos = objetos.order_by('id')
+    item_order_formset = inlineformset_factory(Pedido, PedidoDetail, form=PedidoDetailForm, extra=2,
+                                               can_delete=False, min_num=1, validate_min=True
+                                             )
+
+    if request.method == 'POST':
+        forms = PedidoForm(request.POST, request.FILES, instance=order_forms)
+        formset = item_order_formset(request.POST, request.FILES, instance=order_forms, prefix='pedido_det')
+
+        if forms.is_valid() and formset.is_valid():
+            forms = forms.save(commit=False)
+            forms.save()
+            formset.save()
+            messages.success(request, 'Pedido registrado com sucesso!')
+            return redirect('web:pedido_detail', forms.id)
+
+    else:
+        forms = PedidoForm(instance=order_forms)
+        formset = item_order_formset(instance=order_forms, prefix='pedido_det')
+
+    context = {
+        'forms': forms,
+        'formset': formset,
+        'objetos': objetos,
+        'cliente': cliente
+    }
+
+    return render(request, 'pedidos/novo_pedido_cliente.html', context)
+
+
+@login_required
 def pedido_detail(request, id):
     page = 'pedidos/pedido_detail.html'
-    pedido = Pedido.objects.filter(id=id)
+    pedido = Pedido.objects.get(id=id)
     pedido_detail = PedidoDetail.objects.filter(pedido=id)
     agenda_pedido = Agenda.objects.filter(pedido=id)
     agenda = Agenda.objects.all()
@@ -222,6 +274,7 @@ def pedido_detail(request, id):
                 messages.error(request, 'Horário não disponível')
                 form = AgendaForm
             else:
+                messages.success(request, 'Sessão %s para o serviço de %s foi agendada com sucesso!' % (form.sessao, form.servico))
                 form.save()
                 return redirect('web:pedido_detail', form.pedido.pedido.id)
         else:
@@ -260,6 +313,7 @@ def del_agendamento(request, id):
     form = AgendaForm(request.POST)
     if request.POST:
         agendamento.delete()
+        messages.warning(request, 'Sessão %s foi cancelada!' % agendamento.sessao)
         return redirect('web:pedido_detail', agendamento.get_pedido())
 
     return render(request, page, {'form': form, 'agendamento': agendamento})

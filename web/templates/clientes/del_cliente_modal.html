@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<div class="modal fade" id="del_agendamento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="del_cliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
     <div class="modal-header">
@@ -10,7 +10,7 @@
     </div>
     <div class="modal-body">
       
-        <p>Tem certeza que deseja cancelar a <b id="sessao"></b> do serviço de <b id="servico"></b>? </p>
+        <p>Tem certeza que deseja cancelar a sessão? </p>
 
     </div>
     <div class="modal-footer">
@@ -24,13 +24,10 @@
   </div>
 
 <script>
-$('#del_agendamento').on('show.bs.modal', function (event) {
-var sessao = $(event.relatedTarget).data('sessao');
-var servico = $(event.relatedTarget).data('service');
+$('#del_cliente').on('show.bs.modal', function (event) {
+var myVal = $(event.relatedTarget).data('sessao');
 var href = $(event.relatedTarget).data('del');
-$(this).find('.modal-title').text("Cancelar Sessão " + sessao)
-$("#sessao").text("sessão " + sessao)
-$("#servico").text(servico)
+$(this).find('.modal-title').text("Cancelar Sessão " + myVal)
 $("#btn-del").attr('href', href)
 });
 </script>

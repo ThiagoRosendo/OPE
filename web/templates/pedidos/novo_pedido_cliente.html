@@ -6,10 +6,11 @@
 {% block content %}
 
 <script src="../../static/js/pedido.js"></script>
-
 <header class="page-header">
     <div class="container-fluid">
      <a href="{% url 'web:index' %}"> Início</a> /
+   <a href="{% url 'web:cliente_list' %}"> Lista de clientes</a> /
+     <a href="{% url 'web:cliente_detail' cliente.cpf %}"> {{cliente.nome}}</a> / 
      Novo Pedido
     </div>
   </header>
@@ -27,18 +28,13 @@
         
             <form action="" method="POST" name="pedido">
               
-            {% csrf_token %}
-            <div class="form-row">
-                <div class="form-group col-md-5">
-                    <select name="cliente" class="form-control" id="id_cliente">
-  <option value="" selected="">Selecione um cliente</option>
-                        {% for i in clientes %}
-                        <option value="{{i.cpf}}">{{i.nome}}</option>
-                        {% endfor %}
-                    {{ formset.management_form|bootstrap }}
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        <input type="hidden" name="cliente" id="id_cliente" value="{{cliente.cpf}}">
+                        {{ formset.management_form|bootstrap }}
+                    </div>
                 </div>
-            </div>
-            <hr>
                             
             <div id="pedido">
 
@@ -66,7 +62,7 @@
                      oninput="set_valor{{forloop.counter0}}(), limpa_campos{{forloop.counter0}}(),reset_preco(), aplica_desconto(desconto.value), get_subtotal{{forloop.counter0}}(), get_total1()">
   <option value="" selected="">Selecione um serviço</option>
                         {% for i in objetos %}
-                        <option value="{{i.nome}}">{{i.nome}}</option>
+                        <option value="{{i.id}}">{{i.nome}}</option>
                         {% endfor %}
   
 
@@ -101,7 +97,7 @@
         var i, len;
 
         {% for item in objetos %}
-        servico.push("{{item.nome}}");
+        servico.push({{item.id}});
         valor.push({{item.valor}});
         {% endfor %}
 
@@ -190,7 +186,11 @@ function reset_preco(){
 
     
         </script>
+
 </div>
+                 
+                
+                        
                  <a href="{% url 'web:index' %}" class="btn btn-warning pull-right botao-cancelar"><i class="fa fa-times"></i> Cancelar</a>
                         <button class="btn btn-primary pull-right botao-salvar" value="Save"><i class="fa fa-floppy-o"></i> Salvar</button>
                  

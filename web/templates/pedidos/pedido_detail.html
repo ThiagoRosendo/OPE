@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<header class="page-header">
+    <div class="container-fluid">
+     <a href="{% url 'web:index' %}"> Início</a> / 
+     <a href="{% url 'web:cliente_list' %}"> Lista de clientes</a> /
+     <a href="{% url 'web:cliente_detail' pedido.cliente.cpf %}"> {{pedido.cliente}}</a> /
+        Pedido {{pedido.id}}
+    </div>
+  </header>
+  <br>
 
 <div class="container-fluid">
     <div class="row">
@@ -11,12 +20,12 @@
             <h3 class="h4">Detalhes do Pedido</h3>
           </div>
           <div class="card-body">
-              {% for item in pedido %}
-<b>Nº do Pedido: </b> {{item.id}} <br>
-<b>Cliente: </b>{{item.cliente}}
+
+<b>Nº do Pedido: </b> {{pedido.id}} <br>
+<b>Cliente: </b>{{pedido.cliente}}
  
-		<p><b>Data: </b>{{item.data}} </p>
-        {% endfor %}
+		<p><b>Data: </b>{{pedido.data}} </p>
+ 
         <div>
 			<table class="table">
 				<thead>
@@ -43,16 +52,14 @@
 		</div>
 
 		<hr>
-{% for i in pedido %}
-		<h3 class="text-right"><b>Total: R$</b> <span class="label label-info"> {{i.valor_total}} </span></h3>
+
+		<h3 class="text-right"><b>Total: R$</b> <span class="label label-info"> {{pedido.valor_total}} </span></h3>
 		<!-- <p class="text-right">Obs: IPI não calculado.</p> -->
 		<p>
-			<a href="{% url 'web:cliente_detail' i.cliente.cpf  %}"><span class="glyphicon glyphicon-chevron-left">Voltar</span></a>
-		</p>{% endfor %} 
-    </div>
-
-
-        
+			<a href="{% url 'web:cliente_detail' pedido.cliente.cpf  %}"><span class="glyphicon glyphicon-chevron-left">Voltar</span></a>
+		</p>
+	</div>
+	        
 	<div>
 		<table class="table">
 			<thead>
@@ -82,7 +89,7 @@
 					<td class="text-right"></td>
 					<td class="text-right"></td>
           <td class="text-right"><button class="btn btn-dark btn-sm" href="#" data-toggle="modal" data-target="#exampleModal"
-			data-sessao="{{forloop.counter}}" id="btn-sessao">Agendar</button>
+			data-sessao="{{forloop.counter}}" data-servico="{{item.servico}}" id="btn-sessao">Agendar</button>
 		</td>
 				</tr>	
 					
@@ -97,7 +104,7 @@
 
   var id = {{dado.id}}
   var url = 'agenda/' + id + '/del'
-    
+  var servico = "{{dado.servico}}"
   var sessao = {{dado.sessao}}
   var dia = {{dado.data | date:"d"}};
     var dia = String(dia);
@@ -125,7 +132,10 @@
     }
 
     for (var i = 0, row; row = table.rows[i]; i++){
-    if(row.cells[1].innerHTML == sessao){
+		
+    if(row.cells[1].innerHTML == sessao && row.cells[0].innerHTML.replace(/ /g, '') == servico){
+		
+		
 
 	var btn = "btn-cancel"+i
     row.cells[2].innerHTML = data
@@ -134,6 +144,8 @@
     row.cells[5].innerHTML = "<button id="+ btn +" type='button' class='btn btn-danger btn-sm' data-target='#del_agendamento' data-toggle='modal'>Cancelar</button>"
 	document.getElementById(btn).setAttribute('data-del', url )
 	document.getElementById(btn).setAttribute('data-sessao', {{dado.sessao}})
+	document.getElementById(btn).setAttribute('data-service', servico)
+
     }
     }
     

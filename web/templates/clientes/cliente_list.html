@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load l10n %}
 {% block content %}
+<header class="page-header">
+  <div class="container-fluid">
+   <a href="{% url 'web:index' %}"> Início</a> / Lista de clientes
+  </div>
+</header>
 <br>
 <div class="col-lg-12">
   <div class="card">
@@ -27,33 +32,33 @@
                       <tr>
                         <td><a href="{% url 'web:cliente_detail' field.cpf %}">{{ field.nome }}</a></td>
                         <td>{{ field.cpf }}</td>
-                        <td>{{ field.tel_cel }}</td>
+                        <td>{% if field.tel_cel %}{{field.tel_cel}}{% else %}Não informado{% endif %}</td>
                         <td>{{ field.data_cadastro }}</td>
                         <td><a href="{% url 'web:cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-pencil"></i></a></td>
-                        <td><button type="button" data-toggle="modal" data-target="#del_cliente"
-                            class="dropdown-item button-editar-href"><i class="fa fa-trash"></i></a></td>
+                        <td><button type="button" data-toggle="modal" data-target="#del_cliente" class="dropdown-item button-editar-href"
+                          data-cpf="{{field.cpf}}" data-nome="{{field.nome}}"><i class="fa fa-trash"></i></a></td>
                       
-                                                  <!-- Modal -->
-                                                  <div class="modal fade" id="del_cliente" tabindex="-1" role="dialog" aria-labelledby="excluir_cliente" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                                      <div class="modal-content">
-                                                        <div class="modal-header">
-                                                          <h5 class="modal-title" id="excluir_cliente">Excluir Cadastro</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                                              <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                          Tem certerza que deseja excluir o cadastro de <b>{{ field.nome }}</b>? Todos os dados serão perdidos!
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                          <button type="submit" name="excluir" class="btn btn-danger">Sim, excluir</button>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <!-- Fim do Modal -->
+                <!-- Modal -->
+                <div class="modal fade" id="del_cliente" tabindex="-1" role="dialog" aria-labelledby="excluir_cliente" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="excluir_cliente">Excluir Cadastro</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                        Tem certerza que deseja excluir o cadastro de <b id="nome"></b>? Todos os dados serão perdidos!
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <a href="" id="excluir" class="btn btn-danger">Sim, excluir</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Fim do Modal -->
                       
                       
                       
@@ -64,6 +69,15 @@
             {% endfor %}
          </tbody>
                   </table>
+
+                  <script>
+                    $('#del_cliente').on('show.bs.modal', function (event) {3
+                    var nome = $(event.relatedTarget).data('nome')
+                    var cpf = $(event.relatedTarget).data('cpf');
+                    $("#nome").text(nome)
+                    $("#excluir").attr('href', '/clientes/'+cpf+'/del')
+                    });
+                    </script>
 
                   
                 </div>

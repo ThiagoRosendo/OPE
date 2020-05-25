@@ -111,7 +111,7 @@ class Pedido(models.Model):
 
 class PedidoDetail(models.Model):
     pedido = models.ForeignKey(Pedido, related_name='pedido_det', on_delete=models.CASCADE)
-    servico = models.ForeignKey(Servicos, on_delete=models.CASCADE)
+    servico = models.CharField('Serviço', max_length=255)
     quantidade = models.PositiveIntegerField('Quantidade')
     preco = models.DecimalField('Preço', max_digits=7, decimal_places=2)
     subtotal = models.DecimalField('Subtotal', max_digits=7, decimal_places=2)
@@ -175,8 +175,8 @@ class Agenda(models.Model):
     id = models.AutoField(primary_key=True)
     cliente = models.ForeignKey(ClienteModel, related_name='cliente_agenda', verbose_name='cliente', on_delete=models.CASCADE)
     pedido = models.ForeignKey(PedidoDetail, related_name='pedido_agenda', verbose_name='pedido', on_delete=models.CASCADE)
-    servico = models.ForeignKey(Servicos, on_delete=models.CASCADE)
-    sessao = models.PositiveIntegerField('Sessão')
+    servico = models.CharField(max_length=255)
+    sessao = models.CharField(max_length=3)
     data = models.DateField()
     hora_inicio = models.CharField(choices=horarios, max_length=5)
     hora_fim = models.CharField(choices=horarios, max_length=5)

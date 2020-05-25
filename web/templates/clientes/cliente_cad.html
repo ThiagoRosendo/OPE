@@ -6,6 +6,13 @@
 <script src="../../static/js/cel.js"></script>
 <script src="../../static/js/data.js"></script>
 <script src="../../static/js/nome.js"></script>
+<header class="page-header">
+  <div class="container-fluid">
+   <a href="{% url 'web:index' %}"> Início</a> / 
+   <a href="{% url 'web:cliente_list' %}"> Lista de clientes</a> /
+      Cadastrar Cliente
+  </div>
+</header>
 
 <br>
 <div class="container-fluid">
@@ -132,16 +139,6 @@
                 </div></div>
                
           </form>
-          <script>
-            $( document ).ready(function() {
-              if (document.registroForm.alert.value==1){
-                swal("¡Bien hecho!aaa", "El registro fue exitosoaaaa.", "suaaaaaccess")
-              }
-              if (document.registroForm.alert.value==0){
-                swal("¡Ooaaaaps!", "Algo salaaaaió mal.", "erraaaaor")
-              }
-            });
-            </script>
         </div>
       </div>
     </div>
