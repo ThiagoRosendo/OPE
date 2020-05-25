@@ -313,7 +313,7 @@ def del_agendamento(request, id):
     form = AgendaForm(request.POST)
     if request.POST:
         agendamento.delete()
-        messages.warning(request, 'Sessão %s foi cancelada!' % agendamento.sessao)
+        messages.warning(request, 'Sessão %s do serviço de %s foi cancelada!' % (agendamento.sessao, agendamento.servico))
         return redirect('web:pedido_detail', agendamento.get_pedido())
 
     return render(request, page, {'form': form, 'agendamento': agendamento})
