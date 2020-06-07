@@ -74,6 +74,8 @@ if (i == -1) return str;
 
 return r;
 }
+
+
 function mascara(o,f){
 v_obj=o
 v_fun=f

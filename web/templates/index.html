@@ -3,16 +3,229 @@
 {% load static %}
 
 {% block content %}
+<br>
+<div class="row col-lg-12">
+<div class="col-lg-8">
+  <div class="card">
+    <div class="card-close">
+      <div class="dropdown">
+        <button type="button" id="closeCard1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+        <div aria-labelledby="closeCard1" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+      </div>
+    </div>
+    <div class="card-header d-flex align-items-center">
+      <h3 class="h4">Agenda do dia</h3>
+    </div>
+    <div class="card-body">
+      {% if agenda %}
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Serviço</th>
+              <th>Início</th>
+              <th>Término</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for dado in agenda %}
+            <tr id="{{forloop.counter}}">
+              <td>{{dado.cliente}}</td>
+              <td>{{dado.servico}}</td>
+              <td>{{dado.hora_inicio}}</td>
+              <td>{{dado.hora_fim}}</td>
+              <td>
+                <button id="btn-registrar{{forloop.counter}}" type='button' class='btn btn-sm material-icons' data-target='#RegistrarSessao' data-toggle='modal'
+                data-id="{{dado.id}}">create</button>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+          {% else %}
+            Nenhum cliente agendado para hoje
+      {% endif %}
+    </div>
+  </div>
+</div>
 
-<center>
-        <p> 
-           <h1>Faculdade Impacta Tecnologia - ADS 4B</h1>    
-        </p><br>
+<div class="col-lg-3">
+  <div class="card">
+    <div class="card-close">
+      <div class="dropdown">
+        <button type="button" id="closeCard4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+        <div aria-labelledby="closeCard4" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+      </div>
+    </div>
+    <div class="card-header d-flex align-items-center">
+      <h3 class="h4">Acesso Rápido</h3>
+    </div>
+    <div class="card-body text-center">
+      <a href="{% url 'web:cliente_cad' %}" class="btn btn-primary">Novo Cliente</a>
+    
 
-	Projeto GC Dominium em desenvolvimento...
+    </div>
+  </div>
+</div>
 
 
+<div class="col-lg-7">
+  <div class="bar-chart-example card">
+    <div class="card-close">
+      <div class="dropdown">
+        <button type="button" id="closeCard6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+        <div aria-labelledby="closeCard6" class="dropdown-menu dropdown-menu-right has-shadow" style="display: none;"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+      </div>
+    </div>
+    <div class="card-header d-flex align-items-center">
+      <h3 class="h4">Vendas</h3>
+    </div>
+    <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+      <canvas id="barChartExample" width="913" height="456" class="chartjs-render-monitor" style="display: block; height: 365px; width: 731px;"></canvas>
+    </div>
+  </div>
+</div>
+</div>
+
+{% include 'pedidos/registrar_sessao.html' %}
+
+<script>
+        document.getElementById('home-link').setAttribute('class', 'active')
+  {% for registro in registros %}
+  var btn_registrar = document.getElementById('btn-registrar{{forloop.counter}}')
+  var id_registro = "{{registro}}"
+  if(btn_registrar.getAttribute('data-id') == id_registro){
+    var desc = "{{registro.descricao | linebreaksbr}}"
+    desc = desc.replace(/<br>/g, "\r")
+    btn_registrar.setAttribute('data-descricao', desc )
+  }
+  {% endfor %}
+
+</script>
+
+<script>
+$(document).ready(function () {
+    'use strict';
 
 
-</center>
+    // ------------------------------------------------------- //
+    // Charts Gradients
+    // ------------------------------------------------------ //
+    var ctx1 = $("canvas").get(0).getContext("2d");
+    var gradient1 = ctx1.createLinearGradient(150, 0, 150, 300);
+    gradient1.addColorStop(0, 'rgba(133, 180, 242, 0.91)');
+    gradient1.addColorStop(1, 'rgba(255, 119, 119, 0.94)');
+
+    var gradient2 = ctx1.createLinearGradient(146.000, 0.000, 154.000, 300.000);
+    gradient2.addColorStop(0, 'rgba(104, 179, 112, 0.85)');
+    gradient2.addColorStop(1, 'rgba(76, 162, 205, 0.85)');
+
+     // ------------------------------------------------------- //
+    // Bar Chart
+    // ------------------------------------------------------ //
+  var mes = 0
+    {% for pedido in pedidos %}
+    mes = mes + {{pedido.valor_total}}
+                    
+                    {% endfor %}
+    var BARCHARTEXMPLE    = $('#barChartExample');
+    var barChartExample = new Chart(BARCHARTEXMPLE, {
+        type: 'bar',
+        options: {
+            scales: {
+                xAxes: [{
+                    display: true,
+                    gridLines: {
+                        color: '#eee'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    gridLines: {
+                        color: '#eee'
+                    }
+                }]
+            },
+        },
+        data: {
+            labels: ["Janeiro", "Fevereiro", "Março"],
+            datasets: [
+                {
+                    label: "Vendas",
+                    backgroundColor: [
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1
+                    ],
+                    hoverBackgroundColor: [
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1
+                    ],
+                    borderColor: [
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1,
+                        gradient1
+                    ],
+                    borderWidth: 1,
+
+                    data: [mes, 1, 80, 81, 56, 55, 40],
+                },
+                {
+                    label: "Data Set 2",
+                    backgroundColor: [
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2
+                    ],
+                    hoverBackgroundColor: [
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2
+                    ],
+                    borderColor: [
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2
+                    ],
+                    borderWidth: 1,
+                    data: [620, 40, 60, 47, 88, 27, 30],
+                }
+            ]
+        }
+    });
+
+  });
+
+
+</script>
+
+
 {% endblock %}

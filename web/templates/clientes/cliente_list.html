@@ -24,7 +24,8 @@
                         <th>CPF</th>
                         <th>Telefone Celular</th>
                         <th>Data de cadastro</th>
-              
+                        <th></th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>                        
@@ -36,7 +37,7 @@
                         <td>{{ field.data_cadastro }}</td>
                         <td><a href="{% url 'web:cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-pencil"></i></a></td>
                         <td><button type="button" data-toggle="modal" data-target="#del_cliente" class="dropdown-item button-editar-href"
-                          data-cpf="{{field.cpf}}" data-nome="{{field.nome}}"><i class="fa fa-trash"></i></a></td>
+                          data-cpf="{{field.cpf}}" data-nome="{{field.nome}}"><i class="fa fa-trash"></i></button></td>
                       
                 <!-- Modal -->
                 <div class="modal fade" id="del_cliente" tabindex="-1" role="dialog" aria-labelledby="excluir_cliente" aria-hidden="true">
@@ -84,5 +85,8 @@
               </div>
             </div>
         </div>
+        <script>
+          document.getElementById('clientes-link').setAttribute('class', 'active')
+        </script>
 
 {% endblock %}

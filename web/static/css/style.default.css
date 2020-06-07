@@ -1921,12 +1921,12 @@ input.input-material.is-invalid ~ label {
   right: 0;
 }
 
-.login-page .container {
+/* .login-page .container {
   min-height: 100vh;
   z-index: 999;
   padding: 20px;
   position: relative;
-}
+} */
 
 .login-page .form-holder {
   width: 100%;

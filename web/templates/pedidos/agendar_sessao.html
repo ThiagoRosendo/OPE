@@ -44,7 +44,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      <button type="submit" class="btn btn-primary">Salvar</button>
+      <button type="submit" class="btn btn-primary" name="agendar">Salvar</button>
     </div>
     </div>
     </form>
@@ -76,29 +76,14 @@ $(this).find("#id_servico").val(servico);
     var inicio = [];
 
     {% for item in agenda %}
-    var dia = {{item.data | date:"d"}};
-    var dia = String(dia);
-    if (dia.length == 1){dia = "0" + dia};
-    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
-    var ano = {{item.data | date:"Y"}};
-    var data = ano + "-" + mes + "-" + dia;
-    console.log(input)
-    console.log(data)
+    var data = "{{item.data | date:'yy-m-d' }}";
 
-  
     if(input == data){
-        var hora = String({{item.hora_inicio | cut:":"}});
-
-        if(hora.length  == 3){
-          inicio.push("0" + hora[0] + ":" + hora[1] + hora[2])
-        }
-        else{
-          inicio.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
-      }
+        var hora = "{{item.hora_inicio}}"
+        inicio.push(hora)
       }
     {% endfor %}
         inicio.sort();
-        console.log(inicio)
       return inicio;
   };
 
@@ -106,23 +91,11 @@ $(this).find("#id_servico").val(servico);
     var fim = [];
 
     {% for item in agenda %}
-  
-    var dia = {{item.data | date:"d"}};
-    var dia = String(dia);
-    if (dia.length == 1){dia = "0" + dia};
-    var mes = ("0"+{{item.data | date:"m"}}).slice(-2);
-    var ano = {{item.data | date:"Y"}};
-    var data = ano + "-" + mes + "-" + dia;
-  
+    
+    var data = "{{item.data | date:'yy-m-d'}}";
     if(input == data){
-        var hora = String({{item.hora_fim| cut:":"}});
-
-        if(hora.length  == 3){
-          fim.push("0" + hora[0] + ":" + hora[1] + hora[2])
-        }
-        else{
-          fim.push(hora[0] + hora[1] + ":" + hora[2] + hora[3])
-      }
+        var hora = "{{item.hora_fim}}";
+        fim.push(hora)
       }
     {% endfor %}
         fim.sort();

@@ -7,7 +7,7 @@ from django.forms import modelformset_factory
 from .models import *
 from django.views.generic import TemplateView, ListView, DetailView
 from django.forms import formset_factory, inlineformset_factory
-from datetime import date
+from datetime import date, timedelta
 
 
 def check_data(data):
@@ -68,9 +68,37 @@ def logout_user(request):
     logout(request)
     return redirect('web:login')
 
+
 @login_required
 def index(request):
-    return render(request, 'index.html')
+    pedidos = Pedido.objects.all()
+    registros = RegistroSessao.objects.all()
+    data = date.today()
+    semana = []
+    for i in range(1, 8):
+        semana.append(data + timedelta(days=i))
+    agenda = Agenda.objects.filter(data=data)
+    agenda = agenda.order_by('hora_inicio')
+
+    if request.POST:
+        if 'registrar' in request.POST:
+            form = RegistroSessaoForm(request.POST)
+            if form.is_valid():
+                form = form.save(commit=False)
+                try:
+                    registro = RegistroSessao.objects.get(agendamento=form.agendamento.id)
+                    form = RegistroSessaoForm(request.POST, instance=registro)
+                    form = form.save(commit=False)
+                    messages.success(request, 'O registro da sessão %s de %s foi atualizado.' % (form.agendamento.sessao, form.agendamento.servico))
+                    form.save()
+                except:
+                    messages.success(request, 'O registro da sessão %s de %s foi realizado com sucesso!' % (form.agendamento.sessao, form.agendamento.servico))
+                    form.save()
+                return redirect('web:index')
+            else:
+                raise Exception('erro')
+
+    return render(request, 'index.html', {'agenda': agenda, 'semana': semana, 'pedidos': pedidos, 'registros': registros})
 
 @login_required
 def cliente_cad(request):
@@ -263,27 +291,49 @@ def pedido_detail(request, id):
     pedido_detail = PedidoDetail.objects.filter(pedido=id)
     agenda_pedido = Agenda.objects.filter(pedido=id)
     agenda = Agenda.objects.all()
+    registros = RegistroSessao.objects.all()
     if request.POST:
-        form = AgendaForm(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            if check_data(form.data) is False:
-                messages.error(request, 'Não é possível agendar um atendimento para uma data anterior a hoje!')
-                form = AgendaForm
-            elif check_agenda(agenda, form.data, form.hora_inicio, form.hora_fim) is False:
-                messages.error(request, 'Horário não disponível')
-                form = AgendaForm
+        if 'agendar' in request.POST:
+            form = AgendaForm(request.POST)
+            if form.is_valid():
+                form = form.save(commit=False)
+                if check_data(form.data) is False:
+                    messages.error(request, 'Não é possível agendar um atendimento para uma data anterior a hoje!')
+                    form = AgendaForm
+                elif check_agenda(agenda, form.data, form.hora_inicio, form.hora_fim) is False:
+                    messages.error(request, 'Horário não disponível')
+                    form = AgendaForm
+                else:
+                    messages.success(request, 'Sessão %s para o serviço de %s foi agendada com sucesso!' % (form.sessao, form.servico))
+                    form.save()
+                    return redirect('web:pedido_detail', form.pedido.id)
+        if 'registrar' in request.POST:
+            form = RegistroSessaoForm(request.POST)
+            if form.is_valid():
+                form = form.save(commit=False)
+                try:
+                    registro = RegistroSessao.objects.get(agendamento=form.agendamento.id)
+                    form = RegistroSessaoForm(request.POST, instance=registro)
+                    form = form.save(commit=False)
+                    messages.success(request, 'O registro da sessão %s de %s foi atualizado.' % (form.agendamento.sessao, form.agendamento.servico))
+                    form.save()
+                except:
+                    messages.success(request, 'O registro da sessão %s de %s foi realizado com sucesso!' % (form.agendamento.sessao, form.agendamento.servico))
+                    form.save()
+                return redirect('web:pedido_detail', pedido.id)
             else:
-                messages.success(request, 'Sessão %s para o serviço de %s foi agendada com sucesso!' % (form.sessao, form.servico))
-                form.save()
-                return redirect('web:pedido_detail', form.pedido.id)
-        else:
-            raise Exception('Erro')
+                raise Exception('erro')
             
     else:
         form = AgendaForm
 
-    return render(request, page, {'pedido': pedido, 'pedido_detail': pedido_detail, 'agenda': agenda, 'agenda_pedido': agenda_pedido, 'form': form})
+    context = {
+        'pedido': pedido, 'pedido_detail': pedido_detail,
+        'agenda': agenda, 'agenda_pedido': agenda_pedido, 'form': form,
+        'registros': registros
+        }
+
+    return render(request, page, context )
 
 
 @login_required

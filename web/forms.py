@@ -84,3 +84,8 @@ class AgendaForm(forms.ModelForm):
         model = Agenda
         fields = '__all__'
     
+class RegistroSessaoForm(forms.ModelForm):
+
+    class Meta:
+        model = RegistroSessao
+        fields = '__all__'

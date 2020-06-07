@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 {% for field in cliente %}
 <header class="page-header">
     <div class="container-fluid">
@@ -28,7 +29,7 @@
                     <b>Data de nascimento: </b> {{ field.data_nascimento | date:'d/m/Y' }} &nbsp;&nbsp; <b>Idade: </b> {{field.idade}} <br>
                     <b>Sexo: </b> {{ field.sexo }} <br>
 
-                    <div class="avatar">
+                    
                     <img src="{{ field.photo.url }}" class="img-fluid rounded-circle foto-cliente" width="150px">
                     
                     <hr class="my-3">
@@ -42,7 +43,7 @@
                     {{ field.cep }}
 
                    
-</div>
+
 
 <hr>
 <script>
@@ -59,7 +60,7 @@
 
 {% empty %}
 
-<a href="#" onclick="open_ficha_anamnese()" class="btn-ficha">Preencher Ficha</a>
+<a href="{% url 'web:ficha_anamnese' field.cpf %}" class="btn-ficha">Preencher Ficha</a>
 
 {% endfor %}
 
@@ -98,4 +99,7 @@
                     </div>
 {% endfor %}
 
+<script>
+    document.getElementById('clientes-link').setAttribute('class', 'active')
+  </script>
 {% endblock %}

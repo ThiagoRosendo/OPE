@@ -142,7 +142,7 @@ function limpa_campos{{forloop.counter0}}() {
 <!-- --------------------------  INPUT DE DESCONTO  ------------------------- -->
                 <div class="form-group btn-desconto">
                 <span class="desc">Desconto</span>
-                <input type="number" class="input-desconto" step="0.10" max="100" class="form-group col-md-1" id="id_desconto" name="desconto" class="form-control"
+                <input type="number" class="input-desconto" step="0.10" min="0" max="100" class="form-group col-md-1" id="id_desconto" name="desconto" class="form-control"
                  oninput="reset_preco(), aplica_desconto(this.value), get_subtotal0(), get_subtotal1(), get_subtotal2(), get_total1()"
                  onblur="reset_preco(), aplica_desconto(this.value),get_subtotal0(), get_subtotal1(), get_subtotal2(), get_total1()">
                 <span class="porcentagem">%</span>
@@ -212,6 +212,9 @@ function reset_preco(){
 </div>
 
 
+<script>
+    document.getElementById('pedidos-link').setAttribute('class', 'active')
+  </script>
                                    
    
 

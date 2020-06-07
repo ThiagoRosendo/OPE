@@ -51,10 +51,11 @@ label {
   position: absolute;
   right: 55px;
   top: 60px;
+  margin-bottom: 30px;
 }
 
 .avatar{
-  margin-top: 50px;
+  margin-top: 0px;
 }
 
 @media(max-width:796px){

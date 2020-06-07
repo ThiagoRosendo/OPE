@@ -102,49 +102,44 @@
 
   {% for dado in agenda_pedido %}
 
-  var id = {{dado.id}}
-  var url = 'agenda/' + id + '/del'
-  var servico = "{{dado.servico}}"
-  var sessao = {{dado.sessao}}
-  var dia = {{dado.data | date:"d"}};
-    var dia = String(dia);
-    if (dia.length == 1){dia = "0" + dia};
-    var mes = ("0"+{{dado.data | date:"m"}}).slice(-2);
-    var ano = {{dado.data | date:"Y"}};
-    var data = dia + "/" + mes + "/" + ano;
-
-    var hora_inicio = String({{dado.hora_inicio | cut:":"}});
-
-    if(hora_inicio.length  == 3){
-      var hora_ini = ("0" + hora_inicio[0] + ":" + hora_inicio[1] + hora_inicio[2])
-    }
-    else{
-      var hora_ini = (hora_inicio[0] + hora_inicio[1] + ":" + hora_inicio[2] + hora_inicio[3])
-    }
-
-    var hora_fim = String({{dado.hora_fim | cut:":"}});
-
-    if(hora_fim.length  == 3){
-      var hora_f = ("0" + hora_fim[0] + ":" + hora_fim[1] + hora_fim[2])
-    }
-    else{
-      var hora_f = (hora_fim[0] + hora_fim[1] + ":" + hora_fim[2] + hora_fim[3])
-    }
+	var id = {{dado.id}}
+	var url = 'agenda/' + id + '/del'
+	var servico = "{{dado.servico}}"
+	var sessao = {{dado.sessao}}
+	var data = "{{dado.data | date:'d/m/Y'}}"
+    var hora_inicio = "{{dado.hora_inicio}}"
+    var hora_fim = "{{dado.hora_fim}}";
 
     for (var i = 0, row; row = table.rows[i]; i++){
 		
-    if(row.cells[1].innerHTML == sessao && row.cells[0].innerHTML.replace(/ /g, '') == servico){
-		
-		
-
+    if(row.cells[1].innerHTML == sessao && row.cells[0].innerHTML.replace(/ /g, '') == servico.replace(/ /g, '')){
+	
 	var btn = "btn-cancel"+i
+	var btn_reg = "btn-registrar"+i
+
     row.cells[2].innerHTML = data
-    row.cells[3].innerHTML = hora_ini
-    row.cells[4].innerHTML = hora_f
-    row.cells[5].innerHTML = "<button id="+ btn +" type='button' class='btn btn-danger btn-sm' data-target='#del_agendamento' data-toggle='modal'>Cancelar</button>"
+    row.cells[3].innerHTML = hora_inicio
+    row.cells[4].innerHTML = hora_fim
+	row.cells[5].innerHTML = "<button id="+ btn +" type='button' class='btn btn-sm material-icon' data-target='#del_agendamento' data-toggle='modal'>" +
+	"<span class='material-icons'>delete_forever</span></button>" +
+	"<button id="+ btn_reg +" type='button' class='btn btn-sm material-icons' data-target='#RegistrarSessao' data-toggle='modal'>" +
+	"create</button>"
 	document.getElementById(btn).setAttribute('data-del', url )
 	document.getElementById(btn).setAttribute('data-sessao', {{dado.sessao}})
 	document.getElementById(btn).setAttribute('data-service', servico)
+	
+	document.getElementById(btn_reg).setAttribute('data-id', id)
+
+	{% for registro in registros %}
+		{% if registro.agendamento.id == dado.id %}
+		var desc = "{{registro.descricao | linebreaksbr}}"
+    	desc = desc.replace(/<br>/g, "\r")
+			
+			document.getElementById(btn_reg).setAttribute('data-descricao', desc)
+		{% endif %}
+
+	{% endfor %}
+	
 
     }
     }
@@ -160,7 +155,9 @@
     </table>
     
 	{% include 'pedidos/agendar_sessao.html' %}
-    {% include 'pedidos/modal_del.html' %}
+	{% include 'pedidos/modal_del.html' %}
+    {% include 'pedidos/registrar_sessao.html' %}
+	
 	
 
 

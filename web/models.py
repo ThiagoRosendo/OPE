@@ -1,6 +1,7 @@
 from django.db import models
 from .agenda import agenda
 from datetime import date
+from django.contrib.auth.models import User
 
 ficha = (
     (u'1', u'Bom'),
@@ -21,6 +22,10 @@ horarios = (
     ('18:00', '18:00'), ('18:30', '18:30'), ('19:00', '19:00'), ('19:30', '19:30'),
     ('20:00', '20:00'), ('20:30', '20:30'), ('21:00', '21:00'), ('21:30', '21:30')
 )
+
+class Usuario(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    cargo = models.CharField('Cargo', max_length=20)
 
 class ClienteModel(models.Model):
     sexo_choices = [['Feminino', 'Feminino'], ['Masculino', 'Masculino']]
@@ -182,14 +187,21 @@ class Agenda(models.Model):
     hora_fim = models.CharField(choices=horarios, max_length=5)
 
     def __str__(self):
-        return str(self.sessao)
+        return str(self.id)
 
     def get_sessao(self):
         return str(self.sessao)
     
     def get_pedido(self):
         return str(self.pedido)
-        
 
+
+class RegistroSessao(models.Model):
+
+    agendamento = models.ForeignKey(Agenda, on_delete=models.CASCADE)
+    descricao = models.TextField(default='', blank=True)
+        
+    def __str__(self):
+        return str(self.agendamento)
 
 
