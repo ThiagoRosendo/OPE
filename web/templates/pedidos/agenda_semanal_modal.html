@@ -1,0 +1,59 @@
+{% load widget_tweaks %}
+<div class="modal fade" id="agendaSemanal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Agenda Semanal</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+      <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+            {% if agenda %}
+            <div class="table-responsive">
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Serviço</th>
+                    <th>Data</th>
+                    <th>Início</th>
+                    <th>Término</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for dado in agenda %}
+                  <tr id="{{forloop.counter}}">
+                    <td>{{dado.cliente}}</td>
+                    <td>{{dado.servico}}</td>
+                    <td>{{dado.data | date:'d/m/Y'}}</td>
+                    <td>{{dado.hora_inicio}}</td>
+                    <td>{{dado.hora_fim}}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+                {% else %}
+                  Nenhum cliente agendado para hoje
+            {% endif %}
+
+        </div>
+
+ 
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+    </div>
+    </div>
+    </form>
+
+  </div>
+  </div>
+
+<script>
+$('#agendaSemanal').on('show.bs.modal', function (event) {
+});
+
+</script>
+

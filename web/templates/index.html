@@ -3,9 +3,53 @@
 {% load static %}
 
 {% block content %}
-<br>
-<div class="row col-lg-12">
-<div class="col-lg-8">
+<header class="page-header">
+  <div class="container-fluid">
+    <h2 class="no-margin-bottom">Ínicio</h2>
+  </div>
+</header>
+<section class="dashboard-counts">
+  <div class="container-fluid">
+    <div class="row bg-white has-shadow">
+      <!-- Item -->
+      <div class="col-xl-3 col-sm-6 btn-index">
+      <div class="item d-flex align-items-center divlink" onclick="window.location='clientes/cadastrar/'">
+          <div class="icon bg-violet"><i class="icon-user"></i></div>
+          <div class="title"><span>Novo Cliente</span>
+          </div>
+        </div>
+      </div>
+      <!-- Item -->
+      <div class="col-xl-3 col-sm-6 btn-index">
+        <div class="item d-flex align-items-center divlink" onclick="window.location='pedidos/novo_pedido/'">
+          <div class="icon bg-green"><i class="icon-padnote"></i></div>
+          <div class="title"><span>Novo Pedido</span>
+          </div>
+        </div>
+      </div>
+      <!-- Item -->
+      <div class="col-xl-3 col-sm-6 btn-index">
+        <div class="item d-flex align-items-center divlink">
+          <div class="icon bg-red"><i class="icon-bill"></i></div>
+          <div class="title"><span>Registrar Despesa</span>
+          </div>
+        </div>
+      </div>
+      <!-- Item -->
+      <div class="col-xl-3 col-sm-6 btn-index">
+        <div class="item d-flex align-items-center divlink" data-toggle="modal" data-target="#agendaSemanal">
+          <div class="icon bg-orange"><i class="icon-check"></i></div>
+          <div class="title"><span>Agenda Semanal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tables">
+<div class="container-fluid row">
+<div class="col-lg-12">
   <div class="card">
     <div class="card-close">
       <div class="dropdown">
@@ -52,27 +96,7 @@
   </div>
 </div>
 
-<div class="col-lg-3">
-  <div class="card">
-    <div class="card-close">
-      <div class="dropdown">
-        <button type="button" id="closeCard4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
-        <div aria-labelledby="closeCard4" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
-      </div>
-    </div>
-    <div class="card-header d-flex align-items-center">
-      <h3 class="h4">Acesso Rápido</h3>
-    </div>
-    <div class="card-body text-center">
-      <a href="{% url 'web:cliente_cad' %}" class="btn btn-primary">Novo Cliente</a>
-    
-
-    </div>
-  </div>
-</div>
-
-
-<div class="col-lg-7">
+<div class="col-lg-12">
   <div class="bar-chart-example card">
     <div class="card-close">
       <div class="dropdown">
@@ -89,14 +113,17 @@
   </div>
 </div>
 </div>
+</section>
 
 {% include 'pedidos/registrar_sessao.html' %}
+{% include 'pedidos/agenda_semanal_modal.html' %}
+
 
 <script>
         document.getElementById('home-link').setAttribute('class', 'active')
   {% for registro in registros %}
   var btn_registrar = document.getElementById('btn-registrar{{forloop.counter}}')
-  var id_registro = "{{registro}}"
+  var id_registro = "{{registro.agendamento.id}}"
   if(btn_registrar.getAttribute('data-id') == id_registro){
     var desc = "{{registro.descricao | linebreaksbr}}"
     desc = desc.replace(/<br>/g, "\r")
@@ -104,6 +131,28 @@
   }
   {% endfor %}
 
+</script>
+
+<script>
+  var meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto',
+                'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  var vendas = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    {% for pedido in pedidos %}
+    var mes = "{{pedido.data | date:'n'}}";
+    var valor = {{pedido.valor_total}};
+    vendas[parseInt(mes)-1] += valor;
+    {% endfor %}
+
+    var meses_venda = []
+    var vendas_mes = []
+
+    for(i=0; i < vendas.length; i++){
+      if(vendas[i] > 0){
+        meses_venda.push(meses[i]);
+        vendas_mes.push(vendas[i])
+      }
+    }
 </script>
 
 <script>
@@ -126,11 +175,6 @@ $(document).ready(function () {
      // ------------------------------------------------------- //
     // Bar Chart
     // ------------------------------------------------------ //
-  var mes = 0
-    {% for pedido in pedidos %}
-    mes = mes + {{pedido.valor_total}}
-                    
-                    {% endfor %}
     var BARCHARTEXMPLE    = $('#barChartExample');
     var barChartExample = new Chart(BARCHARTEXMPLE, {
         type: 'bar',
@@ -151,7 +195,7 @@ $(document).ready(function () {
             },
         },
         data: {
-            labels: ["Janeiro", "Fevereiro", "Março"],
+            labels: meses,
             datasets: [
                 {
                     label: "Vendas",
@@ -184,7 +228,7 @@ $(document).ready(function () {
                     ],
                     borderWidth: 1,
 
-                    data: [mes, 1, 80, 81, 56, 55, 40],
+                    data: vendas,
                 },
                 {
                     label: "Data Set 2",
@@ -216,13 +260,14 @@ $(document).ready(function () {
                         gradient2
                     ],
                     borderWidth: 1,
-                    data: [620, 40, 60, 47, 88, 27, 30],
+                    data: [],
                 }
             ]
         }
     });
 
   });
+
 
 
 </script>

@@ -71,7 +71,7 @@ def logout_user(request):
 
 @login_required
 def index(request):
-    pedidos = Pedido.objects.all()
+    pedidos = Pedido.objects.filter(data__year=date.today().year)
     registros = RegistroSessao.objects.all()
     data = date.today()
     semana = []
@@ -297,16 +297,23 @@ def pedido_detail(request, id):
             form = AgendaForm(request.POST)
             if form.is_valid():
                 form = form.save(commit=False)
-                if check_data(form.data) is False:
-                    messages.error(request, 'Não é possível agendar um atendimento para uma data anterior a hoje!')
-                    form = AgendaForm
-                elif check_agenda(agenda, form.data, form.hora_inicio, form.hora_fim) is False:
-                    messages.error(request, 'Horário não disponível')
-                    form = AgendaForm
-                else:
-                    messages.success(request, 'Sessão %s para o serviço de %s foi agendada com sucesso!' % (form.sessao, form.servico))
+                try:
+                    agendamento = Agenda.objects.get(id=form.id)
+                    form = AgendaForm(request.POST, instance=agendamento)
+                    form = form.save(commit=False)
+                    messages.success(request, 'Sessão %s para o serviço de %s foi agendada atualizada!' % (form.sessao, form.servico))
                     form.save()
-                    return redirect('web:pedido_detail', form.pedido.id)
+                except:
+                    if check_data(form.data) is False:
+                        messages.error(request, 'Não é possível agendar um atendimento para uma data anterior a hoje!')
+                        form = AgendaForm
+                    elif check_agenda(agenda, form.data, form.hora_inicio, form.hora_fim) is False:
+                        messages.error(request, 'Horário não disponível')
+                        form = AgendaForm
+                    else:
+                        messages.success(request, 'Sessão %s para o serviço de %s foi agendada com sucesso!' % (form.sessao, form.servico))
+                        form.save()
+                return redirect('web:pedido_detail', form.pedido.id)
         if 'registrar' in request.POST:
             form = RegistroSessaoForm(request.POST)
             if form.is_valid():

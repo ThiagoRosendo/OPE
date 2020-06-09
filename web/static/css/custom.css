@@ -163,3 +163,16 @@ li.active{
     background: #075A00;
     border: none;
 }
+
+.divlink{
+    cursor: pointer;    
+}
+
+.divlink:hover{
+    background: #fafafa
+}
+
+.btn-index{
+    padding-left: 0px;
+    padding-right: 0px;
+}
