@@ -1914,7 +1914,7 @@ input.input-material.is-invalid ~ label {
   height: 100%;
   display: block;
   z-index: -1;
-  background: url(../img/bg.jpg);
+  background: url(https://images.daznservices.com/di/library/GOAL/f4/64/cristiano-ronaldo-juventus-real-madrid-champions-league_prxlfv91mq7x1nk4piyjxpe8m.jpg);
   background-size: cover;
   -webkit-filter: blur(10px);
   filter: blur(10px);
@@ -1924,12 +1924,12 @@ input.input-material.is-invalid ~ label {
   right: 0;
 }
 
-/* .login-page .container {
+.login-page .container {
   min-height: 100vh;
   z-index: 999;
   padding: 20px;
   position: relative;
-} */
+}
 
 .login-page .form-holder {
   width: 100%;
@@ -1949,7 +1949,8 @@ input.input-material.is-invalid ~ label {
 }
 
 .login-page .form-holder .info {
-  background: rgba(121, 106, 238, 0.9);
+  /* background: rgba(121, 106, 238, 0.9); */
+  background: #2f333e;
   color: #fff;
 }
 
