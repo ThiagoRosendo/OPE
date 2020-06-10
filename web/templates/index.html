@@ -22,14 +22,14 @@
       <!-- Item -->
       <div class="col-xl-3 col-sm-6 btn-index">
         <div class="item d-flex align-items-center divlink" onclick="window.location='pedidos/novo_pedido/'">
-          <div class="icon bg-green"><i class="icon-padnote"></i></div>
+          <div class="icon bg-green"><i class="fa fa-shopping-cart"></i></div>
           <div class="title"><span>Novo Pedido</span>
           </div>
         </div>
       </div>
       <!-- Item -->
       <div class="col-xl-3 col-sm-6 btn-index">
-        <div class="item d-flex align-items-center divlink">
+        <div class="item d-flex align-items-center divlink" data-toggle="modal" data-target="#RegistrarDespesa">
           <div class="icon bg-red"><i class="icon-bill"></i></div>
           <div class="title"><span>Registrar Despesa</span>
           </div>
@@ -38,7 +38,7 @@
       <!-- Item -->
       <div class="col-xl-3 col-sm-6 btn-index">
         <div class="item d-flex align-items-center divlink" data-toggle="modal" data-target="#agendaSemanal">
-          <div class="icon bg-orange"><i class="icon-check"></i></div>
+          <div class="icon bg-orange"><i class="fa fa-calendar-o"></i></div>
           <div class="title"><span>Agenda Semanal</span>
           </div>
         </div>
@@ -70,19 +70,27 @@
               <th>Serviço</th>
               <th>Início</th>
               <th>Término</th>
+              <th>Contato</th>
+              <th></th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {% for dado in agenda %}
             <tr id="{{forloop.counter}}">
-              <td>{{dado.cliente}}</td>
-              <td>{{dado.servico}}</td>
-              <td>{{dado.hora_inicio}}</td>
-              <td>{{dado.hora_fim}}</td>
-              <td>
-                <button id="btn-registrar{{forloop.counter}}" type='button' class='btn btn-sm material-icons' data-target='#RegistrarSessao' data-toggle='modal'
-                data-id="{{dado.id}}">create</button>
+              <td width="36%">{{dado.cliente}}</td>
+              <td width="30%">{{dado.servico}}</td>
+              <td width="10%">{{dado.hora_inicio}}</td>
+              <td width="10%">{{dado.hora_fim}}</td>
+              <td width="10%">{% if dado.cliente.tel_cel %}{{dado.cliente.tel_cel}}
+                {% elif dado.cliente.tel_fixo %}{{dado.cliente.tel_fixo}}
+                {% else %}Não informado{% endif %}</td>
+              <td width="2%">
+                <button id="btn-registrar{{forloop.counter}}" type='button' class='btn button-editar-href' data-target='#RegistrarSessao' data-toggle='modal'
+                data-id="{{dado.id}}"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Registrar Atendimento"></i></button>
+              </td>
+              <td width="2%"><i data-toggle="tooltip" data-placement="top" title="Detalhes do Pedido">
+                <a href="{% url 'web:pedido_detail' dado.pedido %}" id="btn-pedido{{forloop.counter}}" class='btn button-editar-href'><i class="fa fa-list-alt"></i></a></i>
               </td>
             </tr>
           {% endfor %}
@@ -95,8 +103,7 @@
     </div>
   </div>
 </div>
-
-<div class="col-lg-12">
+  <div class="col-lg-8">
   <div class="bar-chart-example card">
     <div class="card-close">
       <div class="dropdown">
@@ -112,11 +119,32 @@
     </div>
   </div>
 </div>
+
+<div class="statistics col-lg-4">
+  <div class="statistic d-flex align-items-center has-shadow divlink">
+    <div class="icon bg-green"><i class="fa fa-usd"></i></div>
+    <div class="text"><strong id="total-vendas">R$ 0,00</strong><br><small>Total de Vendas</small></div>
+  </div>
+  <div class="statistic d-flex align-items-center has-shadow divlink" data-toggle="modal" data-target="#despesas">
+    <div class="icon bg-red"><i class="fa fa-usd"></i></div>
+    <div class="text"><strong id="desp-pagar">R$ 0,00</strong><br><small>Despesas A Pagar</small></div>
+  </div>
+  <div class="statistic d-flex align-items-center has-shadow divlink" data-toggle="modal" data-target="#despesas">
+    <div class="icon bg-orange"><i class="fa fa-usd"></i></div>
+    <div class="text"><strong id="desp-pagas">R$ 0,00</strong><br><small>Despesas Pagas</small></div>
+  </div>
+  <div class="statistic d-flex align-items-center has-shadow divlink"> 
+    <div id="saldo-total-circle" class="icon bg-green"><i class="fa fa-usd"></i></div>
+    <div class="text"><strong id="saldo-total">R$ 0,00</strong><br><small>Saldo Total</small></div>
+  </div>
+</div>
+
 </div>
 </section>
 
 {% include 'pedidos/registrar_sessao.html' %}
 {% include 'pedidos/agenda_semanal_modal.html' %}
+{% include 'modal_despesa.html' %}
 
 
 <script>
@@ -137,6 +165,13 @@
   var meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto',
                 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
   var vendas = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var meses_atuais = []
+  var mes_atual = '{% now "n" %}'
+  mes_atual = parseInt(mes_atual)
+  for(i=0; i < mes_atual+1; i++){
+    meses_atuais.push(meses[i])
+  }
+  
 
     {% for pedido in pedidos %}
     var mes = "{{pedido.data | date:'n'}}";
@@ -152,7 +187,41 @@
         meses_venda.push(meses[i]);
         vendas_mes.push(vendas[i])
       }
-    }
+    }  
+
+  var despesas = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var despesas_pagas = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var despesas_a_pagar = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    {% for despesa in despesas %}
+    var mes = "{{despesa.vencimento | date:'n'}}";
+    var valor = {{despesa.valor}};
+    despesas[mes-1] += valor;
+    
+    {% if despesa.status == '0' %}
+    despesas_a_pagar[mes-1] += valor
+
+    {% else %}
+    despesas_pagas[mes-1] += valor
+
+    {% endif %}
+    {% endfor %}
+  
+    var saldo_total = (vendas[mes_atual-1] - despesas_a_pagar[mes_atual-1] - despesas_pagas[mes_atual-1]).toFixed(2)
+
+    // Cards laterais
+    document.getElementById('total-vendas').innerHTML = 'R$ ' + String(vendas[mes_atual-1].toFixed(2)).replace('.', ',')
+    document.getElementById('desp-pagar').innerHTML = 'R$ ' + String(despesas_a_pagar[mes_atual-1].toFixed(2)).replace('.', ',')
+    document.getElementById('desp-pagas').innerHTML = 'R$ ' + String(despesas_pagas[mes_atual-1].toFixed(2)).replace('.', ',')
+    document.getElementById('saldo-total').innerHTML = 'R$ ' + String(saldo_total).replace('.',',')
+    if(saldo_total < 0){ 
+      document.getElementById('saldo-total').setAttribute('class', 'saldo-negativo')
+      document.getElementById('saldo-total-circle').setAttribute('class', 'icon bg-red')
+      }
+
+
+
+
 </script>
 
 <script>
@@ -195,7 +264,7 @@ $(document).ready(function () {
             },
         },
         data: {
-            labels: meses,
+            labels: meses_atuais,
             datasets: [
                 {
                     label: "Vendas",
@@ -231,7 +300,7 @@ $(document).ready(function () {
                     data: vendas,
                 },
                 {
-                    label: "Data Set 2",
+                    label: "Desp. Pagas",
                     backgroundColor: [
                         gradient2,
                         gradient2,
@@ -260,7 +329,39 @@ $(document).ready(function () {
                         gradient2
                     ],
                     borderWidth: 1,
-                    data: [],
+                    data: despesas_pagas,
+                },
+                {
+                    label: "Desp. A Pagar",
+                    backgroundColor: [
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2
+                    ],
+                    hoverBackgroundColor: [
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2
+                    ],
+                    borderColor: [
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2,
+                        gradient2
+                    ],
+                    borderWidth: 1,
+                    data: despesas_a_pagar,
                 }
             ]
         }

@@ -9,25 +9,25 @@
       </button>
     </div>
     <div class="modal-body">
-            {% if agenda %}
+            {% if agenda_semanal %}
             <div class="table-responsive">
               <table class="table table-striped table-sm">
                 <thead>
                   <tr>
-                    <th>Cliente</th>
-                    <th>Serviço</th>
-                    <th>Data</th>
-                    <th>Início</th>
-                    <th>Término</th>
+                    <th width="35%">Cliente</th>
+                    <th width="30%">Serviço</th>
+                    <th width="19%">Data</th>
+                    <th width="8%">Início</th>
+                    <th width="8%">Término</th>
                     
                   </tr>
                 </thead>
                 <tbody>
-                  {% for dado in agenda %}
+                  {% for dado in agenda_semanal %}
                   <tr id="{{forloop.counter}}">
                     <td>{{dado.cliente}}</td>
                     <td>{{dado.servico}}</td>
-                    <td>{{dado.data | date:'d/m/Y'}}</td>
+                    <td>{{dado.data | date:'D, d/m/Y'}}</td>
                     <td>{{dado.hora_inicio}}</td>
                     <td>{{dado.hora_fim}}</td>
                   </tr>

@@ -26,7 +26,7 @@ def check_agenda(agenda, data, hora_inicio, hora_fim):
     inicio.sort()
     fim.sort()
     if len(inicio) > 0:
-        if hora_inicio > fim[-1]:
+        if hora_inicio >= fim[-1]:
             return True
 
         for i in range(0, len(inicio)):
@@ -72,14 +72,15 @@ def logout_user(request):
 @login_required
 def index(request):
     pedidos = Pedido.objects.filter(data__year=date.today().year)
+    despesas = Despesas.objects.filter(vencimento__year=date.today().year).order_by('vencimento')
     registros = RegistroSessao.objects.all()
     data = date.today()
     semana = []
-    for i in range(1, 8):
-        semana.append(data + timedelta(days=i))
-    agenda = Agenda.objects.filter(data=data)
-    agenda = agenda.order_by('hora_inicio')
-
+    for i in range(0 - data.weekday(), 7 - data.weekday()):
+        semana.append(data + timedelta(days=i))   
+    agenda = Agenda.objects.filter(data=data).order_by('hora_inicio')
+    print(semana[0], semana[-1])
+    agenda_semanal = Agenda.objects.filter(data__range=[semana[0], semana[-1]]).order_by('data', 'hora_inicio')
     if request.POST:
         if 'registrar' in request.POST:
             form = RegistroSessaoForm(request.POST)
@@ -97,8 +98,22 @@ def index(request):
                 return redirect('web:index')
             else:
                 raise Exception('erro')
+        
+        if 'despesa' in request.POST:
+            form = DespesasForm(request.POST)
+            if form.is_valid():
+                form = form.save(commit=False)
+                form.save()
+                messages.success(request, '"%s" foi registrado no relatório de despesas.' % form.descricao)
+                return redirect('web:index')
+            else:
+                raise Exception('erro')
 
-    return render(request, 'index.html', {'agenda': agenda, 'semana': semana, 'pedidos': pedidos, 'registros': registros})
+    context = {'agenda': agenda, 'agenda_semanal': agenda_semanal,
+               'pedidos': pedidos, 'registros': registros, 'despesas': despesas
+                }
+
+    return render(request, 'index.html', context)
 
 @login_required
 def cliente_cad(request):
@@ -374,4 +389,15 @@ def del_agendamento(request, id):
         return redirect('web:pedido_detail', agendamento.get_pedido())
 
     return render(request, page, {'form': form, 'agendamento': agendamento})
+
+@login_required
+def confirmar_pgto(request, id):
+    page = 'despesas/confirmar_pgto.html'
+    despesa = Despesas.objects.get(id=id)
+    if request.POST:
+        despesa.status = '1'
+        despesa.save()
+        messages.success(request, 'O pagamento "%s" foi confirmado.' % despesa.descricao)
+        return redirect('web:index')
+    return render(request, page, {'despesa': despesa})
 

@@ -50,6 +50,7 @@ class AnamneseForm(forms.ModelForm):
     intestino = forms.CharField(widget=forms.RadioSelect(choices=ficha))
     sono = forms.CharField(widget=forms.RadioSelect(choices=ficha))
     alimentacao = forms.CharField(widget=forms.RadioSelect(choices=ficha))
+    agua = forms.CharField(widget=forms.RadioSelect(choices=ficha))
     atv_fisica = forms.CharField(widget=forms.RadioSelect(choices=booleano))
     anticoncepcional = forms.CharField(widget=forms.RadioSelect(choices=booleano))
     gestante = forms.CharField(widget=forms.RadioSelect(choices=booleano))
@@ -84,8 +85,17 @@ class AgendaForm(forms.ModelForm):
         model = Agenda
         fields = '__all__'
     
+
 class RegistroSessaoForm(forms.ModelForm):
 
     class Meta:
         model = RegistroSessao
+        fields = '__all__'
+
+
+class DespesasForm(forms.ModelForm):
+    
+    status = forms.CharField(widget=forms.RadioSelect(choices=status_despesa))
+    class Meta:
+        model = Despesas
         fields = '__all__'

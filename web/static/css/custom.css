@@ -166,6 +166,7 @@ li.active{
 
 .divlink{
     cursor: pointer;    
+    background: white;
 }
 
 .divlink:hover{
@@ -175,4 +176,21 @@ li.active{
 .btn-index{
     padding-left: 0px;
     padding-right: 0px;
+}
+
+.radio-check{
+    padding-left: 145px;
+    padding-right: 145px;
+}
+
+.check-despesa{
+    cursor: pointer;
+}
+
+.saldo-negativo{
+    color: red !important;
+}
+
+.btn-space{
+    padding: 5px;
 }

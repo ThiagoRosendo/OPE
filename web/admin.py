@@ -9,6 +9,8 @@ admin.site.register(Pedido),
 admin.site.register(FichaAnamnese)
 admin.site.register(Agenda)
 admin.site.register(RegistroSessao)
+admin.site.register(Despesas)
+
 class UsuarioInline(admin.StackedInline):
     model = Usuario
     can_delete = False

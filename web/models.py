@@ -23,6 +23,10 @@ horarios = (
     ('20:00', '20:00'), ('20:30', '20:30'), ('21:00', '21:00'), ('21:30', '21:30')
 )
 
+status_despesa = (
+    (u'0', u'A Pagar'), (u'1', u'Pago')
+)
+
 class Usuario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cargo = models.CharField('Cargo', max_length=20)
@@ -153,6 +157,7 @@ class FichaAnamnese(models.Model):
     intestino = models.CharField(choices=ficha, max_length=1)
     sono = models.CharField(choices=ficha, max_length=1)
     alimentacao = models.CharField(choices=ficha, max_length=1)
+    agua = models.CharField(choices=ficha, max_length=1)
     atv_fisica = models.CharField('Atividade Física', choices=booleano, max_length=1)
     anticoncepcional = models.CharField('Anticoncepcional', choices=booleano, max_length=1)
     gestante = models.CharField('Gestante', choices=booleano, max_length=1)
@@ -203,5 +208,13 @@ class RegistroSessao(models.Model):
         
     def __str__(self):
         return str(self.agendamento)
+
+class Despesas(models.Model):
+
+    id = models.AutoField(primary_key=True)
+    descricao = models.CharField('Descrição', max_length=255)
+    valor = models.DecimalField('Valor', decimal_places=2, max_digits=7)
+    vencimento = models.DateField('Vencimento')
+    status = models.CharField('Status', choices=status_despesa, max_length=1)
 
 

@@ -1,0 +1,10 @@
+<form method="POST" id="del">
+    {% csrf_token %}
+              {{ form.non_field_errors }}
+  </form>
+
+  <script>
+    window.onload = function(){
+document.forms['del'].submit();
+}
+</script>

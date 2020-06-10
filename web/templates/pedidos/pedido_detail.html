@@ -120,10 +120,10 @@
     row.cells[2].innerHTML = data
     row.cells[3].innerHTML = hora_inicio
     row.cells[4].innerHTML = hora_fim
-	row.cells[5].innerHTML = "<button id="+ btn +" type='button' class='btn btn-sm material-icon' data-target='#del_agendamento' data-toggle='modal'>" +
-	"<span class='material-icons'>delete_forever</span></button>" +
-	"<button id="+ btn_reg +" type='button' class='btn btn-sm material-icons' data-target='#RegistrarSessao' data-toggle='modal'>" +
-	"create</button>"
+	row.cells[5].innerHTML = "<button id="+ btn +" type='button' class='btn button-editar-href' data-target='#del_agendamento' data-toggle='modal'>" +
+	"<i class='fa fa-trash btn-space'></i></button>" +
+	"<button id="+ btn_reg +" type='button' class='btn button-editar-href' data-target='#RegistrarSessao' data-toggle='modal'>" +
+	"<i class='fa fa-pencil btn-space'></i></button>"
 
 	document.getElementById(btn).setAttribute('data-del', url )
 	document.getElementById(btn).setAttribute('data-sessao', {{dado.sessao}})

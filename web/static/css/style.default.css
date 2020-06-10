@@ -1765,6 +1765,7 @@ button, input[type='submit'] {
 
 .checkbox-template + label, .radio-template + label {
   margin-left: 10px;
+  margin-right: 10px;
 }
 
 .checkbox-template::before, .radio-template::before {
