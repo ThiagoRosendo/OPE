@@ -21,20 +21,22 @@
 
                       
                 <div class="card-header d-flex align-items-center">
-                                <h3 class="h4">Dados Pessoais</h3>
+                                <h3 class="h4">Perfil do Cliente</h3>
                     </div>
                 <div class="card-body">
                     <div class="row">
-                    <div class="dados-pessoais col-md-5">
+                    <div class="dados-pessoais col-md-5 bg-white has-shadow">
+                        <h3 style="padding-left: 115px;">Dados Pessoais</h3>
                     <b class="dados-label">Nome: </b> {{ field.nome }}  <br>
                     <b class="dados-label">CPF: </b> {{ field.cpf }}  <b class="dados-label">RG: </b> {{ field.rg }}  <br>
                     <b class="dados-label">Data de nascimento: </b> {{ field.data_nascimento | date:'d/m/Y' }}<b class="dados-label">Idade: </b> {{field.idade}} <br>
                     <b class="dados-label">Sexo: </b> {{ field.sexo }} <br>
                     </div>
 
-                    <div class="dados-pessoais col-md-3">
-                    <b>Residencial: </b> {% if field.tel_fixo %}{{field.tel_fixo}}{% else %}Não informado{% endif %}
-                    <b>Celular: </b> {% if field.tel_cel %}{{field.tel_cel}}{% else %}Não informado{% endif %}
+                    <div class="dados-pessoais col-md-3 bg-white has-shadow">
+                        <h3 style="padding-left: 70px;">Contato</h3>
+                    <b>Residencial: </b> {% if field.tel_fixo %}{{field.tel_fixo}}{% else %}Não informado{% endif %}<br>
+                    <b>Celular: </b> {% if field.tel_cel %}{{field.tel_cel}}{% else %}Não informado{% endif %}<br>
                     <b>Emergência: </b> {% if field.tel_emergency %}{{field.tel_emergency}}{% else %}Não informado{% endif %}<br>
                     <b>E-mail: </b> {% if field.email %}{{field.email}}{% else %}Não informado{% endif %}
                 </div>
@@ -42,8 +44,9 @@
 
                    
                 </div>
-                    <div class="dados-endereco">
+                    <div class="dados-endereco bg-white has-shadow">
                     <hr class="my-3">
+                    <h3 style="padding-left: 140px;">Endereço</h3>
                     <b class="dados-label">Endereço:</b>{{ field.logradouro }}, {{ field.numero }} {{ field.complemento }}<br>
                     <b class="dados-label">Bairro:</b>{{ field.bairro }} <br>
                     <b class="dados-label">Cidade:</b>{{ field.cidade }}<b class="dados-label">UF:</b>{{ field.uf }}<br>
@@ -55,6 +58,8 @@
 
 
 <hr>
+
+<h2 style="text-align: center;">Pedidos</h2>
 <script>
     function view_ficha_anamnese() {
         window.open("{% url 'web:ficha_anamnese_p' field.cpf %}","__blank", "width=900,height=600")
