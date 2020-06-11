@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'lucida_calligraphyitalic';
+    src: url('../fonts/lucida-calligraphy-italic-webfont.woff2') format('woff2'),
+         url('../fonts/lucida-calligraphy-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

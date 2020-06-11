@@ -22,7 +22,7 @@
                       <tr>
                         <th>Nome</th>
                         <th>CPF</th>
-                        <th>Telefone Celular</th>
+                        <th>Contato</th>
                         <th>Data de cadastro</th>
                         <th></th>
                         <th></th>
@@ -34,8 +34,10 @@
                       <tr>
                         <td><a href="{% url 'web:cliente_detail' field.cpf %}">{{ field.nome }}</a></td>
                         <td>{{ field.cpf }}</td>
-                        <td>{% if field.tel_cel %}{{field.tel_cel}}{% else %}Não informado{% endif %}</td>
-                        <td>{{ field.data_cadastro | date:'d/M/Y' }}</td>
+                        <td>{% if field.tel_cel %}{{field.tel_cel}}
+                          {% elif field.tel_fixo %}{{field.tel_fixo}}
+                          {% else %}Não informado{% endif %}</td>
+                        <td>{{ field.data_cadastro | date:'d M Y' }}</td>
                         <td><a href="{% url 'web:cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-pencil"></i></a></td>
                         <td><a href="{% url 'web:novo_pedido_cliente' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-shopping-cart"></i></a></td>
                         <td><button type="button" data-toggle="modal" data-target="#del_cliente" class="dropdown-item button-editar-href"

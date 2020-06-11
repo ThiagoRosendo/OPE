@@ -194,3 +194,59 @@ li.active{
 .btn-space{
     padding: 5px;
 }
+
+.title-login{
+    font-family: 'goodvibrations_script';
+    text-align: center;
+    font-size: 40px;
+}
+
+.subtitle-login{
+    font-family: 'goodvibrations_script';
+    text-align: center;
+    font-size: 25px;
+}
+
+.dominium{
+    text-align: center;
+    font-size: 70px !important;
+}
+
+.logo{
+    background: -webkit-radial-gradient(#ecbe5c, #40300e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 50px;
+}
+.logo-base{
+    background: -webkit-radial-gradient(#ecbe5c, #40300e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'goodvibrations_script';
+}
+
+.logo-base-d{
+    background: -webkit-radial-gradient(#ecbe5c, #40300e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dados-pessoais{
+    padding-top: 10px;
+    padding-bottom: 20px;
+
+}
+
+.dados-contato{
+
+
+}
+
+.dados-endereco{
+
+}
+
+.dados-label{
+    padding-right: 5px;
+    padding-left: 15px;
+}

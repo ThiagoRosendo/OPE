@@ -87,9 +87,9 @@
                 {% else %}Não informado{% endif %}</td>
               <td width="2%">
                 <button id="btn-registrar{{forloop.counter}}" type='button' class='btn button-editar-href' data-target='#RegistrarSessao' data-toggle='modal'
-                data-id="{{dado.id}}"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Registrar Atendimento"></i></button>
+                data-id="{{dado.id}}"><i class="fa fa-pencil" title="Registrar Atendimento"></i></button>
               </td>
-              <td width="2%"><i data-toggle="tooltip" data-placement="top" title="Detalhes do Pedido">
+              <td width="2%">
                 <a href="{% url 'web:pedido_detail' dado.pedido %}" id="btn-pedido{{forloop.counter}}" class='btn button-editar-href'><i class="fa fa-list-alt"></i></a></i>
               </td>
             </tr>
