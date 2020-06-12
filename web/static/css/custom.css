@@ -232,21 +232,34 @@ li.active{
 }
 
 .dados-pessoais{
-    padding-top: 10px;
+    padding-top: 20px;
     padding-bottom: 20px;
+    margin-left: 20px;
+    
 
 }
 
 .dados-contato{
 
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 20px;
 
 }
 
 .dados-endereco{
-
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
 }
 
 .dados-label{
     padding-right: 5px;
     padding-left: 15px;
+    color: #686a76;
+}
+
+.card-title{
+    text-align: center;
 }

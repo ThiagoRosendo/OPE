@@ -174,8 +174,9 @@ def cliente_detail(request, cpf):
     cliente = ClienteModel.objects.filter(cpf=cpf)
     pedidos = Pedido.objects.filter(cliente=cpf)
     fichas = FichaAnamnese.objects.filter(cliente=cpf)
+    ultimo_pedido = Pedido.objects.filter(cliente=cpf).last()
 
-    return render(request, page, {'cliente': cliente, 'pedidos': pedidos, 'fichas': fichas})
+    return render(request, page, {'cliente': cliente, 'pedidos': pedidos, 'fichas': fichas, 'ultimo_pedido': ultimo_pedido})
 
 
 @login_required
