@@ -25,7 +25,7 @@ SECRET_KEY = '&4^6&5cuifqdzv*far95c*ka*9#oy0$ey9nzb3!)pnjmbva@x='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 LOGIN_URL = '/login'
 
@@ -91,10 +91,11 @@ WSGI_APPLICATION = 'gcd.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'opegcd$default',
+        'NAME': 'opegcd$bd',
         'USER': 'opegcd',
         'PASSWORD': 'Ts303125',
         'HOST': 'opegcd.mysql.pythonanywhere-services.com',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     }
 }
 
