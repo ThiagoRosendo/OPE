@@ -28,7 +28,7 @@
                     <tbody>                        
             {% for field in services %}
                       <tr>
-                        <td><a href="{% url 'web:services_detail' field.id %}"><li>{{ field.nome }}</li></a></td>
+                        <td><a href="{% url 'web:services_detail' field.id %}">{{ field.nome }}</a></td>
                         <td>R$  {{ field.valor }}</td>
                       </tr>
             {% endfor %}

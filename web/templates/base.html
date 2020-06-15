@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
     <!-- theme stylesheet-->
     <link rel="stylesheet" href="{% static 'css/style.default.css' %}" id="theme-stylesheet">
-    <link rel="stylesheet" href="../static/css/good_vibrations.css">
+      <link rel="stylesheet" href="{% static 'css/good_vibrations.css' %}">
     <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <!-- Favicon-->
@@ -67,7 +67,7 @@
               <div class="navbar-header">
                 <!-- Navbar Brand --><a href="{% url 'web:index' %}" class="navbar-brand d-none d-sm-inline-block">
                   <div class="brand-text d-none d-lg-inline-block"><span class="logo-base"><b>GC</b></span><strong class="logo-base-d"> Dominium</strong></div>
-                  <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>GCD</strong></div></a>
+                  <div class="brand-text d-none d-sm-inline-block d-lg-none logo-base-d"><strong>GCD</strong></div></a>
                 <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
               </div>
               <!-- Navbar Menu -->
@@ -125,7 +125,7 @@
             <li id="home-link"><a href="{% url 'web:index' %}"> <i class="icon-home"></i> Início </a></li>
             <li id="clientes-link"><a href="{% url 'web:cliente_list' %}"> <i class="icon-user"></i> Clientes </a></li>
             <li id="servicos-link"><a href="{% url 'web:services_list' %}"> <i class="icon-list"></i> Serviços </a></li>
-            <li id="pedidos-link"><a href="{% url 'web:novo_pedido' %}"> <i class="material-icons">add_shopping_cart</i> Novo Pedido </a></li>
+            <li id="pedidos-link"><a href="{% url 'web:novo_pedido' %}"> <i class="fa fa-shopping-cart"></i> Novo Pedido </a></li>
            
           </u1>
         </nav>

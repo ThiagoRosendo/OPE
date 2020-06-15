@@ -216,7 +216,8 @@ li.active{
     background: -webkit-radial-gradient(#ecbe5c, #40300e);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    padding: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .logo-base{
     background: -webkit-radial-gradient(#ecbe5c, #40300e);

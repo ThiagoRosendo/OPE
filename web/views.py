@@ -79,7 +79,6 @@ def index(request):
     for i in range(0 - data.weekday(), 7 - data.weekday()):
         semana.append(data + timedelta(days=i))   
     agenda = Agenda.objects.filter(data=data).order_by('hora_inicio')
-    print(semana[0], semana[-1])
     agenda_semanal = Agenda.objects.filter(data__range=[semana[0], semana[-1]]).order_by('data', 'hora_inicio')
     if request.POST:
         if 'registrar' in request.POST:
@@ -136,7 +135,6 @@ def cliente_edit(request, cpf):
     page = 'clientes/cliente_edit.html'
     cliente = ClienteModel.objects.get(cpf=cpf)
     form = ClienteCadForm(request.POST or None, instance=cliente)
-    print(cliente.photo == 'default.jpg')
     if request.POST:
         if form.is_valid() and 'salvar' in request.POST:
             form.save()
@@ -187,14 +185,12 @@ def cliente_detail(request, cpf):
         for item in objetos:
             pedido_detail[pedido.id].append(item.servico)
     for item in pedido_detail:
-        print(pedido.id)
         if len(pedido_detail[item]) == 2:
             pd.append(pedido_detail[item][0] + ' e mais 1 serviço')
         elif len(pedido_detail[item]) > 1:
                 pd.append(pedido_detail[item][0] + ' e mais %d serviços' % (len(pedido_detail[pedido.id]) - 1))
         else:
                 pd.append(pedido_detail[item][0])
-    print(pd)
 
     return render(request, page, {'cliente': cliente, 'pedidos': pedidos, 'fichas': fichas, 'ultimo_pedido': ultimo_pedido, 'pd': pd})
 
