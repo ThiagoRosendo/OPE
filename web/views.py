@@ -136,12 +136,14 @@ def cliente_edit(request, cpf):
     page = 'clientes/cliente_edit.html'
     cliente = ClienteModel.objects.get(cpf=cpf)
     form = ClienteCadForm(request.POST or None, instance=cliente)
+    print(cliente.photo == 'default.jpg')
     if request.POST:
         if form.is_valid() and 'salvar' in request.POST:
             form.save()
             return redirect('web:cliente_detail', cliente.cpf)
         if 'excluir' in request.POST:
-            cliente.photo.delete()
+            if 'default.jpg' != cliente.photo:
+                cliente.photo.delete()
             cliente.delete()
             return redirect('web:cliente_list')
 
@@ -153,6 +155,8 @@ def cliente_del(request, cpf):
     cliente = ClienteModel.objects.get(cpf=cpf)
     form = ClienteCadForm(request.POST)
     if request.POST:
+        if 'default.jpg' != cliente.photo:
+            cliente.photo.detele()
         cliente.delete()
         messages.warning(request, 'O cadastro de %s foi exlcuído com sucesso!' % cliente.nome)
         return redirect('web:cliente_list')
@@ -171,12 +175,28 @@ def cliente_list(request):
 @login_required
 def cliente_detail(request, cpf):
     page = 'clientes/cliente_detail.html'
-    cliente = ClienteModel.objects.filter(cpf=cpf)
+    cliente = ClienteModel.objects.get(cpf=cpf)
     pedidos = Pedido.objects.filter(cliente=cpf)
     fichas = FichaAnamnese.objects.filter(cliente=cpf)
-    ultimo_pedido = Pedido.objects.filter(cliente=cpf).last()
+    ultimo_pedido = pedidos.last() if len(pedidos) > 0 else ''
+    pedido_detail = {}
+    pd = []
+    for pedido in pedidos:
+        objetos = PedidoDetail.objects.filter(pedido=pedido.id)
+        pedido_detail[pedido.id] = []
+        for item in objetos:
+            pedido_detail[pedido.id].append(item.servico)
+    for item in pedido_detail:
+        print(pedido.id)
+        if len(pedido_detail[item]) == 2:
+            pd.append(pedido_detail[item][0] + ' e mais 1 serviço')
+        elif len(pedido_detail[item]) > 1:
+                pd.append(pedido_detail[item][0] + ' e mais %d serviços' % (len(pedido_detail[pedido.id]) - 1))
+        else:
+                pd.append(pedido_detail[item][0])
+    print(pd)
 
-    return render(request, page, {'cliente': cliente, 'pedidos': pedidos, 'fichas': fichas, 'ultimo_pedido': ultimo_pedido})
+    return render(request, page, {'cliente': cliente, 'pedidos': pedidos, 'fichas': fichas, 'ultimo_pedido': ultimo_pedido, 'pd': pd})
 
 
 @login_required
@@ -379,6 +399,8 @@ def ficha_anamnese_p(request, cpf):
     page = 'clientes/ficha_anamnese_p.html'
     ficha = FichaAnamnese.objects.filter(cliente=cpf)
 
+    return render(request, page, {'ficha': ficha})
+
 @login_required
 def del_agendamento(request, id):
     page = 'pedidos/del_agendamento.html'
@@ -401,4 +423,17 @@ def confirmar_pgto(request, id):
         messages.success(request, 'O pagamento "%s" foi confirmado.' % despesa.descricao)
         return redirect('web:index')
     return render(request, page, {'despesa': despesa})
+
+def busca(request):
+    query = request.GET.get('search', '')
+    if query:
+        clientes = ClienteModel.objects.filter(nome__icontains=query).order_by('nome')
+        pedidos_detail = PedidoDetail.objects.filter(servico__icontains=query)
+
+    context = {'clientes': clientes, 'pedidos_detail': pedidos_detail,
+                'query': query
+                }
+
+    return render(request, 'busca.html', context)
+
 

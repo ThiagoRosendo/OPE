@@ -57,8 +57,8 @@
           <!-- Search Box-->
           <div class="search-box">
             <button class="dismiss"><i class="icon-close"></i></button>
-            <form id="searchForm" method="GET" role="search">
-              <input type="search" placeholder="What are you looking for..." class="form-control">
+            <form id="searchForm" method="GET" role="search" action="{% url 'web:busca' %}">
+              <input required type="search" name="search" placeholder="O que você está procurando?" class="form-control">
             </form>
           </div>
           <div class="container-fluid">

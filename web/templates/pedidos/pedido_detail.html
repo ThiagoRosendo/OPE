@@ -17,59 +17,70 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header d-flex align-items-center">
-            <h3 class="h4">Detalhes do Pedido</h3>
+            <h3 class="h4">Pedido #{{pedido}}</h3>
           </div>
           <div class="card-body">
 
-<b>Nº do Pedido: </b> {{pedido.id}} <br>
-<b>Cliente: </b>{{pedido.cliente}}
- 
-		<p><b>Data: </b>{{pedido.data}} </p>
- 
+			<div class="row">
+				<div class="dados-pessoais col-md-4 bg-white has-shadow centre">
+					<h3 class="card-title">Cliente</h3>
+				<spam class="dados-label">Nome: </spam> {{ pedido.cliente.nome }}  <br>
+				<spam class="dados-label">CPF: </spam> {{ pedido.cliente.cpf }} <br>
+				<spam class="dados-label">RG: </spam> {{ pedido.cliente.rg }}  <br>
+				<spam class="dados-label">Idade: </spam> {{ pedido.cliente.idade}} <br>
+				</div>
+
+				<div class="dados-contato col-md-4 bg-white has-shadow centre">
+					<h3 class="card-title">Contato</h3>
+				<spam class="dados-label">Residencial: </spam> {% if pedido.cliente.tel_fixo %}{{pedido.cliente.tel_fixo}}{% else %}Não informado{% endif %}<br>
+				<spam class="dados-label">Celular: </spam> {% if pedido.cliente.tel_cel %}{{pedido.cliente.tel_cel}}{% else %}Não informado{% endif %}<br>
+				<spam class="dados-label">Emergência: </spam> {% if pedido.cliente.tel_emergency %}{{pedido.cliente.tel_emergency}}{% else %}Não informado{% endif %}<br>
+				<spam class="dados-label">E-mail: </spam> {% if pedido.cliente.email %}{{pedido.cliente.email}}{% else %}Não informado{% endif %}
+			</div>
+			</div>
+
+			<hr>
+			<h3 class="text-center">Detalhes do Pedido</h3>
         <div class="table-responsive">
 			<table class="table">
 				<thead>
 					<tr>
-						<th>Serviço</th>
-						<th class="text-right">Quantidade</th>
-						<th class="text-right">Preço de venda</th>
-						<th class="text-right">Subtotal</th>
+						<th width="30%">Serviço</th>
+						<th width="10%" class="text-right">Quantidade</th>
+						<th width="30%" class="text-right">Preço de venda</th>
+						<th width="30%" class="text-right">Subtotal</th>
 					</tr>
 				</thead>
 				<tbody>
 				{% for i in pedido_detail %}
 					<tr>
 						<td>{{i.servico}} </td>
-						<td class="text-right">{{i.quantidade}}</td>
+						<td class="text-center">{{i.quantidade}}</td>
 						<td class="text-right">R$ {{i.preco}}</td>
 						<td class="text-right">R$ {{i.subtotal}}</td>
 					</tr>
 				{% endfor %}
-					
-				
 				</tbody>
 			</table>
 		</div>
 
-		<hr>
-
 		<h3 class="text-right"><b>Total: R$</b> <span class="label label-info"> {{pedido.valor_total}} </span></h3>
-		<!-- <p class="text-right">Obs: IPI não calculado.</p> -->
-		<p>
-			<a href="{% url 'web:cliente_detail' pedido.cliente.cpf  %}"><span class="glyphicon glyphicon-chevron-left">Voltar</span></a>
-		</p>
-	</div>
+		<br>
+
+	<hr>
+	<h3 class="text-center">Agenda</h3>
+
 	        
 	<div class="table-responsive">
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Serviço</th>
-					<th class="text-right">Nº da sessão</th>
-					<th class="text-right">Data</th>
-					<th class="text-right">Início</th>
-					<th class="text-right">Término</th>
-					<th class="text-right"></th>
+					<th width="30%">Serviço</th>
+					<th width="15%">Sessão</th>
+					<th width="15%">Data</th>
+					<th width="15%">Início</th>
+					<th width="15%">Término</th>
+					<th width="10%"></th>
 
 				</tr>
 			</thead>
@@ -83,10 +94,10 @@
 					
 					<tr id="{{forloop.counter}}">
 					<td>{{item.servico}} </td>
-					<td class="text-right">{{forloop.counter}}</td>
-					<td class="text-right"></td>
-					<td class="text-right"></td>
-					<td class="text-right"></td>
+					<td style="padding-left: 37px;">{{forloop.counter}}</td>
+					<td></td>
+					<td></td>
+					<td></td>
           <td class="text-right"><button class="btn btn-dark btn-sm" href="#" data-toggle="modal" data-target="#exampleModal"
 			data-sessao="{{forloop.counter}}" data-servico="{{item.servico}}" id="btn-sessao">Agendar</button>
 		</td>
@@ -119,10 +130,10 @@
     row.cells[2].innerHTML = data
     row.cells[3].innerHTML = hora_inicio
     row.cells[4].innerHTML = hora_fim
-	row.cells[5].innerHTML = "<button id="+ btn +" type='button' class='btn button-editar-href' data-target='#del_agendamento' data-toggle='modal'>" +
+	row.cells[5].innerHTML = "<button id="+ btn +" type='button' class='btn button-editar-href' data-target='#del_agendamento' data-toggle='modal' title='Cancelar Agendamento'>" +
 	"<i class='fa fa-trash btn-space'></i></button>" +
-	"<button id="+ btn_reg +" type='button' class='btn button-editar-href' data-target='#RegistrarSessao' data-toggle='modal'>" +
-	"<i class='fa fa-pencil btn-space'></i></button>"
+	"<button id="+ btn_reg +" type='button' class='btn button-editar-href' data-target='#RegistrarSessao' data-toggle='modal' title='Registrar Sessão'>" +
+	"<i class='fa fa-sticky-note-o'></i></button>"
 
 	document.getElementById(btn).setAttribute('data-del', url )
 	document.getElementById(btn).setAttribute('data-sessao', {{dado.sessao}})
@@ -162,6 +173,7 @@
 
 
 	</div>
+</div>
 </div>
 </div>
 

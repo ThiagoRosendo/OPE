@@ -43,6 +43,7 @@ urlpatterns = [
     path('clientes/<cpf>/print-ficha', views.ficha_anamnese_p, name='ficha_anamnese_p'),
     path('pedido/agenda/<id>/del', views.del_agendamento, name='del_agendamento'),
     path('despesas/conf_pgto/<id>', views.confirmar_pgto, name='confirmar_pgto'),
+    path('resultado_busca', views.busca, name='busca')
 
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

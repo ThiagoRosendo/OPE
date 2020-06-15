@@ -129,13 +129,14 @@
                         </div>
                               
                           <!--------------------------------------------------------FIM DO ENDEREÇO ------------------------------------------->
-                        </div>                        
+                                           
                         <hr class="my-3">
                         <div class="pure-controls">
                                 <!-- Início do Modal -->
                                                   <!-- Botão para acionar modal -->
-                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#salvar_cliente">Salvar</button>
+                              <a href="{% url 'web:cliente_detail' cliente.cpf %}" class="btn btn-secondary">Cancelar</a>
                               <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_cliente">Excluir</button>
+                              <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#salvar_cliente">Salvar Alterações</button>
                         </div>
                               <!-- Modal -->
                               <div class="modal fade" id="salvar_cliente" tabindex="-1" role="dialog" aria-labelledby="salvar_alteracoes" aria-hidden="true">
@@ -188,6 +189,7 @@
       </div>
     </div>
 </div>
+</div>     
 <script>
   document.getElementById('clientes-link').setAttribute('class', 'active')
 </script>

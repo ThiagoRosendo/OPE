@@ -48,9 +48,7 @@ label {
 }
 
 .foto-cliente{
-  position: absolute;
-  right: 55px;
-  top: 70px;
+  margin-left: 70px;
 }
 
 .avatar{

@@ -1,5 +1,4 @@
 from django.db import models
-from .agenda import agenda
 from datetime import date
 from django.contrib.auth.models import User
 

@@ -1,23 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-{% for field in cliente %}
 <header class="page-header">
     <div class="container-fluid">
      <a href="{% url 'web:index' %}"> Início</a> / 
      <a href="{% url 'web:cliente_list' %}"> Lista de clientes</a> /
-        {{field.nome}}
+        {{cliente.nome}}
     </div>
   </header>
 
 <br>
 <div class="col-lg-12">
         <div class="card">
-                <div class="card-close">
-                    <a href="{% url 'web:novo_pedido_cliente' field.cpf %}"><i class="fa fa-plus"></i> Novo pedido</a> 
-                <a href="{% url 'web:cliente_edit' field.cpf %}"><i class="fa fa-gear"></i> Editar</a>
-                </div>
 
                       
                 <div class="card-header d-flex align-items-center">
@@ -25,45 +19,74 @@
                     </div>
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-3 profile-image">
+                            <img src="{{ cliente.photo.url }}" class="img-fluid rounded-circle foto-cliente" width="170px">
+                        </div>
                     <div class="dados-pessoais col-md-4 bg-white has-shadow">
                         <h3 class="card-title">Dados Pessoais</h3>
-                    <spam class="dados-label">Nome: </spam> {{ field.nome }}  <br>
-                    <spam class="dados-label">CPF: </spam> {{ field.cpf }}  <spam class="dados-label">RG: </spam> {{ field.rg }}  <br>
-                    <spam class="dados-label">Data de nascimento: </spam> {{ field.data_nascimento | date:'d/m/Y' }}<spam class="dados-label">Idade: </spam> {{field.idade}} <br>
-                    <spam class="dados-label">Sexo: </spam> {{ field.sexo }} <br>
+                    <spam class="dados-label">Nome: </spam> {{ cliente.nome }}  <br>
+                    <spam class="dados-label">CPF: </spam> {{ cliente.cpf }}  <spam class="dados-label">RG: </spam> {{ cliente.rg }}  <br>
+                    <spam class="dados-label">Idade: </spam> {{cliente.idade}} <br>
+                    <spam class="dados-label">Sexo: </spam> {% if cliente.sexo == 'Masculino' %}<i class="fa fa-venus"></i>{% else %}<i class="fa fa-mars"></i>{% endif %}
                     </div>
 
                     <div class="dados-contato col-md-4 bg-white has-shadow">
                         <h3 class="card-title">Contato</h3>
-                    <spam class="dados-label">Residencial: </spam> {% if field.tel_fixo %}{{field.tel_fixo}}{% else %}Não informado{% endif %}<br>
-                    <spam class="dados-label">Celular: </spam> {% if field.tel_cel %}{{field.tel_cel}}{% else %}Não informado{% endif %}<br>
-                    <spam class="dados-label">Emergência: </spam> {% if field.tel_emergency %}{{field.tel_emergency}}{% else %}Não informado{% endif %}<br>
-                    <spam class="dados-label">E-mail: </spam> {% if field.email %}{{field.email}}{% else %}Não informado{% endif %}
+                    <spam class="dados-label">Residencial: </spam> {% if cliente.tel_fixo %}{{cliente.tel_fixo}}{% else %}Não informado{% endif %}<br>
+                    <spam class="dados-label">Celular: </spam> {% if cliente.tel_cel %}{{cliente.tel_cel}}{% else %}Não informado{% endif %}<br>
+                    <spam class="dados-label">Emergência: </spam> {% if cliente.tel_emergency %}{{cliente.tel_emergency}}{% else %}Não informado{% endif %}<br>
+                    <spam class="dados-label">E-mail: </spam> {% if cliente.email %}{{cliente.email}}{% else %}Não informado{% endif %}
                 </div>
-                <div class="profile-image">
-                    <img src="{{ field.photo.url }}" class="img-fluid rounded-circle foto-cliente" width="200px">
-                </div>
+               
                 </div>
                    
                 
                 <div class="row">
+                    <div class="dados-endereco statistics col-md-3">
+                        <div class="statistic btn-detail d-flex align-items-center has-shadow divlink" onclick="window.location='/clientes/{{cliente.cpf}}/edit'">
+                          <div class="icon bg-violet"><i class="icon-user"></i></div>
+                          <div class="text">Editar Cadastro</div>
+                        </div>
+                        <div class="statistic btn-detail d-flex align-items-center has-shadow divlink" onclick="window.location='/pedidos/novo_pedido/{{cliente.cpf}}'">
+                          <div class="icon bg-green"><i class="fa fa-shopping-cart"></i></div>
+                          <div class="text">Novo Pedido<br></div>
+                        </div>
+                        {% if fichas %}
+                        <div class="statistic btn-detail d-flex align-items-center has-shadow divlink" onclick="view_ficha_anamnese()">
+                            <div class="icon bg-orange"><i class="icon-bill"></i></div>
+                            <div class="text">Visualizar Ficha<br></div>
+                          </div>
+                        {% else %}
+                        <div class="statistic btn-detail d-flex align-items-center has-shadow divlink" onclick="window.location='/clientes/{{cliente.cpf}}/ficha'">
+                            <div class="icon bg-orange"><i class="icon-bill"></i></div>
+                            <div class="text">Preencher Ficha<br></div>
+                          </div>
+                          {% endif %}
+                        </div>
                     <div class="dados-endereco col-md-4 bg-white has-shadow">
                     <h3 class="card-title">Endereço</h3>
-                    <spam class="dados-label">Endereço:</spam>{{ field.logradouro }}, {{ field.numero }} | 
-                    {% if field.complemento %} 
-                    {{ field.complemento }}<br>
+                    <spam class="dados-label">Endereço:</spam>{{ cliente.logradouro }}, {{ cliente.numero }}<br>
+                    {% if cliente.complemento %} 
+                    <spam class="dados-label">Complemento:</spam>{{ cliente.complemento }}<br>
                     {% endif %}
-                    <spam class="dados-label">Bairro:</spam>{{ field.bairro }} <br>
-                    <spam class="dados-label">Cidade:</spam>{{ field.cidade }}<spam class="dados-label">UF:</spam>{{ field.uf }}<br>
-                    <spam class="dados-label">CEP:</spam>{{ field.cep }}
+                    <spam class="dados-label">Bairro:</spam>{{ cliente.bairro }} <br>
+                    <spam class="dados-label">Cidade:</spam>{{ cliente.cidade }}<spam class="dados-label">UF:</spam>{{ cliente.uf }}<br>
+                    <spam class="dados-label">CEP:</spam>{{ cliente.cep }}
                     </div>
 
                     <div class="dados-endereco col-md-4 bg-white has-shadow">
                         <h3 class="card-title">Histórico</h3>
-                        <spam class="dados-label">Último pedido em:</spam>{{ultimo_pedido.data | date:'d M Y'}}<br>
-                        <spam class="dados-label">Cliente desde: </spam>{{ field.data_cadastro | date:'d M Y' }} <br>
+                        {% if ultimo_pedido %}
+                        <spam class="dados-label">Último pedido em:</spam>{{ultimo_pedido.data | date:'d M Y'}} 
+                            <a class="btn button-editar-href" href="{% url 'web:pedido_detail' ultimo_pedido.id %} " title="Ver pedido"><i class="fa fa-list-alt"></i></a><br>
+                        {% else %}
+                        <spam class="dados-label">Último pedido em:</spam>N/A<br>
                         
+                        {% endif %}
+                        <spam class="dados-label">Cliente desde: </spam>{{ cliente.data_cadastro | date:'d M Y' }} <br>
+
                         </div>
+
                 </div>
             
                    
@@ -74,36 +97,29 @@
 
 <script>
     function view_ficha_anamnese() {
-        window.open("{% url 'web:ficha_anamnese_p' field.cpf %}","__blank", "width=900,height=600")
+        window.open("{% url 'web:ficha_anamnese_p' cliente.cpf %}","__blank", "width=900,height=600")
     }
 </script>
-{% for item in fichas %}
-
-<a href="#" onclick="view_ficha_anamnese()" class="btn-ficha">Avaliação Pessoal</a>
-
-{% empty %}
-
-<a href="{% url 'web:ficha_anamnese' field.cpf %}" class="btn-ficha pull-right">Preencher Ficha</a>
-
-{% endfor %}
 
 {% if pedidos %}
-<h2 style="text-align: center;">Pedidos</h2>
+<h2 class="text-center">Pedidos</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th class="text-left" style="width:20%;">Nº do Pedido</th>
-            <th class="text-center" style="width:30%;">Data</th>
-            <th class="text-center" style="width:30%;">Valor Total</th>
+            <th class="text-left" style="width:5%;">#</th>
+            <th class="text-left" style="width:45%;">Serviço</th>
+            <th class="text-center" style="width:20%;">Data</th>
+            <th class="text-center" style="width:10%;">Valor Total</th>
             <th class="text-right" style="width: 20%"></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="table-body">
         {% for i in pedidos %}
     
         <tr>
             <td>{{i.id}} </td>
+            <td></td>
             <td class="text-center">{{i.data | date:"d M Y"}}</td>
             <td class="text-center">R$ {{i.valor_total}}</td>
             <td class="text-right"><a href="{% url 'web:pedido_detail' i %}">Detalhes</a> </td>
@@ -118,14 +134,23 @@
     
     </tbody>
 </table>
-</div>
+
 {% endif %}
-                    
+  </div>                  
                             </div>
                         </div>
-{% endfor %}
 
 <script>
     document.getElementById('clientes-link').setAttribute('class', 'active')
+    var table = document.getElementById("table-body")
+    var lista = []
+    {% for item in pd %}
+    lista.push("{{item}}")
+    {% endfor %}
+    
+    for (var i = 0, row; row = table.rows[i]; i++){
+      row.cells[1].innerHTML = lista[i]
+    }
+      
   </script>
 {% endblock %}

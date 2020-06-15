@@ -38,10 +38,10 @@
                           {% elif field.tel_fixo %}{{field.tel_fixo}}
                           {% else %}Não informado{% endif %}</td>
                         <td>{{ field.data_cadastro | date:'d M Y' }}</td>
-                        <td><a href="{% url 'web:cliente_edit' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-pencil"></i></a></td>
-                        <td><a href="{% url 'web:novo_pedido_cliente' field.cpf %}" class="dropdown-item button-editar-href"><i class="fa fa-shopping-cart"></i></a></td>
+                        <td><a href="{% url 'web:cliente_edit' field.cpf %}" class="dropdown-item button-editar-href" title="Editar Cadastro"><i class="fa fa-pencil"></i></a></td>
+                        <td><a href="{% url 'web:novo_pedido_cliente' field.cpf %}" class="dropdown-item button-editar-href" title="Novo Pedido"><i class="fa fa-shopping-cart"></i></a></td>
                         <td><button type="button" data-toggle="modal" data-target="#del_cliente" class="dropdown-item button-editar-href"
-                          data-cpf="{{field.cpf}}" data-nome="{{field.nome}}"><i class="fa fa-trash"></i></button></td>
+                          data-cpf="{{field.cpf}}" data-nome="{{field.nome}}" title="Excluir Cadastro"><i class="fa fa-trash"></i></button></td>
                         
                       
                 <!-- Modal -->
