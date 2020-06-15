@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django_forms_bootstrap',
     'crispy_forms',
     'widget_tweaks',
-    'bootstrap_modal_forms'
     
 ]
 
