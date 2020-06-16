@@ -12,7 +12,7 @@ admin.site.register(RegistroSessao)
 admin.site.register(Despesas)
 
 class UsuarioInline(admin.StackedInline):
-    model = Usuario
+    model = Custom
     can_delete = False
     verbose_name_plural = 'usuários'
 

@@ -42,6 +42,9 @@ urlpatterns = [
     path('clientes/<cpf>/ficha', views.ficha_anamnese, name='ficha_anamnese'),
     path('clientes/<cpf>/print-ficha', views.ficha_anamnese_p, name='ficha_anamnese_p'),
     path('pedido/agenda/<id>/del', views.del_agendamento, name='del_agendamento'),
+    path('pedido/agenda/<id>/del_semanal', views.del_agendamento_semanal, name='del_agendamento_semanal'),
+    path('despesa/<id>/del', views.del_despesa, name='del_despesa'),
+    path('pedido/<id>/del', views.del_pedido, name='del_pedido'),
     path('despesas/conf_pgto/<id>', views.confirmar_pgto, name='confirmar_pgto'),
     path('resultado_busca', views.busca, name='busca')
 

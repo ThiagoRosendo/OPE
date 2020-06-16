@@ -40,8 +40,10 @@
               <input type="text" name="cpf" class="form-control" required id="id_cpf" placeholder="CPF" maxlength="14" onblur="validarCPF(this.value)" oninput="mascara(this)">
               {% if form.cpf.errors %}
               <script>
-                  alert('CPF já cadastrado!')
-              </script>
+                $(document).ready(function(){
+                    $("#cpfCadastrado").modal('show');
+                });
+            </script>
               {% endif %}
             </div>
 
@@ -134,14 +136,39 @@
                         <hr class="my-3">
 
                 <div class="pure-controls">
-                    <button type="submit" class="btn btn-primary">CADASTRAR</button>
+                  <a href="{% url 'web:index' %}" class="btn btn-secondary">CANCELAR</a>
+                    <button type="submit" class="btn btn-primary pull-right">CADASTRAR</button>
                 </div></div>
                
           </form>
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="cpfCadastrado" tabindex="-1" role="dialog" aria-labelledby="cpfCadastradoLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cpfCadastradoLabel">OPS!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+  
+          Este CPF já está cadastrado!
+  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+        </div>
+    
+      </div>
+      </div>
+    
     <script>
       document.getElementById('clientes-link').setAttribute('class', 'active')
+      console.log(document.cliente.cpf)
     </script>
 {% endblock %}

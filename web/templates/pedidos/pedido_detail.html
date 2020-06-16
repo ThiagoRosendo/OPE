@@ -126,6 +126,7 @@
 	
 	var btn = "btn-cancel"+i
 	var btn_reg = "btn-registrar"+i
+	var editar = "btn-editar"+i
 
     row.cells[2].innerHTML = data
     row.cells[3].innerHTML = hora_inicio
@@ -140,17 +141,26 @@
 	document.getElementById(btn).setAttribute('data-service', servico)
 	
 	document.getElementById(btn_reg).setAttribute('data-id', id)
+	document.getElementById(btn_reg).setAttribute('class', 'btn button-editar-href sem-registro')
+
+
 
 	{% for registro in registros %}
 		{% if registro.agendamento.id == dado.id %}
 		var desc = "{{registro.descricao | linebreaksbr}}"
+		var diaR = "{{registro.data | date:'d'}}"; var mesR = "{{registro.data | date:'F'}}"; var anoR = "{{registro.data | date:'Y'}}";
+		var horaR = "{{registro.data | date:'H'}}"; var minR = "{{registro.data | date:'i'}}";
+		var registro = "Última edição em " + diaR + " de " + mesR + " de " + anoR + " às " + horaR + ":" + minR + "."
     	desc = desc.replace(/<br>/g, "\r")
-			
-			document.getElementById(btn_reg).setAttribute('data-descricao', desc)
+		document.getElementById(btn_reg).setAttribute('data-data', registro)
+		document.getElementById(btn_reg).setAttribute('data-descricao', desc)
+		document.getElementById(btn_reg).setAttribute('class', 'btn button-editar-href com-registro')
+		document.getElementById(btn_reg).setAttribute('title', 'Editar Registro')
+
+
 		{% endif %}
 
 	{% endfor %}
-	
 
     }
     }
@@ -166,6 +176,7 @@
     </table>
     
 	{% include 'pedidos/agendar_sessao.html' %}
+	{% include 'pedidos/editar_sessao.html' %}
 	{% include 'pedidos/modal_del.html' %}
     {% include 'pedidos/registrar_sessao.html' %}
 	

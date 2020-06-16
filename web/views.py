@@ -89,10 +89,10 @@ def index(request):
                     registro = RegistroSessao.objects.get(agendamento=form.agendamento.id)
                     form = RegistroSessaoForm(request.POST, instance=registro)
                     form = form.save(commit=False)
-                    messages.success(request, 'O registro da sessão %s de %s foi atualizado.' % (form.agendamento.sessao, form.agendamento.servico))
+                    messages.success(request, 'O registro da sessão "%s"de "%s"foi atualizado.' % (form.agendamento.sessao, form.agendamento.servico))
                     form.save()
                 except:
-                    messages.success(request, 'O registro da sessão %s de %s foi realizado com sucesso!' % (form.agendamento.sessao, form.agendamento.servico))
+                    messages.success(request, 'O registro da sessão "%s"de "%s"foi realizado com sucesso!' % (form.agendamento.sessao, form.agendamento.servico))
                     form.save()
                 return redirect('web:index')
             else:
@@ -156,7 +156,7 @@ def cliente_del(request, cpf):
         if 'default.jpg' != cliente.photo:
             cliente.photo.detele()
         cliente.delete()
-        messages.warning(request, 'O cadastro de %s foi exlcuído com sucesso!' % cliente.nome)
+        messages.warning(request, 'O cadastro de "%s"foi exlcuído com sucesso!' % cliente.nome)
         return redirect('web:cliente_list')
 
     return render (request, page, {'cliente': cliente, 'form': form})
@@ -218,10 +218,10 @@ def services_edit(request, id):
     if request.POST:
         if form.is_valid() and 'salvar' in request.POST:
             form.save()
-            messages.success(request, 'O serviço de %s foi atulizado com sucesso!' % services.nome)
+            messages.success(request, 'O serviço de "%s"foi atulizado com sucesso!' % services.nome)
             return redirect('web:services_list')
         if 'excluir' in request.POST:
-            messages.warning(request, 'O serviço de %s foi excluído!' % services.nome)
+            messages.warning(request, 'O serviço de "%s"foi excluído!' % services.nome)
             services.delete()
             return redirect('web:services_list')
 
@@ -329,22 +329,15 @@ def pedido_detail(request, id):
             form = AgendaForm(request.POST)
             if form.is_valid():
                 form = form.save(commit=False)
-                try:
-                    agendamento = Agenda.objects.get(id=form.id)
-                    form = AgendaForm(request.POST, instance=agendamento)
-                    form = form.save(commit=False)
-                    messages.success(request, 'Sessão %s para o serviço de %s foi agendada atualizada!' % (form.sessao, form.servico))
+                if check_data(form.data) is False:
+                    messages.error(request, 'Não é possível agendar um atendimento para uma data anterior a hoje!')
+                    form = AgendaForm
+                elif check_agenda(agenda, form.data, form.hora_inicio, form.hora_fim) is False:
+                    messages.error(request, 'Horário não disponível')
+                    form = AgendaForm
+                else:
+                    messages.success(request, 'Sessão "%s" para o serviço de "%s" foi agendada com sucesso!' % (form.sessao, form.servico))
                     form.save()
-                except:
-                    if check_data(form.data) is False:
-                        messages.error(request, 'Não é possível agendar um atendimento para uma data anterior a hoje!')
-                        form = AgendaForm
-                    elif check_agenda(agenda, form.data, form.hora_inicio, form.hora_fim) is False:
-                        messages.error(request, 'Horário não disponível')
-                        form = AgendaForm
-                    else:
-                        messages.success(request, 'Sessão %s para o serviço de %s foi agendada com sucesso!' % (form.sessao, form.servico))
-                        form.save()
                 return redirect('web:pedido_detail', form.pedido.id)
         if 'registrar' in request.POST:
             form = RegistroSessaoForm(request.POST)
@@ -352,16 +345,20 @@ def pedido_detail(request, id):
                 form = form.save(commit=False)
                 try:
                     registro = RegistroSessao.objects.get(agendamento=form.agendamento.id)
+                    print(registro.data)
                     form = RegistroSessaoForm(request.POST, instance=registro)
                     form = form.save(commit=False)
-                    messages.success(request, 'O registro da sessão %s de %s foi atualizado.' % (form.agendamento.sessao, form.agendamento.servico))
+                    messages.success(request, 'O registro da sessão "%s"de "%s"foi atualizado.' % (form.agendamento.sessao, form.agendamento.servico))
                     form.save()
                 except:
-                    messages.success(request, 'O registro da sessão %s de %s foi realizado com sucesso!' % (form.agendamento.sessao, form.agendamento.servico))
+                    messages.success(request, 'O registro da sessão "%s"de "%s"foi realizado com sucesso!' % (form.agendamento.sessao, form.agendamento.servico))
                     form.save()
                 return redirect('web:pedido_detail', pedido.id)
             else:
                 raise Exception('erro')
+
+            return redirect('web:pedido_detail', agendamento.pedido)
+
             
     else:
         form = AgendaForm
@@ -373,6 +370,18 @@ def pedido_detail(request, id):
         }
 
     return render(request, page, context )
+
+@login_required
+def del_pedido(request, id):
+    page = 'pedidos/delete_pedido.html'
+    pedido = Pedido.objects.get(id=id)
+    form = PedidoForm(request.POST)
+    if request.POST:
+        pedido.delete()
+        messages.warning(request, 'O pedido "%s" foi cancelado com sucesso!' % id)
+        return redirect('web:cliente_detail', pedido.cliente.cpf)
+
+    return render(request, page, {'form': form, 'pedido': pedido})
 
 
 @login_required
@@ -404,10 +413,34 @@ def del_agendamento(request, id):
     form = AgendaForm(request.POST)
     if request.POST:
         agendamento.delete()
-        messages.warning(request, 'Sessão %s do serviço de %s foi cancelada!' % (agendamento.sessao, agendamento.servico))
+        messages.warning(request, 'Sessão "%s"do serviço de "%s"foi cancelada!' % (agendamento.sessao, agendamento.servico))
         return redirect('web:pedido_detail', agendamento.get_pedido())
 
     return render(request, page, {'form': form, 'agendamento': agendamento})
+
+@login_required
+def del_agendamento_semanal(request, id):
+    page = 'pedidos/del_agendamento.html'
+    agendamento = Agenda.objects.get(id=id)
+    form = AgendaForm(request.POST)
+    if request.POST:
+        agendamento.delete()
+        messages.warning(request, 'Sessão "%s"do serviço de "%s"foi cancelada!' % (agendamento.sessao, agendamento.servico))
+        return redirect('web:index')
+
+    return render(request, page, {'form': form, 'agendamento': agendamento})
+
+@login_required
+def del_despesa(request, id):
+    page = 'despesas/delete_despesa.html'
+    despesa = Despesas.objects.get(id=id)
+    form = DespesasForm(request.POST)
+    if request.POST:
+        despesa.delete()
+        messages.warning(request, 'A despesa "%s" foi exluída com sucesso!' % (despesa.descricao))
+        return redirect('web:index')
+
+    return render(request, page, {'form': form, 'despesa': despesa})
 
 @login_required
 def confirmar_pgto(request, id):

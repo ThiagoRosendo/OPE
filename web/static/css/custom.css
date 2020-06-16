@@ -179,8 +179,7 @@ li.active{
 }
 
 .radio-check{
-    padding-left: 145px;
-    padding-right: 145px;
+    margin: auto;
 }
 
 .check-despesa{
@@ -276,4 +275,20 @@ div.centre {
 .btn-detail {
     padding: 3px 20px;
     margin-bottom: 15px;
+}
+
+.registrar-sessao{
+    color: #686a76;
+}
+
+.com-registro{
+    background: #54e69d !important;
+    color: #fff;
+    width: 26px;
+}
+
+.sem-registro{
+    background: #ff7676 !important;
+    color: #fff;
+    width: 26px;
 }

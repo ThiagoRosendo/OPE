@@ -17,7 +17,8 @@
         
         <input type="hidden" name="agendamento" required id="id_agendamento">
         <label for="id_descricao">Observações do atendimento:</label>
-        <textarea class="form-control" name="descricao" id="id_descricao" rows="9"></textarea>
+        <textarea class="form-control" name="descricao" id="id_descricao" rows="9" required></textarea>
+        <small id="edicao" class="pull-right registrar-sessao"></small>
           
           
           
@@ -39,6 +40,8 @@ $('#RegistrarSessao').on('show.bs.modal', function (event) {
 var id_agendamento = $(event.relatedTarget).data('id');
 $(this).find("#id_agendamento").val(id_agendamento);
 $(this).find('#id_descricao').text($(event.relatedTarget).data('descricao'))
+$(this).find('#edicao').text($(event.relatedTarget).data('data'))
+
 
 });
 

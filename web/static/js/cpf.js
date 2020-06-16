@@ -5,7 +5,7 @@ function validarCPF( cpf ){
     {
         window.alert("CPF inválido. Tente novamente.");
                    document.cliente.cpf.value = '';
-                   document.cliente.cpf.focus();
+                    $(this).find('id_cpf').focus()
                    return false;
     }
     
@@ -19,7 +19,7 @@ function validarCPF( cpf ){
     {
         window.alert("CPF inválido. Tente novamente.");
                     document.cliente.cpf.value = '';
-                    document.cliente.cpf.focus();
+                     $(this).find('id_cpf').focus()
                    return false;
       }
     
@@ -37,7 +37,7 @@ function validarCPF( cpf ){
     if(resto != parseInt(cpf.charAt(9))){
         window.alert("CPF inválido. Tente novamente.");
                     document.cliente.cpf.value = '';
-                    document.cliente.cpf.focus();       
+                     $(this).find('id_cpf').focus()       
                    return false;
     }
     
@@ -55,7 +55,7 @@ function validarCPF( cpf ){
     if(resto != parseInt(cpf.charAt(10))){
         window.alert("CPF inválido. Tente novamente.");
                     document.cliente.cpf.value = '';
-                    document.cliente.cpf.focus();
+                     $(this).find('id_cpf').focus()
                    return false;
     }
 

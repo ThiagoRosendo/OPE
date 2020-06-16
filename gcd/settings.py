@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['*']
 LOGIN_URL = '/login'
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,7 +49,6 @@ INSTALLED_APPS = [
     
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 MIDDLEWARE = [
@@ -147,4 +147,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+EMAIL_HOST_USER = 'guinho.home@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_PASSWORD = '30312533'
 

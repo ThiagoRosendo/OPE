@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 ficha = (
     (u'1', u'Bom'),
@@ -26,9 +27,10 @@ status_despesa = (
     (u'0', u'A Pagar'), (u'1', u'Pago')
 )
 
-class Usuario(models.Model):
+class Custom(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    cargo = models.CharField('Cargo', max_length=20)
+    cargo = models.CharField('Cargo', max_length=30)
+    foto = models.ImageField('Foto', upload_to='users', default='default.png', blank=True)
 
 class ClienteModel(models.Model):
     sexo_choices = [['Feminino', 'Feminino'], ['Masculino', 'Masculino']]
@@ -39,7 +41,7 @@ class ClienteModel(models.Model):
     rg = models.CharField('RG', max_length=20, null=True)
     data_nascimento = models.DateField('Data de nascimento')
     sexo = models.CharField(max_length=9, choices=sexo_choices, null=True, blank=True)
-    photo = models.ImageField('Foto de perfil', upload_to='profile', default='default.jpg', blank=True)
+    photo = models.ImageField('Foto de perfil', upload_to='profile', default='default.png', blank=True)
     
     # Contato
 
@@ -124,6 +126,10 @@ class PedidoDetail(models.Model):
     preco = models.DecimalField('Preço', max_digits=7, decimal_places=2)
     subtotal = models.DecimalField('Subtotal', max_digits=7, decimal_places=2)
     
+    class Meta:
+        verbose_name = 'Pedido Details'
+        verbose_name_plural = 'Pedidos Details'
+    
 
     def __str__(self):
         return str(self.pedido)
@@ -178,6 +184,10 @@ class FichaAnamnese(models.Model):
     estresse = models.CharField('Estresse', choices=booleano, max_length=1)
     diabetes = models.CharField('Diabetes', choices=booleano, max_length=1)
     doenca = models.CharField('Algum tipo de doença', choices=booleano, max_length=1)
+
+    class Meta:
+        verbose_name = 'Ficha Anamnese'
+        verbose_name_plural = 'Fichas Anamnese'
     
 
 class Agenda(models.Model):
@@ -199,14 +209,23 @@ class Agenda(models.Model):
     def get_pedido(self):
         return str(self.pedido)
 
+    class Meta:
+        verbose_name = 'Agendamento'
+        verbose_name_plural = 'Agendamentos'
+
 
 class RegistroSessao(models.Model):
 
     agendamento = models.ForeignKey(Agenda, on_delete=models.CASCADE)
     descricao = models.TextField(default='', blank=True)
+    data = models.DateTimeField('Data do Registro', auto_now=True)
         
     def __str__(self):
         return str(self.agendamento)
+
+    class Meta:
+        verbose_name = 'Registro de atendimento'
+        verbose_name_plural = 'Registros de atendimentos'
 
 class Despesas(models.Model):
 
@@ -215,5 +234,9 @@ class Despesas(models.Model):
     valor = models.DecimalField('Valor', decimal_places=2, max_digits=7)
     vencimento = models.DateField('Vencimento')
     status = models.CharField('Status', choices=status_despesa, max_length=1)
+
+    class Meta:
+        verbose_name = 'Despesa'
+        verbose_name_plural = 'Despesas'
 
 
