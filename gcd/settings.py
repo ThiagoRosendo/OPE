@@ -90,10 +90,10 @@ WSGI_APPLICATION = 'gcd.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'opegcd$bd',
-        'USER': 'opegcd',
+        'NAME': 'gcdominium$default',
+        'USER': 'gcdominium',
         'PASSWORD': 'Ts303125',
-        'HOST': 'opegcd.mysql.pythonanywhere-services.com',   # Or an IP Address that your DB is hosted on
+        'HOST': 'gcdominium.mysql.pythonanywhere-services.com',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
