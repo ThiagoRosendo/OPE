@@ -129,6 +129,15 @@
             <li id="pedidos-link"><a href="{% url 'web:novo_pedido' %}"> <i class="fa fa-shopping-cart"></i> Novo Pedido </a></li>
            
           </u1>
+          <span class="heading">Gerenciar</span>
+          <li><a href="{% url 'password_change' %}"> <i class="fa fa-cog"></i> Alterar Senha </a></li>
+          {% if request.user.is_superuser %}
+          <li><a href="{% url 'web:register' %}"> <i class="fa fa-user-plus"></i> Registrar Usuário </a></li>
+
+          {% endif %}
+
+          <li><a href="{% url 'web:logout' %}"> <i class="fa fa-sign-out"></i> Sair </a></li>
+
         </nav>
         <div class="content-inner">
           <!-- Page Header-->

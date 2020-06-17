@@ -46,7 +46,8 @@ urlpatterns = [
     path('despesa/<id>/del', views.del_despesa, name='del_despesa'),
     path('pedido/<id>/del', views.del_pedido, name='del_pedido'),
     path('despesas/conf_pgto/<id>', views.confirmar_pgto, name='confirmar_pgto'),
-    path('resultado_busca', views.busca, name='busca')
+    path('resultado_busca', views.busca, name='busca'),
+    path('register', views.register, name='register'),
+    path('register_custom', views.register_custom, name='register_custom'),
 
-    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

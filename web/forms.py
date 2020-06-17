@@ -1,7 +1,10 @@
 from django import forms
 from .models import *
-
 from django.forms import formset_factory
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
 
 
 class ClienteCadForm(forms.ModelForm):
@@ -97,4 +100,18 @@ class DespesasForm(forms.ModelForm):
     status = forms.CharField(widget=forms.RadioSelect(choices=status_despesa))
     class Meta:
         model = Despesas
+        fields = '__all__'
+
+
+class RegistroUsuario(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email']
+
+
+class CustomUsuario(forms.ModelForm):
+
+    class Meta:
+        model = Custom
         fields = '__all__'

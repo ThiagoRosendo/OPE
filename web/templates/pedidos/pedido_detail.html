@@ -98,8 +98,8 @@
 					<td></td>
 					<td></td>
 					<td></td>
-          <td class="text-right"><button class="btn btn-dark btn-sm" href="#" data-toggle="modal" data-target="#exampleModal"
-			data-sessao="{{forloop.counter}}" data-servico="{{item.servico}}" id="btn-sessao">Agendar</button>
+          <td class="text-right"><button class="btn btn-sm" href="#" data-toggle="modal" data-target="#exampleModal"
+			data-sessao="{{forloop.counter}}" data-servico="{{item.servico}}" id="btn-sessao"><i class='fa fa-calendar'></i></button>
 		</td>
 				</tr>	
 					
@@ -176,7 +176,6 @@
     </table>
     
 	{% include 'pedidos/agendar_sessao.html' %}
-	{% include 'pedidos/editar_sessao.html' %}
 	{% include 'pedidos/modal_del.html' %}
     {% include 'pedidos/registrar_sessao.html' %}
 	

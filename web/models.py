@@ -239,4 +239,3 @@ class Despesas(models.Model):
         verbose_name = 'Despesa'
         verbose_name_plural = 'Despesas'
 
-

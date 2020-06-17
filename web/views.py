@@ -8,6 +8,7 @@ from .models import *
 from django.views.generic import TemplateView, ListView, DetailView
 from django.forms import formset_factory, inlineformset_factory
 from datetime import date, timedelta
+from django.contrib.auth.forms import UserCreationForm
 
 
 def check_data(data):
@@ -89,10 +90,10 @@ def index(request):
                     registro = RegistroSessao.objects.get(agendamento=form.agendamento.id)
                     form = RegistroSessaoForm(request.POST, instance=registro)
                     form = form.save(commit=False)
-                    messages.success(request, 'O registro da sessão "%s"de "%s"foi atualizado.' % (form.agendamento.sessao, form.agendamento.servico))
+                    messages.success(request, 'O registro da sessão "%s" de "%s" foi atualizado.' % (form.agendamento.sessao, form.agendamento.servico))
                     form.save()
                 except:
-                    messages.success(request, 'O registro da sessão "%s"de "%s"foi realizado com sucesso!' % (form.agendamento.sessao, form.agendamento.servico))
+                    messages.success(request, 'O registro da sessão "%s" de "%s" foi realizado com sucesso!' % (form.agendamento.sessao, form.agendamento.servico))
                     form.save()
                 return redirect('web:index')
             else:
@@ -140,7 +141,7 @@ def cliente_edit(request, cpf):
             form.save()
             return redirect('web:cliente_detail', cliente.cpf)
         if 'excluir' in request.POST:
-            if 'default.jpg' != cliente.photo:
+            if 'default.png' != cliente.photo:
                 cliente.photo.delete()
             cliente.delete()
             return redirect('web:cliente_list')
@@ -153,10 +154,10 @@ def cliente_del(request, cpf):
     cliente = ClienteModel.objects.get(cpf=cpf)
     form = ClienteCadForm(request.POST)
     if request.POST:
-        if 'default.jpg' != cliente.photo:
-            cliente.photo.detele()
+        if 'default.png' != cliente.photo:
+            cliente.photo.delete()
         cliente.delete()
-        messages.warning(request, 'O cadastro de "%s"foi exlcuído com sucesso!' % cliente.nome)
+        messages.warning(request, 'O cadastro de "%s" foi exlcuído com sucesso!' % cliente.nome)
         return redirect('web:cliente_list')
 
     return render (request, page, {'cliente': cliente, 'form': form})
@@ -218,10 +219,10 @@ def services_edit(request, id):
     if request.POST:
         if form.is_valid() and 'salvar' in request.POST:
             form.save()
-            messages.success(request, 'O serviço de "%s"foi atulizado com sucesso!' % services.nome)
+            messages.success(request, 'O serviço de "%s" foi atulizado com sucesso!' % services.nome)
             return redirect('web:services_list')
         if 'excluir' in request.POST:
-            messages.warning(request, 'O serviço de "%s"foi excluído!' % services.nome)
+            messages.warning(request, 'O serviço de "%s" foi excluído!' % services.nome)
             services.delete()
             return redirect('web:services_list')
 
@@ -348,10 +349,10 @@ def pedido_detail(request, id):
                     print(registro.data)
                     form = RegistroSessaoForm(request.POST, instance=registro)
                     form = form.save(commit=False)
-                    messages.success(request, 'O registro da sessão "%s"de "%s"foi atualizado.' % (form.agendamento.sessao, form.agendamento.servico))
+                    messages.success(request, 'O registro da sessão "%s" de "%s" foi atualizado.' % (form.agendamento.sessao, form.agendamento.servico))
                     form.save()
                 except:
-                    messages.success(request, 'O registro da sessão "%s"de "%s"foi realizado com sucesso!' % (form.agendamento.sessao, form.agendamento.servico))
+                    messages.success(request, 'O registro da sessão "%s" de "%s" foi realizado com sucesso!' % (form.agendamento.sessao, form.agendamento.servico))
                     form.save()
                 return redirect('web:pedido_detail', pedido.id)
             else:
@@ -413,7 +414,7 @@ def del_agendamento(request, id):
     form = AgendaForm(request.POST)
     if request.POST:
         agendamento.delete()
-        messages.warning(request, 'Sessão "%s"do serviço de "%s"foi cancelada!' % (agendamento.sessao, agendamento.servico))
+        messages.warning(request, 'Sessão "%s" do serviço de "%s" foi cancelada!' % (agendamento.sessao, agendamento.servico))
         return redirect('web:pedido_detail', agendamento.get_pedido())
 
     return render(request, page, {'form': form, 'agendamento': agendamento})
@@ -425,7 +426,7 @@ def del_agendamento_semanal(request, id):
     form = AgendaForm(request.POST)
     if request.POST:
         agendamento.delete()
-        messages.warning(request, 'Sessão "%s"do serviço de "%s"foi cancelada!' % (agendamento.sessao, agendamento.servico))
+        messages.warning(request, 'Sessão "%s" do serviço de "%s" foi cancelada!' % (agendamento.sessao, agendamento.servico))
         return redirect('web:index')
 
     return render(request, page, {'form': form, 'agendamento': agendamento})
@@ -464,5 +465,35 @@ def busca(request):
                 }
 
     return render(request, 'busca.html', context)
+
+
+def register(request):
+
+    if request.POST:
+        form = RegistroUsuario(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuário cadastrado com sucesso!')
+            return redirect('web:index')
+    else:
+        form = RegistroUsuario
+    return render(request, 'register.html', {'form': form})
+
+def register_custom(request):
+    if request.POST:
+        form = CustomUsuario(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuário cadastrado com sucesso!')
+            return redirect('web:index')
+    else:
+        form = RegistroUsuario
+        form = CustomUsuario(request.POST)
+    return render(request, 'register_custom.html', {'form': form})
+
+
+
+
+
 
 

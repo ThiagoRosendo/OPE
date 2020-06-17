@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<br>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Basic Form-->
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <h3 class="h4">Registrar Usuário</h3>
+        </div>
+        <div class="card-body">
+ 
+    
+         
+                  <form method="post" class="form-validate">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    
+                    <label for="id_first_name">Nome</label>
+                    {{form.first_name | attr:'class:form-control'}}
+
+                    <label for="id_last_name">Sobrenome</label>
+                    {{form.last_name | attr:'class:form-control'}}
+
+
+                    <label for="id_email">E-mail</label>
+                    {{form.email | attr:'class:form-control'}}
+
+                    <label for="id_username">Usuário</label>
+                    {{form.username | attr:'class:form-control'}}
+                    
+                   
+                    <label for="id_password1">Senha</label>
+
+                    {{form.password1 | attr:'class:form-control'}}
+
+                    <small>
+                        <p>
+                        <li>Sua senha não pode ser tão parecida com suas outras informações pessoais.</li>
+                          <li> Sua senha precisa conter pelo menos 8 caracteres.</li>
+                            <li>Sua senha não pode ser uma senha habitualmente utilizada.</li>
+                              <li>Sua senha não pode ser inteiramente numérica.</li>
+                              </p>
+                            </small>
+
+                    <label for="id_password2">Confirmação de senha</label>
+                    {{form.password2 | attr:'class:form-control'}}
+
+                    {{a}}
+                    
+
+
+                    <br>
+                   <button id="change" type="submit" class="btn btn-dark">Registrar</button>
+                    <a href="{% url 'web:index' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                  
+                    <!-- This should be submit button but I replaced it with <a> for demo purposes-->
+                  </form>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+
+
+{% endblock %}
